@@ -8,10 +8,15 @@ module.exports = {
   "description": prompt("Description", '', function (desc) {
     return desc
   }),
-  "main": 'build/index.js',
-  "git": 'git@github.com:mindhivenz/packages.git',
-  "license": 'MIT',
   "keywords": prompt("Keywords", '', function (desc) {
     return desc
   }),
+  "main": 'build/index.js',
+  "git": 'git@github.com:mindhivenz/packages.git',
+  "license": 'MIT',
+  "homepage": "https://github.com/mindhivenz/packages",
+  "bugs": {
+    "url": "https://github.com/mindhivenz/packages/issues"
+  },
+
 }

@@ -86,5 +86,8 @@
     "postinstall": "node ./scripts/postinstall.js && yarn run build --silent",
     "publish": "yarn run build-clean --silent && yarn run build --silent && lerna publish --silent",
     "watch": "yarn run build --silent && node ./scripts/watch.js"
+  },
+  "dependencies": {
+    "ncp": "^2.0.0"
   }
 }
