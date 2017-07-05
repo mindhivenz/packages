@@ -27,7 +27,6 @@ const chalk = require('chalk');
 const micromatch = require('micromatch');
 const stringLength = require('string-length');
 const getPackages = require('./_getPackages');
-const browserBuild = require('./browserBuild');
 
 const OK = chalk.reset.inverse.bold.green(' DONE ');
 const SRC_DIR = 'src';
@@ -78,36 +77,6 @@ function buildNodePackage(p) {
   process.stdout.write(`${OK}\n`);
 }
 
-function buildBrowserPackage(p) {
-  const srcDir = path.resolve(p, SRC_DIR);
-  const pkgJsonPath = path.resolve(p, 'package.json');
-
-  if (!fs.existsSync(pkgJsonPath)) {
-    return;
-  }
-
-  const {browser} = require(pkgJsonPath);
-  if (browser) {
-    if (browser.indexOf(BUILD_ES5_DIR) !== 0) {
-      throw new Error(
-        `browser field for ${pkgJsonPath} should start with "${BUILD_ES5_DIR}"`
-      );
-    }
-    browserBuild(
-      p.split('/').pop(),
-      path.resolve(srcDir, 'index.js'),
-      path.resolve(p, browser)
-    )
-      .then(() => {
-        process.stdout.write(adjustToTerminalWidth(`${path.basename(p)}\n`));
-        process.stdout.write(`${OK}\n`);
-      })
-      .catch(e => {
-        console.error(e);
-        process.exit(1);
-      });
-  }
-}
 
 function buildFile(file, silent) {
   const destPath = getBuildPath(file, BUILD_DIR);
@@ -155,6 +124,4 @@ if (files.length) {
   packages.forEach(buildNodePackage);
   process.stdout.write('\n');
 
-  process.stdout.write(chalk.inverse(' Building browser packages \n'));
-  packages.forEach(buildBrowserPackage);
 }
