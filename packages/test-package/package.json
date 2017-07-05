@@ -1,7 +1,7 @@
 {
   "name": "@mindhive/test-package",
   "version": "0.0.0",
-  "description": "Test package for Mindhibe Monorepo",
+  "description": "Test package for Mindhive Monorepo",
   "contributors": [
     {
       "name": "Nick Virtue",
