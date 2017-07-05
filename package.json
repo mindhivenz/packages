@@ -1,9 +1,4 @@
 {
-  "private": false,
-  "repository": {
-    "old": "git",
-    "url": "git@github.com:mindhivenz/packages.git"
-  },
   "devDependencies": {
     "babel-core": "^6.23.1",
     "babel-eslint": "^7.1.1",
@@ -26,27 +21,24 @@
     "eslint-plugin-markdown": "^1.0.0-beta.6",
     "eslint-plugin-react": "^7.1.0",
     "glob": "^7.1.1",
-    "immutable": "^4.0.0-rc.1",
     "init-package-json": "^1.10.1",
     "lerna": "^2.0.0-rc.5",
     "micromatch": "^2.3.11",
     "mocha": "^3.4.2",
-    "prettier": "^1.5.2",
     "react": "15.4.2",
-    "slash": "^1.0.0",
+    "prettier": "^1.5.2",
     "string-length": "^1.0.1",
-    "strip-ansi": "^3.0.1",
-    "typescript": "^2.2.2",
     "fullname": "^3.3.0",
     "ncp": "^2.0.0"
   },
   "scripts": {
-    "build-clean": "rm -rf ./packages/*/build ./packages/*/build-es5",
+    "build-clean": "rm -rf ./packages/*/build",
     "build": "node ./scripts/build.js",
     "clean-all": "rm -rf ./node_modules && rm -rf ./packages/*/node_modules && yarn run build-clean",
     "new": "node ./scripts/new-package.js",
     "postinstall": "node ./scripts/postinstall.js && yarn run build --silent",
     "pub": "yarn run build-clean --silent && yarn run build --silent && lerna publish --access public --silent",
+    "test": "./scripts/test.sh",
     "watch": "yarn run build --silent && node ./scripts/watch.js"
   }
 }
