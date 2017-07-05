@@ -1,0 +1,34 @@
+{
+  "name": "@mindhive/styles",
+  "version": "0.0.0",
+  "description": "JSS and inline styles including MUI theming support",
+  "contributors": [
+    {
+      "name": "Nick Virtue",
+      "email": "nick@mindhive.co.nz"
+    },
+    {
+      "name": "Damon Maria",
+      "email": "damon@mindhive.co.nz"
+    }
+  ],
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "recompose": "^0.22.0"
+  },
+  "peerDependencies": {
+    "@mindhive/di": "^4.0.0",
+    "react": "^15.0.0"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Nick Virtue",
+  "homepage": "https://github.com/mindhivenz/packages",
+  "bugs": {
+    "url": "https://github.com/mindhivenz/packages/issues"
+  },
+  "license": "MIT"
+
+}
