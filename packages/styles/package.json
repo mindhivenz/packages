@@ -1,6 +1,6 @@
 {
   "name": "@mindhive/styles",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "private": false,
   "description": "JSS and inline styles drawn from MUI theme",
   "contributors": [
@@ -21,11 +21,15 @@
     "@mindhive/di": "^4.0.0",
     "react": "^15.0.0"
   },
-  "main": "build/index.js",
+  "main": "./build/index.js",
   "scripts": {
     "test": "test"
   },
   "author": "Nick Virtue",
+  "repository": {
+    "old": "git",
+    "url": "git@github.com:mindhivenz/packages.git"
+  },
   "homepage": "https://github.com/mindhivenz/packages",
   "bugs": {
     "url": "https://github.com/mindhivenz/packages/issues"
