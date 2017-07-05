@@ -10,7 +10,7 @@ const classSheetInjector = (classesName = 'classes') => (BaseComponent) => {
 
   return class extends Component {
     static displayName = 'applyTheme-classSheet'
-    instanceUpdateId = 0
+    classUpdateId = 0
 
     constructor(props) {
       super(props)
@@ -22,12 +22,12 @@ const classSheetInjector = (classesName = 'classes') => (BaseComponent) => {
 
     componentWillUpdate(nextProps) {
       if (! isEqual(this.props.themeStyles, nextProps.themeStyles)) {
-        if (this.instanceUpdateId === updateId) {
+        if (this.classUpdateId === updateId) {
           this.detachSheet()
           this.attachSheet(nextProps.themeStyles)
           updateId += 1
         }
-        this.instanceUpdateId = updateId
+        this.classUpdateId = updateId
       }
     }
 
