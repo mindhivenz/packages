@@ -14,8 +14,8 @@ module.exports = {
   "private": false,
   "main": 'index.js',
   "scripts": {
-    "build": "babel src --ignore *.spec.js --out-dir build",
-    "test": "mocha --compilers js:babel-core/register --reporter spec \"src/**/*.spec.js\"",
+    "test": "../../scripts/test.sh",
+    "build": "../../scripts/build.sh"
   },
   "repository": {
     "old": "git",

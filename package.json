@@ -34,9 +34,10 @@
     "ncp": "^2.0.0"
   },
   "scripts": {
-    "build-clean": "rm -rf ./packages/*/build",
+    "clean-all": "rm -rf ./node_modules && rm -rf ./packages/*/node_modules && yarn run clean-build",
+    "clean-build": "rm -rf ./packages/*/build",
+    "bootstrap": "yarn run clean-all && yarn",
     "build": "lerna run build",
-    "clean-all": "rm -rf ./node_modules && rm -rf ./packages/*/node_modules && yarn run build-clean",
     "new": "node ./scripts/new-package.js",
     "postinstall": "lerna bootstrap && yarn run build --silent",
     "pub": "yarn run build-clean --silent && yarn run build --silent && lerna publish --access public --silent",
