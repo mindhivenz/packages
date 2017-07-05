@@ -1,6 +1,6 @@
 {
   "name": "@mindhive/styles",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "private": false,
   "description": "JSS and inline styles drawn from MUI theme",
   "contributors": [
@@ -24,7 +24,8 @@
   },
   "main": "./build/index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "build": "babel src --ignore *.spec.js --out-dir build"
   },
   "author": "Nick Virtue",
   "repository": {
