@@ -33,6 +33,7 @@ const SRC_DIR = 'src';
 const BUILD_DIR = 'build';
 const BUILD_ES5_DIR = 'build-es5';
 const JS_FILES_PATTERN = '**/*.js';
+const JSX_FILES_PATTERN = '**/*.jsx';
 const IGNORE_PATTERN = '**/__tests__/**';
 const PACKAGES_DIR = path.resolve(__dirname, '../packages');
 
@@ -89,7 +90,7 @@ function buildFile(file, silent) {
           path.relative(PACKAGES_DIR, file) +
           ' (ignore)\n'
       );
-  } else if (!micromatch.isMatch(file, JS_FILES_PATTERN)) {
+  } else if (!(micromatch.isMatch(file, JS_FILES_PATTERN) || micromatch.isMatch(file, JSX_FILES_PATTERN))) {
     fs.createReadStream(file).pipe(fs.createWriteStream(destPath));
     silent ||
       process.stdout.write(
