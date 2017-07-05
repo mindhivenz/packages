@@ -9,7 +9,7 @@ const classSheetInjector = (classesName = 'classes') => (BaseComponent) => {
   let updateId = 0
 
   return class extends Component {
-    static displayName = 'applyTheme-classSheet'
+    static displayName = 'classSheetInjector-classSheet'
     classUpdateId = 0
 
     constructor(props) {

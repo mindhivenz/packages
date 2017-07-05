@@ -12,7 +12,11 @@ module.exports = {
     );
   },
   "private": false,
-  "main": './build/index.js',
+  "main": './index.js',
+  "scripts": {
+    "test": "test",
+    "build": "babel src --ignore *.spec.js --out-dir build",
+  },
   "repository": {
     "old": "git",
     "url": "git@github.com:mindhivenz/packages.git"
