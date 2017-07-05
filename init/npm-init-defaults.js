@@ -11,6 +11,7 @@ module.exports = {
       callBack(null, prompt('Author', name))    }
     );
   },
+  "private": false,
   "main": 'build/index.js',
   "git": 'git@github.com:mindhivenz/packages.git',
   "license": 'MIT',
