@@ -8,7 +8,7 @@ import { app } from '@mindhive/di'
 
 export default domains => (BaseComponent) => {
 
-  const factory = createEagerFactory(BaseComponent);
+  const factory = createEagerFactory(BaseComponent)
 
   class Inject extends Component {
 
