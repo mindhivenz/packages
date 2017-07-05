@@ -1,5 +1,5 @@
 {
-  "name": "@mindhive/styles",
+  "name": "@mindhive/test-package",
   "version": "0.0.0",
   "description": "JSS and inline styles including MUI theming support",
   "contributors": [
@@ -20,7 +20,7 @@
     "@mindhive/di": "^4.0.0",
     "react": "^15.0.0"
   },
-  "main": "index.js",
+  "main": "build/index.js",
   "scripts": {
     "test": "test"
   },
