@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @flow
  */
 
 import {version as VERSION} from '../package.json'
@@ -15,5 +14,5 @@ import Inject from './inject'
 module.exports = {
   Inject,
   getVersion: () => VERSION,
-}
+};
 
