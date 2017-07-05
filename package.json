@@ -81,8 +81,7 @@
     "build-clean": "rm -rf ./packages/*/build ./packages/*/build-es5",
     "build": "node ./scripts/build.js",
     "clean-all": "rm -rf ./node_modules && rm -rf ./packages/*/node_modules && rm -rf ./integration_tests/*/*/node_modules && yarn run build-clean",
-    "new": "bash ./scripts/new-package.sh",
-    "new2": "node ./scripts/new-package.js",
+    "new": "node ./scripts/new-package.js",
     "postinstall": "node ./scripts/postinstall.js && yarn run build --silent",
     "publish": "yarn run build-clean --silent && yarn run build --silent && lerna publish --silent",
     "watch": "yarn run build --silent && node ./scripts/watch.js"
