@@ -10,9 +10,11 @@
 import {version as VERSION} from '../package.json'
 
 import applyTheme from './applyTheme'
+import withStyles from './withStyles'
 
 module.exports = {
   applyTheme,
+  withStyles,
   getVersion: () => VERSION,
 };
 
