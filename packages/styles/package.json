@@ -19,6 +19,7 @@
   },
   "peerDependencies": {
     "@mindhive/di": "^4.0.0",
+    "@mindhive/mobx": "^2.1.1",
     "react": "^15.0.0"
   },
   "main": "./build/index.js",

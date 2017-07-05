@@ -9,10 +9,10 @@
 
 import {version as VERSION} from '../package.json'
 
-import Inject from './inject'
+import applyTheme from './applyTheme'
 
 module.exports = {
-  Inject,
+  applyTheme,
   getVersion: () => VERSION,
 };
 
