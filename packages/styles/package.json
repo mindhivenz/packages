@@ -1,6 +1,6 @@
 {
   "name": "@mindhive/styles",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "JSS and inline styles drawn from MUI theme",
   "contributors": [
     {
@@ -30,5 +30,4 @@
     "url": "https://github.com/mindhivenz/packages/issues"
   },
   "license": "MIT"
-
 }
