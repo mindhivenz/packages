@@ -12,10 +12,10 @@ module.exports = {
     );
   },
   "private": false,
-  "main": './index.js',
+  "main": 'index.js',
   "scripts": {
-    "test": "test",
     "build": "babel src --ignore *.spec.js --out-dir build",
+    "test": "mocha --compilers js:babel-core/register --reporter spec \"src/**/*.spec.js\"",
   },
   "repository": {
     "old": "git",
