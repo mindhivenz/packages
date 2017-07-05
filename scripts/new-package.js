@@ -3,20 +3,24 @@ var path = require('path');
 var fs = require('fs');
 var ncp = require('ncp');
 
-var newPackageName = `${process.argv[2]}`;
+const newPackageName = `${process.argv[2]}`;
+process.newPackageName = newPackageName
 
-let baseDirectory = path.resolve(__dirname, '../');
+const baseDirectory = path.resolve(__dirname, '../');
 const packagesDirectory = path.resolve(baseDirectory, 'packages');
 const initDirectory = path.resolve(baseDirectory, 'init');
-const initFile = path.resolve(initDirectory, 'npm-init.js');
-var defaultPackageDir = path.resolve(initDirectory, 'default-package');
-var newPackageDir = path.resolve(packagesDirectory, newPackageName);
+const initFile = path.resolve(initDirectory, 'npm-init-defaults.js');
+const defaultPackageDir = path.resolve(initDirectory, 'default-package');
+const newPackageDir = path.resolve(packagesDirectory, newPackageName);
+
+if (fs.existsSync(newPackageDir)) {
+  console.warn(`Package directory already exists: ${newPackageDir}`);
+  return
+}
 
 try {
-  fs.mkdirSync(newPackageDir);
-  ncp(defaultPackageDir, newPackageDir)
-  init(newPackageDir, initFile, {}, function (er, data) {
-  });
+  ncp(defaultPackageDir, newPackageDir);
+  init(newPackageDir, initFile, {"__pn": newPackageName}, () => {});
 }
 catch (err) {
   console.log(err);

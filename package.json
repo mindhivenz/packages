@@ -87,6 +87,9 @@
     "watch": "yarn run build --silent && node ./scripts/watch.js"
   },
   "dependencies": {
-    "ncp": "^2.0.0"
+    "fullname": "^3.3.0",
+    "fullname-cli": "^1.2.0",
+    "ncp": "^2.0.0",
+    "username": "^3.0.0"
   }
 }
