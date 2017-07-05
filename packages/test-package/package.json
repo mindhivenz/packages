@@ -1,7 +1,7 @@
 {
   "name": "@mindhive/test-package",
   "version": "0.0.0",
-  "description": "JSS and inline styles including MUI theming support",
+  "description": "Test package for Mindhibe Monorepo",
   "contributors": [
     {
       "name": "Nick Virtue",
