@@ -9,4 +9,4 @@
 * `yarn build` builds `./packages/*/src` -> `./packages/*/build`
 * `yarn build-clean` removes all `./packages/*/build`
 * `yarn clean-all` removes all `./node_modules` && `./packages/*/node_modules` and runs `build-clean`
-* **Not tested ....** `yarn publish` publishes all changed packages to NPM
+* `yarn pub` publishes all changed packages to NPM, asking for versioning along the way

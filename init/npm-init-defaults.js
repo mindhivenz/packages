@@ -12,8 +12,11 @@ module.exports = {
     );
   },
   "private": false,
-  "main": 'build/index.js',
-  "git": 'git@github.com:mindhivenz/packages.git',
+  "main": './build/index.js',
+  "repository": {
+    "old": "git",
+    "url": "git@github.com:mindhivenz/packages.git"
+  },
   "license": 'MIT',
   "homepage": "https://github.com/mindhivenz/packages",
   "bugs": {
