@@ -1,6 +1,6 @@
 {
   "name": "@mindhive/styles",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "JSS and inline styles drawn from MUI theme",
   "contributors": [
     {
