@@ -4,11 +4,8 @@ import { reduxForm } from 'redux-form'
 import { HotKeys } from 'react-hotkeys'
 import { compose } from 'recompose'
 
-import RaisedButton from 'material-ui/RaisedButton'
-import IconButton from 'material-ui/IconButton'
 import Overlay from 'material-ui/internal/Overlay'
 
-import spacing from 'material-ui/styles/spacing'
 import { ListItem } from 'material-ui/List'
 
 import { Icon, ClearIcon } from '@mindhive/components/Icon'
@@ -17,6 +14,7 @@ import { injectStylesSheet } from './components/EditStyles'
 
 import DiscardButton from './components/DiscardButton'
 import SaveButton from './components/SaveButton'
+import CloseButton from './components/CloseButton'
 
 const docEditContextTypes = {
   docEditForm: PropTypes.string,
@@ -117,7 +115,7 @@ class DocEdit extends Component {
     this.props.handleSubmit(this.props.fields)
   }
 
-  getFirstFocus = node => {
+  getFirstFocus = (node) => {
     if (this.firstFocusable === undefined) {
       this.firstFocusable = node
     }
@@ -187,16 +185,7 @@ class DocEdit extends Component {
     }
     if (showClose) {
       buttons.push(
-        <IconButton
-          onTouchTap={() => this.handleClose(onCancel)}
-          style={styles.close.position}
-        >
-          <ClearIcon
-            style={styles.close.position}
-            color={styles.close.color}
-            hoverColor={styles.close.hoverColor}
-          />
-        </IconButton>
+        <CloseButton onTouchTap={() => this.handleClose(onCancel)} />
       )
     }
 
