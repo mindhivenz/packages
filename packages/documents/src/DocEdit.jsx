@@ -13,7 +13,7 @@ import { ListItem } from 'material-ui/List'
 
 import { Icon, ClearIcon } from '@mindhive/components/Icon'
 
-import withStyles from '../../styles/src/withStyles'
+import { withStyles } from '@mindhive/styles'
 
 const docEditContextTypes = {
   docEditForm: PropTypes.string,
