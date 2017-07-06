@@ -16,12 +16,12 @@ from [Bable](https://github.com/babel/babel/tree/master/packages) and
     1. Creates `./packages/package-name`
     1. Copies `./init/default-package` -> `./packages/package-name`
     1. Runs `npm init` in `./packages/package-name` pulling default values from `./init/npm-init.js`
-    
+
 * **`yarn build`** builds `./packages/*/src` -> `./packages/*/build`
     1. `lerna` runs the `build` script in each package
     1. By default, **all** build scripts point to `./scripts/build.sh`
     1. No need to update **EVERY** package if we change our build :)
-    
+
 * **`yarn test`** runs the `test` script in each package
     1. By default, **all** test scripts point to `./scripts/test.sh`
     1. No need to update **EVERY** package if we change our build :)
@@ -35,11 +35,19 @@ from [Bable](https://github.com/babel/babel/tree/master/packages) and
      
      _Maybe we should sign up for an organisation?_
 
+* **`yarn build-js`** builds `./packages/*/src` -> `./packages/*/build`
+    1. runs `./scripts/build.js`
+    2. mainly here for `watch` below
+    
+* **`yarn watch`** watches `./packages/*/src/*` for changes and builds those individual files
+
 ### Structure
 ```text
 root
-  |-init        ....    template/defaults for new package    
-  |-packages    ....    individual npm packages live here
-  |-scripts     ....    helper scripts
+  |-init            ....    template/defaults for new package    
+  |-packages        ....    our npm packages
+  |   |-documents   ....    DocView, DocEdit etc
+  |    -styles      ....    JSS, withStyles etc
+  |-scripts         ....    helper scripts
 
 ```

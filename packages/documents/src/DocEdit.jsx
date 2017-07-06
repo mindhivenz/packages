@@ -335,6 +335,7 @@ class DocEdit extends Component {
               }
               return React.cloneElement(child, props);
             })}
+
             <div style={styles.buttons}>
               {buttons.length &&
                 buttons.map((button, idx) =>

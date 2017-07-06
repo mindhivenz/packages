@@ -31,8 +31,7 @@ const getPackages = require('./_getPackages')
 const OK = chalk.reset.inverse.bold.green(' DONE ')
 const SRC_DIR = 'src'
 const BUILD_DIR = 'build'
-const JS_FILES_PATTERN = '**/*.js'
-const JSX_FILES_PATTERN = '**/*.jsx'
+const JS_FILES_PATTERN = ['**/*.js', '**/*.jsx']
 const IGNORE_PATTERN = '**/__tests__/**'
 const PACKAGES_DIR = path.resolve(__dirname, '../packages')
 
@@ -93,27 +92,27 @@ function buildFile(file, silent) {
       path.relative(PACKAGES_DIR, file) +
       ' (ignore)\n'
     )
-  } else if (! (micromatch.isMatch(file, JS_FILES_PATTERN) || micromatch.isMatch(file, JSX_FILES_PATTERN))) {
+  } else if (! micromatch([file], JS_FILES_PATTERN)) {
     fs.createReadStream(file).pipe(fs.createWriteStream(destPath))
     silent ||
     process.stdout.write(
+      '\n' +
       chalk.red('  \u2022 ') +
       path.relative(PACKAGES_DIR, file) +
       chalk.red(' \u21D2 ') +
       path.relative(PACKAGES_DIR, destPath) +
-      ' (copy)' +
-      '\n'
+      ' (copy)'
     )
   } else {
     const transformed = babel.transformFileSync(file, babelNodeOptions).code
     fs.writeFileSync(destPath, transformed)
     silent ||
     process.stdout.write(
+      '\n' +
       chalk.green('  \u2022 ') +
       path.relative(PACKAGES_DIR, file) +
       chalk.green(' \u21D2 ') +
-      path.relative(PACKAGES_DIR, destPath) +
-      '\n'
+      path.relative(PACKAGES_DIR, destPath)
     )
   }
 }
