@@ -40,7 +40,7 @@
     "build": "lerna run build",
     "new": "node ./scripts/new-package.js",
     "postinstall": "lerna bootstrap && yarn run build --silent",
-    "pub": "yarn run build-clean --silent && yarn run build --silent && lerna publish --access public --silent",
+    "pub": "yarn run clean-build --silent && yarn run build --silent && lerna publish --access public --silent",
     "test": "lerna run test"
   },
   "dependencies": {

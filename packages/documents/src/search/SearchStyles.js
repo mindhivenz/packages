@@ -1,4 +1,4 @@
-import withStyles from '../../styles/src/withStyles'
+import withStyles from '../../../styles/src/withStyles'
 
 export default ({
   palette,

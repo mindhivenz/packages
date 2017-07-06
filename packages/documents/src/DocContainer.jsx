@@ -2,7 +2,7 @@ import React from 'react'
 
 import Paper from 'material-ui/Paper'
 
-import SearchFilter from './SearchFilter'
+import SearchFilter from './search/SearchFilter'
 import DocAddFab from './DocAddFab'
 
 
