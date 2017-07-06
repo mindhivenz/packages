@@ -94,11 +94,13 @@ const mapThemeToStyles = (theme) => {
       color: theme.palette.primary1Color,
     },
     buttons: {
-      position: 'absolute',
+      // position: 'absolute',
       right: `${spacing.desktopGutter}px`,
       top: `${spacing.desktopGutterMore}px`,
-      display: 'inline-block',
+      display: 'block',
       textAlign: 'right',
+      border: '1px dashed red',
+
     },
     save: {
       backgroundColor: saveButtonColor,
