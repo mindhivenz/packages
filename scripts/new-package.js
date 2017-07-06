@@ -4,7 +4,7 @@ var fs = require('fs');
 var ncp = require('ncp');
 
 const newPackageName = `${process.argv[2]}`;
-process.newPackageName = newPackageName
+process.newPackageName = newPackageName;
 
 const baseDirectory = path.resolve(__dirname, '../');
 const packagesDirectory = path.resolve(baseDirectory, 'packages');
@@ -26,3 +26,4 @@ catch (err) {
   console.log(err);
   return
 }
+
