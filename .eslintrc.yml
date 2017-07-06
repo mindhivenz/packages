@@ -1,8 +1,47 @@
+parser: babel-eslint
 extends:
-  - mindhive-react
+- airbnb
+env:
+  mocha: true
+  browser: true
 rules:
+  max-len:
+  - warn
+  - code: 120
+    ignoreTrailingComments: true
+    ignoreUrls: true
+  padded-blocks: off
+  react/prop-types: off
+  semi:
+  - error
+  - never
+  space-unary-ops:
+  - error
+  - overrides:
+      "!": true
+  quote-props: off
+  class-methods-use-this: off
+  no-confusing-arrow: off
+  no-unused-expressions: off
+  no-underscore-dangle: off
+  no-param-reassign:
+  - error
+  - props: false
+  no-trailing-spaces: off
+  no-nested-ternary: off
+  import/named: error
+  import/extensions:
+  - off
+  - never
+  import/no-extraneous-dependencies: off
+  import/prefer-default-export: off
   import/no-unresolved:
-    - error
-    - ignore:
-        - "^react$"
-        - "^react-dom$"
+  - error
+  - ignore:
+    - "^react$"  # since we can't install it as a dependency
+    - "^react-dom$"
+    - "^redux$"
+    - "^redux-form$"
+  react/no-did-mount-set-state: off
+ecmaFeatures:
+  spread: true

@@ -12,7 +12,7 @@ const copyProps = themeDomain => ({
 export default (mapThemeToStyles) => {
 
   if (! mapThemeToStyles) {
-    return Component => {
+    return (Component) => {
       const themedComponent = observer(props =>
         React.createElement(Component, { ...props, ...copyProps(app().themeDomain) })
       )
@@ -49,9 +49,9 @@ export default (mapThemeToStyles) => {
         ...copyProps(themeDomain),
         styles: mapThemeToStyles(themeDomain.muiTheme),
       }
-    }
+    },
   })
-  return Component => {
+  return (Component) => {
     const themedComponent = observer(props =>
       React.createElement(Component, { ...props, ...cache.themeProps })
     )

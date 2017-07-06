@@ -4,7 +4,6 @@ import { jss } from 'react-jss'
 import { createEagerElement, getDisplayName } from 'recompose'
 
 const instanceSheetInjector = (classesName = 'classes') => BaseComponent => class extends Component {
-  static displayName = 'applyTheme-instanceSheet'
   instanceSheet
 
   constructor(props) {
@@ -32,7 +31,7 @@ const instanceSheetInjector = (classesName = 'classes') => BaseComponent => clas
   attachSheet(themeStyles) {
     this.instanceSheet = jss.createStyleSheet(themeStyles, {
       link: true,
-      meta: `${getDisplayName(BaseComponent)}-instanceSheet`
+      meta: `${getDisplayName(BaseComponent)}-instanceSheet`,
     }).attach()
   }
 

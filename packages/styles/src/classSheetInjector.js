@@ -1,5 +1,5 @@
-import { isEqual } from 'lodash'
 import { Component } from 'react'
+import { isEqual } from 'lodash'
 import { jss } from 'react-jss'
 import { createEagerElement, getDisplayName } from 'recompose'
 
@@ -9,7 +9,6 @@ const classSheetInjector = (classesName = 'classes') => (BaseComponent) => {
   let updateId = 0
 
   return class extends Component {
-    static displayName = 'classSheetInjector-classSheet'
     classUpdateId = 0
 
     constructor(props) {
@@ -47,7 +46,7 @@ const classSheetInjector = (classesName = 'classes') => (BaseComponent) => {
     attachSheet(themeStyles) {
       classSheet = jss.createStyleSheet(themeStyles, {
         link: true,
-        meta: `${getDisplayName(BaseComponent)}-classSheet`
+        meta: `${getDisplayName(BaseComponent)}-classSheet`,
 
       }).attach()
     }
