@@ -8,7 +8,7 @@ const SearchIcon = ({
   styles,
 }) =>
   <FlatButton
-    label="Discard!"
+    label="Discard"
     style={styles.discard}
     onTouchTap={onTouchTap}
   />

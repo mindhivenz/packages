@@ -16,6 +16,7 @@ import { Icon, ClearIcon } from '@mindhive/components/Icon'
 import { injectStylesSheet } from './components/EditStyles'
 
 import DiscardButton from './components/DiscardButton'
+import SaveButton from './components/SaveButton'
 
 const docEditContextTypes = {
   docEditForm: PropTypes.string,
@@ -178,15 +179,7 @@ class DocEdit extends Component {
         <DiscardButton onTouchTap={() => this.handleClose(onCancel)} />
       )
       buttons.push(
-        <RaisedButton
-          id={`submit-${docType}-selector`}
-          label="save"
-          style={styles.save}
-          disabledBackgroundColor={styles.save.disabledBackgroundColor}
-          secondary
-          type="submit"
-          disabled={pristine || ! valid || submitting || processing}
-        />
+        <SaveButton docType={docType} disabled={pristine || ! valid || submitting || processing} />
       )
     }
     if (extraButtons) {
