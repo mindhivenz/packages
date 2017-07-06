@@ -82,28 +82,22 @@ const mapThemeToStyles = (theme) => {
       color: theme.palette.primary1Color,
     },
     buttons: {
-      position: 'absolute',
-      right: `${theme.spacing.desktopGutter}px`,
-      top: `${theme.spacing.desktopGutterMore}px`,
-      display: 'inline-block',
+      // position: 'absolute',
+      // right: `${theme.spacing.desktopGutter}px`,
+      // top: `${theme.spacing.desktopGutterMore}px`,
+      // display: 'inline-block',
       textAlign: 'right',
-      border: '1px dashed red',
 
     },
     save: {
       backgroundColor: saveButtonColor,
       disabledBackgroundColor: saveButtonDisabledBackgroundColor,
-      marginRight: theme.spacing.desktopGutterMini,
+      // marginRight: theme.spacing.desktopGutterMini,
     },
     close: {
-      position: {
-        height: 24,
-        width: 24,
-        padding: 0,
-        margin: 0,
-      },
       color: closeButtonColor,
-      hoverColor: closeButtonHoverColor,
+      // hoverColor: closeButtonHoverColor,
+      // marginRight: theme.spacing.desktopGutterMini,
     },
     discard: {
       color: discardButtonColor,

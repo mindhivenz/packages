@@ -146,6 +146,7 @@ class DocEdit extends Component {
       onCancel,
       containerStyle,
 
+      showIcon = false,
       // auto
       styles,
       isNew,
@@ -163,8 +164,6 @@ class DocEdit extends Component {
 
     const itemId = `${docType}-list-item-${id || 'new'}-selector`
 
-    const closeTouchTap = () => this.handleClose(onCancel)
-
     return (
       <HotKeys keyMap={this.keyMap} handlers={this.handlers}>
         <Overlay autoLockScrolling={false} style={styles.overlay} show={isNew || ! pristine} />
@@ -174,11 +173,10 @@ class DocEdit extends Component {
 
           style={Object.assign({}, styles.container, containerStyle, this.state.show ? styles.shown : styles.hidden)}
           id={itemId}
-          leftIcon={<Icon ligature={docIcon} style={styles.icon} />}
+          leftIcon={showIcon ? <Icon ligature={docIcon} style={styles.icon} /> : null}
         >
           {error && <div style={styles.error}>{error.reason}</div>}
           <form
-            ref={(node) => { this.docEditForm = node }}
             id={`${docType}-form`}
             onSubmit={handleSubmit}
           >
@@ -197,7 +195,7 @@ class DocEdit extends Component {
 
             <Buttons
               props={this.props}
-              closeTouchTap={closeTouchTap}
+              closeTouchTap={() => this.handleClose(onCancel)}
               lastFocusId={lastFocusId}
             />
           </form>
