@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { reduxForm } from 'redux-form'
 import { HotKeys } from 'react-hotkeys'
+import { compose } from 'recompose'
 
 import RaisedButton from 'material-ui/RaisedButton'
-import FlatButton from 'material-ui/FlatButton'
 import IconButton from 'material-ui/IconButton'
 import Overlay from 'material-ui/internal/Overlay'
 
@@ -13,7 +13,9 @@ import { ListItem } from 'material-ui/List'
 
 import { Icon, ClearIcon } from '@mindhive/components/Icon'
 
-import { withStyles } from '@mindhive/styles'
+import { injectStylesSheet } from './components/EditStyles'
+
+import DiscardButton from './components/DiscardButton'
 
 const docEditContextTypes = {
   docEditForm: PropTypes.string,
@@ -26,103 +28,8 @@ export const withDocEditContext = (Comp) => {
   return component
 }
 
-const animation = 300
 const animationOut = 100
 
-const mapThemeToStyles = (theme) => {
-  const zIndex = 1400
-  const {
-    saveButtonColor,
-    saveButtonDisabledBackgroundColor,
-    closeButtonColor,
-    closeButtonHoverColor,
-    discardButtonColor,
-  } = theme.docEdit
-
-  return {
-    root: {
-      position: 'fixed',
-      boxSizing: 'border-box',
-      WebkitTapHighlightColor: 'rgba(0,0,0,0)', // Remove mobile color flashing (deprecated)
-      zIndex,
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-    },
-    container: {
-      ...theme.paper,
-      boxShadow: theme.paper.zDepthShadows[0],
-      borderRadius: '2px',
-      position: 'relative',
-      willChange: 'opacity, max-height',
-      overflow: 'hidden',
-      transform: 'scale(1.025, 1)',
-      maxHeight: '48px',
-
-      // opacity: 0,
-      // maxHeight: 0,
-      // transition: `opacity ${animation} ease-out, max-height ${animation} ease-out`,
-      // transition: `${transitions.easeOut(animation, 'all')}, max-height 0.15s ease-out`,
-
-      zIndex: zIndex + 5,
-    },
-    shown: {
-      opacity: 1,
-      maxHeight: '2000px',
-      transition: `opacity ${animation}ms ease-in, max-height ${animation}ms ease-in`,
-      // transition: transitions.easeOut(`${animation}ms`, 'all'),
-    },
-    hidden: {
-      opacity: 0.01,
-      maxHeight: 0,
-      transition: `opacity ${animationOut}ms ease-in, max-height ${animationOut}ms ease-in`,
-      // transition: transitions.easeOut(`${animation}ms`, 'all'),
-    },
-    overlay: {
-      zIndex,
-    },
-    name: {
-      width: '210px',
-      marginRight: `${spacing.desktopGutter}px`,
-    },
-    worksheet: {
-      width: '210px',
-    },
-    icon: {
-      marginTop: '42px',
-      color: theme.palette.primary1Color,
-    },
-    buttons: {
-      // position: 'absolute',
-      right: `${spacing.desktopGutter}px`,
-      top: `${spacing.desktopGutterMore}px`,
-      display: 'block',
-      textAlign: 'right',
-      border: '1px dashed red',
-
-    },
-    save: {
-      backgroundColor: saveButtonColor,
-      disabledBackgroundColor: saveButtonDisabledBackgroundColor,
-      marginRight: spacing.desktopGutterMini,
-    },
-    close: {
-      position: {
-        height: 24,
-        width: 24,
-        padding: 0,
-        margin: 0,
-      },
-      color: closeButtonColor,
-      hoverColor: closeButtonHoverColor,
-    },
-    discard: {
-      color: discardButtonColor,
-      marginRight: spacing.desktopGutterMini,
-    },
-  }
-}
 
 const lastFocusId = 'DOC_EDIT_LAST_FOCUS'
 const firstFocusId = 'DOC_EDIT_FIRST_FOCUS'
@@ -268,11 +175,7 @@ class DocEdit extends Component {
     const buttons = []
     if (showButtons) {
       buttons.push(
-        <FlatButton
-          label="Discard"
-          style={styles.discard}
-          onTouchTap={() => this.handleClose(onCancel)}
-        />
+        <DiscardButton onTouchTap={() => this.handleClose(onCancel)} />
       )
       buttons.push(
         <RaisedButton
@@ -356,11 +259,10 @@ class DocEdit extends Component {
   }
 }
 
-const DocEditReduxForm = reduxForm()(
-  withStyles(mapThemeToStyles)(
-    DocEdit
-  )
-)
+const DocEditReduxForm = compose(
+  reduxForm(),
+  injectStylesSheet,
+)(DocEdit)
 
 export default ({
   document = {},
