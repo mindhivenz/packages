@@ -82,10 +82,10 @@ const mapThemeToStyles = (theme) => {
       color: theme.palette.primary1Color,
     },
     buttons: {
-      // position: 'absolute',
+      position: 'absolute',
       right: `${theme.spacing.desktopGutter}px`,
       top: `${theme.spacing.desktopGutterMore}px`,
-      display: 'block',
+      display: 'inline-block',
       textAlign: 'right',
       border: '1px dashed red',
 

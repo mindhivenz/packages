@@ -12,9 +12,7 @@ import { Icon, ClearIcon } from '@mindhive/components/Icon'
 
 import { injectStylesSheet } from './components/EditStyles'
 
-import DiscardButton from './components/DiscardButton'
-import SaveButton from './components/SaveButton'
-import CloseButton from './components/CloseButton'
+import Buttons from './components/Buttons'
 
 const docEditContextTypes = {
   docEditForm: PropTypes.string,
@@ -147,7 +145,6 @@ class DocEdit extends Component {
       docIcon,
       onCancel,
       containerStyle,
-      extraButtons,
 
       // auto
       styles,
@@ -159,37 +156,14 @@ class DocEdit extends Component {
 
       // redux-form
       error,
-      processing,
       pristine,
-      submitting,
-      valid,
       handleSubmit,
     } = this.props
 
-    const showClose = pristine && ! isNew
-    const showButtons = ! pristine || isNew
 
     const itemId = `${docType}-list-item-${id || 'new'}-selector`
 
-    const buttons = []
-    if (showButtons) {
-      buttons.push(
-        <DiscardButton onTouchTap={() => this.handleClose(onCancel)} />
-      )
-      buttons.push(
-        <SaveButton docType={docType} disabled={pristine || ! valid || submitting || processing} />
-      )
-    }
-    if (extraButtons) {
-      buttons.push(extraButtons)
-    }
-    if (showClose) {
-      buttons.push(
-        <CloseButton onTouchTap={() => this.handleClose(onCancel)} />
-      )
-    }
-
-    const lastBtn = buttons[buttons.length - 1]
+    const closeTouchTap = () => this.handleClose(onCancel)
 
     return (
       <HotKeys keyMap={this.keyMap} handlers={this.handlers}>
@@ -204,11 +178,11 @@ class DocEdit extends Component {
         >
           {error && <div style={styles.error}>{error.reason}</div>}
           <form
-            ref={node => this.docEditForm = node}
+            ref={(node) => { this.docEditForm = node }}
             id={`${docType}-form`}
             onSubmit={handleSubmit}
           >
-            {React.Children.map(children, child => {
+            {React.Children.map(children, (child) => {
               if (! child) {
                 return child
               }
@@ -221,19 +195,11 @@ class DocEdit extends Component {
               return React.cloneElement(child, props);
             })}
 
-            <div style={styles.buttons}>
-              {buttons.length &&
-                buttons.map((button, idx) =>
-                  React.cloneElement(
-                    button,
-                    {
-                      key: `btn-${idx}-key`,
-                      id: button === lastBtn ? lastFocusId : undefined,
-                    }
-                  )
-                )
-              }
-            </div>
+            <Buttons
+              props={this.props}
+              closeTouchTap={closeTouchTap}
+              lastFocusId={lastFocusId}
+            />
           </form>
         </ListItem>
       </HotKeys>
