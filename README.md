@@ -30,7 +30,10 @@ from [Bable](https://github.com/babel/babel/tree/master/packages) and
 
 * **`yarn clean-all`** removes all `./node_modules` && `./packages/*/node_modules` and runs `build-clean`
 
-* **`yarn pub`** publishes all changed packages to NPM, asking for versioning along the way
+* **`yarn pub`** publishes all changed packages to NPM, asking for versioning along the way. I've found that to get the 
+    package published for the first time I need to `npm publish --access public` in the package directory as well as `npm add user`, `mindhive`, `password`, `email`...... Once it's there it works fine with `yarn pub` in the root.
+     
+     _Maybe we should sign up for an organisation?_
 
 ### Structure
 ```text

@@ -154,7 +154,7 @@ class DocEdit extends Component {
     this.componentWillAppear(callback)
   }
 
-  componentWillAppear(callback) {
+  componentWillAppear(aCallBAck) {
     this.setState({
       style: {
         opacity: 1,
@@ -164,7 +164,7 @@ class DocEdit extends Component {
 
     this.enterTimeout = setTimeout(() => {
       this.enterTimeout = null
-      callback()
+      aCallBAck()
     }, 450) // matches transition duration
   }
 
