@@ -28,6 +28,7 @@
     "recompose": "^0.22.0"
   },
   "peerDependencies": {
+    "@mindhive/styles": "^0.0.18",
     "@mindhive/components": "^4.5.35",
     "material-ui": "^0.18.3"
   }

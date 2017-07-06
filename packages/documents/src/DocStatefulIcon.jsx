@@ -1,7 +1,7 @@
 import React from 'react'
 import IconButton from 'material-ui/IconButton'
 
-import withStyles from '../../styles/src/withStyles'
+import { withStyles } from '@mindhive/styles'
 
 
 const DocStatefulIcon = ({

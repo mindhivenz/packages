@@ -1,6 +1,6 @@
 import React from 'react'
 
-import withStyles from '../../styles/src/withStyles'
+import { withStyles } from '@mindhive/styles'
 
 const _DocListIcon = ({
   styles,

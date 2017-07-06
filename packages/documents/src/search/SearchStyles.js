@@ -1,4 +1,4 @@
-import withStyles from '../../../styles/src/withStyles'
+import { withStyles } from '@mindhive/styles'
 
 export default ({
   palette,

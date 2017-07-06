@@ -2,7 +2,7 @@ import React from 'react'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
 
 import { Icon } from '@mindhive/components/Icon'
-import withStyles from './withStyles'
+import { withStyles } from '@mindhive/styles'
 
 
 const mapThemeToStyles = () => {

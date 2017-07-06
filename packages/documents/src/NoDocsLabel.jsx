@@ -1,6 +1,6 @@
 import React from 'react'
 
-import withStyles from './withStyles'
+import { withStyles } from '@mindhive/styles'
 
 
 const NoDocsLabel = ({ hideWhenEmpty, children, styles, prepareStyles }) =>

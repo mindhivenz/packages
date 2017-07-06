@@ -5,7 +5,7 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 import IconMenu from 'material-ui/IconMenu'
 import { PassPropsWrapper } from '@mindhive/components/muiUtils'
 
-import withStyles from './withStyles'
+import { withStyles } from '@mindhive/styles'
 
 
 const DocDropDownMenu = ({

@@ -2,7 +2,7 @@ import React from 'react'
 import { ListItem } from 'material-ui/List'
 import withHover from '@mindhive/components/withHover'
 
-import withStyles from '../../styles/src/withStyles'
+import { withStyles } from '@mindhive/styles'
 
 import { renderDocListIcon } from './DocListIcon'
 
