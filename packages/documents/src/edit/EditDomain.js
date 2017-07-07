@@ -17,6 +17,17 @@ class EditDomain {
     this.retrievers = retrievers
   }
 
+  componentDidMount() {
+    this.handleOpen()
+    // setTimeout(() => this.handleOpen(), 0)
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.enterTimeout)
+    clearTimeout(this.leaveTimeout)
+  }
+
+
   @computed get show() {
     return this._wantShow
   }

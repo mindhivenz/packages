@@ -9,6 +9,7 @@ import DocEdit from './DocEdit'
 import DocView from './DocView'
 import DocDropDownMenu from './DocDropDownMenu'
 import DocStatefulIcon from './DocStatefulIcon'
+import withDocEditContext from './withDocEditContext'
 
 module.exports = {
   DocAddFab,
@@ -20,6 +21,7 @@ module.exports = {
   DocView,
   DocStatefulIcon,
   DocDropDownMenu,
+  withDocEditContext,
   getVersion: () => VERSION,
 }
 
