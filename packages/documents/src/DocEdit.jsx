@@ -1,7 +1,7 @@
 import React from 'react'
 import { reduxForm } from 'redux-form'
 import { HotKeys } from 'react-hotkeys'
-import { compose, lifecycle } from 'recompose'
+import { compose, lifecycle, withProps } from 'recompose'
 
 import Overlay from 'material-ui/internal/Overlay'
 
@@ -80,7 +80,19 @@ const DocEdit = ({
     </ListItem>
   </HotKeys>
 
-const DocEditReduxForm = compose(
+export default compose(
+  withProps(({
+    document = {},
+    docType = 'doc',
+    id = document._id,
+  }) => ({
+    document,
+    docType,
+    isNew: ! document._id,
+    id,
+    initialValues: document,
+    form: `${docType}-form-${id || 'new'}`,
+  })),
   reduxForm(),
   withStore({
     storeClass: EditDomain,
@@ -97,19 +109,3 @@ const DocEditReduxForm = compose(
   withDocEditContext,
   injectStylesSheet,
 )(DocEdit)
-
-export default ({
-  document = {},
-  docType = 'doc',
-  id = document._id,
-  ...otherProps
-}) =>
-  <DocEditReduxForm
-    {...otherProps}
-    document={document}
-    docType={docType}
-    isNew={! document._id}
-    id={id}
-    initialValues={document}
-    form={`${docType}-form-${id || 'new'}`}
-  />
