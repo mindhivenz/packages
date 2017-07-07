@@ -1,6 +1,6 @@
 {
   "name": "@mindhive/documents",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Standard document viewing, editing, listing etc",
   "keywords": [
     "doc",
@@ -24,6 +24,7 @@
     "url": "https://github.com/mindhivenz/packages/issues"
   },
   "dependencies": {
+    "@mindhive/styles": "^0.0.20",
     "lodash": "^4.17.4",
     "recompose": "^0.22.0"
   },
