@@ -4,34 +4,58 @@ const print = require('gulp-print')
 const babel = require('gulp-babel')
 const path = require('path')
 const fs = require('fs')
+const Q = require('q')
+const glob = require('glob')
 
 const packagesPath = 'packages'
-const srcPath = '/src/**/*+(js|jsx)'
+const srcPattern = '/src/**/*+(js|jsx)'
 const destPath = '/build'
 
-function getFolders(dir) {
+function getSubFolders(dir) {
   return fs
   .readdirSync(dir)
   .filter(file => fs.statSync(path.join(dir, file)).isDirectory())
 }
 
-gulp.task('build:packages', (done) => {
-  const folders = getFolders(packagesPath)
+const babelTransform = babel({
+  presets: ['env', 'react'],
+  plugins: [
+    'transform-runtime',
+    'transform-object-rest-spread',
+    'transform-decorators-legacy',
+    'transform-class-properties',
+  ],
+})
 
-  folders.map(folder =>
-    gulp.src(path.join(packagesPath, folder, srcPath))
-    .pipe(babel({
-      presets: ['env', 'react'],
-      plugins: [
-        'transform-runtime',
-        'transform-object-rest-spread',
-        'transform-decorators-legacy',
-        'transform-class-properties',
-      ],
-    }))
-    .pipe(gulp.dest(path.join(packagesPath, folder, destPath)))
+const packageFolders = getSubFolders(packagesPath)
+
+gulp.task('build:packages', (done) => {
+  packageFolders.map(packageFolder =>
+    gulp.src(path.join(packagesPath, packageFolder, srcPattern))
+    .pipe(babelTransform)
+    .pipe(gulp.dest(path.join(packagesPath, packageFolder, destPath)))
   )
   done()
+})
+
+gulp.task('testing', () => {
+  const promises = []
+
+  glob.sync('/js/features/*').forEach(function(filePath) {
+    if (fs.statSync(filePath).isDirectory()) {
+      const defer = Q.defer()
+      const pipeline = gulp.src(filePath + '/**/*.js')
+      .pipe(uglify())
+      .pipe(concat(path.basename(filePath) + '.min.js'))
+      .pipe(gulp.dest(filePath))
+      pipeline.on('end', function() {
+        defer.resolve()
+      })
+      promises.push(defer.promise)
+    }
+  })
+
+  return Q.all(promises)
 })
 
 function defaultTask(done) {
