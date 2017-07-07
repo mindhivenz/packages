@@ -9,10 +9,12 @@ import Overlay from 'material-ui/internal/Overlay'
 import { ListItem } from 'material-ui/List'
 
 import { Icon, ClearIcon } from '@mindhive/components/Icon'
+import withStore from '@mindhive/mobx/withStore'
 
-import { injectStylesSheet } from './components/EditStyles'
+import { injectStylesSheet } from './edit/EditStyles'
 
-import Buttons from './components/Buttons'
+import Buttons from './edit/Buttons'
+import EditDomain from './edit/EditDomain'
 
 const docEditContextTypes = {
   docEditForm: PropTypes.string,
@@ -104,7 +106,7 @@ class DocEdit extends Component {
     })
   }
 
-  discardChanges = (e) => {
+  discardChanges = () => {
     this.handleClose(this.props.onCancel)
   }
 
@@ -113,7 +115,7 @@ class DocEdit extends Component {
     this.props.handleSubmit(this.props.fields)
   }
 
-  getFirstFocus = (node) => {
+  registerFirstFocus = (node) => {
     if (this.firstFocusable === undefined) {
       this.firstFocusable = node
     }
@@ -141,6 +143,7 @@ class DocEdit extends Component {
 
   render() {
     const {
+      editDomain,
       docType,
       docIcon,
       onCancel,
@@ -187,7 +190,7 @@ class DocEdit extends Component {
               const isFirstFocus = child && child.props && child.props.autoFocus === true
               const props = {}
               if (isFirstFocus) {
-                props.ref = this.getFirstFocus
+                props.ref = this.registerFirstFocus
                 if (typeof child.type !== 'string') props.withRef = isFirstFocus
               }
               return React.cloneElement(child, props);
@@ -207,6 +210,10 @@ class DocEdit extends Component {
 
 const DocEditReduxForm = compose(
   reduxForm(),
+  withStore({
+    storeClass: EditDomain,
+    propName: 'editDomain',
+  }),
   injectStylesSheet,
 )(DocEdit)
 
