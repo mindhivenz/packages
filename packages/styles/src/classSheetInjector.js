@@ -1,62 +1,128 @@
-import { Component } from 'react'
-import { isEqual } from 'lodash'
-import { jss } from 'react-jss'
-import { createEagerElement, getDisplayName } from 'recompose'
+'use strict';
 
-const classSheetInjector = (classesName = 'classes') => (BaseComponent) => {
-  let classSheet
-  let instanceCount = 0
-  let updateId = 0
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-  return class extends Component {
-    classUpdateId = 0
+var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
 
-    constructor(props) {
-      super(props)
-      if (instanceCount === 0) {
-        this.attachSheet(props.themeStyles)
-      }
-      instanceCount += 1
-    }
+var _defineProperty3 = _interopRequireDefault(_defineProperty2);
 
-    componentWillUpdate(nextProps) {
-      if (! isEqual(this.props.themeStyles, nextProps.themeStyles)) {
-        if (this.classUpdateId === updateId) {
-          this.detachSheet()
-          this.attachSheet(nextProps.themeStyles)
-          updateId += 1
-        }
-        this.classUpdateId = updateId
-      }
-    }
+var _extends3 = require('babel-runtime/helpers/extends');
 
-    componentWillUnmount() {
-      instanceCount -= 1
-      if (instanceCount === 0) {
-        this.detachSheet()
-      }
-    }
+var _extends4 = _interopRequireDefault(_extends3);
 
-    render() {
-      const { themeStyles: _, ...rest } = this.props // eslint-disable-line no-unused-vars
-      const { classes } = classSheet
-      return createEagerElement(BaseComponent, { [classesName]: classes, ...rest })
-    }
+var _objectWithoutProperties2 = require('babel-runtime/helpers/objectWithoutProperties');
 
-    attachSheet(themeStyles) {
-      classSheet = jss.createStyleSheet(themeStyles, {
-        link: true,
-        meta: `${getDisplayName(BaseComponent)}-classSheet`,
+var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
 
-      }).attach()
-    }
+var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
 
-    detachSheet() {
-      jss.removeStyleSheet(classSheet)
-      classSheet = undefined
-    }
-  }
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = require('react');
+
+var _lodash = require('lodash');
+
+var _reactJss = require('react-jss');
+
+var _recompose = require('recompose');
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
 }
 
-export default classSheetInjector
+var classSheetInjector = function classSheetInjector() {
+  var classesName = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'classes';
+  return function (BaseComponent) {
+    var classSheet = void 0;
+    var instanceCount = 0;
+    var updateId = 0;
 
+    return function (_Component) {
+      (0, _inherits3.default)(_class2, _Component);
+
+      function _class2(props) {
+        (0, _classCallCheck3.default)(this, _class2);
+
+        var _this = (0, _possibleConstructorReturn3.default)(this, (_class2.__proto__ || (0, _getPrototypeOf2.default)(_class2)).call(this, props));
+
+        _this.classUpdateId = 0;
+
+        if (instanceCount === 0) {
+          _this.attachSheet(props.themeStyles);
+        }
+        instanceCount += 1;
+        return _this;
+      }
+
+      (0, _createClass3.default)(_class2, [{
+        key: 'componentWillUpdate',
+        value: function componentWillUpdate(nextProps) {
+          if (!(0, _lodash.isEqual)(this.props.themeStyles, nextProps.themeStyles)) {
+            if (this.classUpdateId === updateId) {
+              this.detachSheet();
+              this.attachSheet(nextProps.themeStyles);
+              updateId += 1;
+            }
+            this.classUpdateId = updateId;
+          }
+        }
+      }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+          instanceCount -= 1;
+          if (instanceCount === 0) {
+            this.detachSheet();
+          }
+        }
+      }, {
+        key: 'render',
+        value: function render() {
+          var _props = this.props,
+              _ = _props.themeStyles,
+              rest = (0, _objectWithoutProperties3.default)(_props, ['themeStyles']); // eslint-disable-line no-unused-vars
+
+          var _classSheet = classSheet,
+              classes = _classSheet.classes;
+
+          return (0, _recompose.createEagerElement)(BaseComponent, (0, _extends4.default)((0, _defineProperty3.default)({}, classesName, classes), rest));
+        }
+      }, {
+        key: 'attachSheet',
+        value: function attachSheet(themeStyles) {
+          classSheet = _reactJss.jss.createStyleSheet(themeStyles, {
+            link: true,
+            meta: (0, _recompose.getDisplayName)(BaseComponent) + '-classSheet'
+
+          }).attach();
+        }
+      }, {
+        key: 'detachSheet',
+        value: function detachSheet() {
+          _reactJss.jss.removeStyleSheet(classSheet);
+          classSheet = undefined;
+        }
+      }]);
+      return _class2;
+    }(_react.Component);
+  };
+};
+
+exports.default = classSheetInjector;

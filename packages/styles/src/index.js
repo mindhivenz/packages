@@ -1,14 +1,28 @@
+'use strict';
 
-import { version as VERSION } from '../package.json'
+var _package = require('../package.json');
 
-import applyTheme from './applyTheme'
-import withStyles from './withStyles'
-import withClassNames from './withClassNames'
+var _applyTheme = require('./applyTheme');
 
-module.exports = {
-  applyTheme,
-  withStyles,
-  withClassNames,
-  getVersion: () => VERSION,
+var _applyTheme2 = _interopRequireDefault(_applyTheme);
+
+var _withStyles = require('./withStyles');
+
+var _withStyles2 = _interopRequireDefault(_withStyles);
+
+var _withClassNames = require('./withClassNames');
+
+var _withClassNames2 = _interopRequireDefault(_withClassNames);
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
 }
 
+module.exports = {
+  applyTheme: _applyTheme2.default,
+  withStyles: _withStyles2.default,
+  withClassNames: _withClassNames2.default,
+  getVersion: function getVersion() {
+    return _package.version;
+  }
+};

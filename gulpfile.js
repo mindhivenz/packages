@@ -4,8 +4,7 @@ const print = require('gulp-print')
 const babel = require('gulp-babel')
 const path = require('path')
 const fs = require('fs')
-const Q = require('q')
-const glob = require('glob')
+const forEach = require('gulp-foreach')
 
 const packagesPath = 'packages'
 const srcPattern = '/src/**/*+(js|jsx)'
@@ -16,6 +15,7 @@ function getSubFolders(dir) {
   .readdirSync(dir)
   .filter(file => fs.statSync(path.join(dir, file)).isDirectory())
 }
+const packageFolders = getSubFolders(packagesPath)
 
 const babelTransform = babel({
   presets: ['env', 'react'],
@@ -27,7 +27,13 @@ const babelTransform = babel({
   ],
 })
 
-const packageFolders = getSubFolders(packagesPath)
+packageFolders.forEach((packageFolder) => {
+  gulp.task(`build:package:${packageFolder}`, () =>
+    gulp.src(path.join(packagesPath, packageFolder, srcPattern))
+    .pipe(babelTransform)
+    .pipe(gulp.dest(path.join(packagesPath, packageFolder, destPath)))
+  )
+})
 
 gulp.task('build:packages', (done) => {
   packageFolders.map(packageFolder =>
@@ -38,25 +44,18 @@ gulp.task('build:packages', (done) => {
   done()
 })
 
-gulp.task('testing', () => {
-  const promises = []
-
-  glob.sync('/js/features/*').forEach(function(filePath) {
-    if (fs.statSync(filePath).isDirectory()) {
-      const defer = Q.defer()
-      const pipeline = gulp.src(filePath + '/**/*.js')
-      .pipe(uglify())
-      .pipe(concat(path.basename(filePath) + '.min.js'))
-      .pipe(gulp.dest(filePath))
-      pipeline.on('end', function() {
-        defer.resolve()
-      })
-      promises.push(defer.promise)
-    }
-  })
-
-  return Q.all(promises)
-})
+// const buildPackage = packageFolder =>
+//   gulp.src(path.join(packagesPath, packageFolder, srcPattern))
+//   .pipe(babelTransform)
+//   .pipe(gulp.dest(path.join(packagesPath, packageFolder, destPath)))
+//
+// gulp.task('build:packages', (done) => {
+//   gulp.src(packagesPath)
+//   .pipe(
+//     forEach((stream, file) => stream
+//     .pipe(buildPackage(file.name))
+//   ))
+// })
 
 function defaultTask(done) {
   // place code for your default task here
