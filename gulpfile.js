@@ -27,23 +27,62 @@ const babelTransform = babel({
   ],
 })
 
+const dest = {
+  on: (e, data) => {
+    console.log(e, data)
+    if (e === 'end') {
+      return () => { console.log('END!!!') }
+    }
+    return () => {}
+  },
+  once: (data) => {
+    console.log('once', data)
+  },
+  emit: (data) => {
+    console.log('emit', data)
+  },
+  write: (data) => {
+    console.log('write')
+  },
+}
 packageFolders.forEach((packageFolder) => {
-  gulp.task(`build:package:${packageFolder}`, () =>
-    gulp.src(path.join(packagesPath, packageFolder, srcPattern))
-    .pipe(babelTransform)
-    .pipe(gulp.dest(path.join(packagesPath, packageFolder, destPath)))
+
+  gulp.task(`build-${packageFolder}`, () =>
+    // gulp.src(path.join(packagesPath, packageFolder, srcPattern))
+    gulp.src(path.join(packagesPath, packageFolder, srcPattern), {passthrough: true})
+      .pipe(babelTransform)
+      .pipe(
+        gulp.dest(path.join(packagesPath, packageFolder, destPath)
+      ))
   )
+
 })
 
-gulp.task('build:packages', (done) => {
-  packageFolders.map(packageFolder =>
-    gulp.src(path.join(packagesPath, packageFolder, srcPattern))
-    .pipe(babelTransform)
-    .pipe(gulp.dest(path.join(packagesPath, packageFolder, destPath)))
-  )
-  done()
-})
 
+// gulp.task('build:packages', (done) => {
+//   packageFolders.forEach(packageFolder =>
+//     gulp.src(path.join(packagesPath, packageFolder, srcPattern))
+//     .pipe(print())
+//     .pipe(babelTransform)
+//     .pipe(gulp.dest(path.join(packagesPath, packageFolder, destPath)))
+//     .pipe(print())
+//   )
+//   done()
+// })
+
+// packageFolders.forEach((packageFolder) => {
+//
+//   gulp.task(`build:package:${packageFolder}`, () =>
+//     gulp.src(path.join(packagesPath, packageFolder, srcPattern))
+//     .pipe(babelTransform)
+//     .pipe(gulp.dest(path.join(packagesPath, packageFolder, destPath)))
+//   )
+//
+// })
+//
+// gulp.task('build:packages:test',
+//   gulp.series(packageFolders.map(packageFolder => `build:package:${packageFolder}`))
+// )
 // const buildPackage = packageFolder =>
 //   gulp.src(path.join(packagesPath, packageFolder, srcPattern))
 //   .pipe(babelTransform)
@@ -63,42 +102,39 @@ function defaultTask(done) {
 }
 
 
-gulp.task('clean:node', (done) => {
+gulp.task('clean:node', () =>
   del([
     'node_modules',
     'packages/*/node_modules',
   ], { dryRun: true })
-  done()
-})
+)
 
-gulp.task('clean:build', (done) => {
+gulp.task('clean:build', () =>
   del([
     'packages/*/build',
   ])
-  done()
-})
+)
 
 gulp.task('clean:all',
   gulp.parallel('clean:node', 'clean:build')
 )
 
-gulp.task('build', (done) => {
-  gulp.src([
-    'packages/*/src/**/*+(js|jsx)',
-  ])
-  .pipe(print())
-  .pipe(babel({
-    presets: ['env', 'react'],
-    plugins: [
-      'transform-runtime',
-      'transform-object-rest-spread',
-      'transform-decorators-legacy',
-      'transform-class-properties',
-    ],
-  }))
-  .pipe(gulp.dest('xxx'))
-  done()
-})
+gulp.task('build-packages',
+  gulp.series(
+    gulp.parallel(
+        packageFolders.map(packageFolder =>
+          `build-${packageFolder}`
+        )
+    )
+  )
+)
+
+gulp.task('build',
+  gulp.series(
+    'clean:build',
+    'build-packages'
+  )
+)
 
 
 gulp.task('default', defaultTask)
