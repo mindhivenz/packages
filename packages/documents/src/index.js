@@ -1,7 +1,5 @@
 import { version as VERSION } from '../package.json'
 
-import * as search from './search/index'
-
 import DocAddFab from './DocAddFab'
 import DocContainer from './DocContainer'
 import NoDocsLabel from './NoDocsLabel'
@@ -12,9 +10,9 @@ import DocView from './DocView'
 import DocDropDownMenu from './DocDropDownMenu'
 import DocStatefulIcon from './DocStatefulIcon'
 import withDocEditContext from './withDocEditContext'
+import withDocEditContextAsProps from './withDocEditContextAsProps'
 
 module.exports = {
-  search,
   DocAddFab,
   DocContainer,
   NoDocsLabel,
@@ -25,6 +23,7 @@ module.exports = {
   DocStatefulIcon,
   DocDropDownMenu,
   withDocEditContext,
+  withDocEditContextAsProps,
   getVersion: () => VERSION,
 }
 

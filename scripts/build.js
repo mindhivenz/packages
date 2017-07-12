@@ -31,7 +31,7 @@ const getPackages = require('./_getPackages')
 const OK = chalk.reset.inverse.bold.green(' DONE ')
 const SRC_DIR = 'src'
 const BUILD_DIR = 'build'
-const JS_FILES_PATTERN = '**/*+(js|jsx)'
+const JS_FILES_PATTERN = '/**/*+(js|jsx)'
 const IGNORE_PATTERN = '**/__tests__/**'
 const PACKAGES_DIR = path.resolve(__dirname, '../packages')
 

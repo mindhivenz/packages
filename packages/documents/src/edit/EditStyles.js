@@ -86,6 +86,7 @@ const mapThemeToStyles = (theme) => {
       // right: `${theme.spacing.desktopGutter}px`,
       // top: `${theme.spacing.desktopGutterMore}px`,
       // display: 'inline-block',
+      marginTop: theme.spacing.desktopSubheaderHeight,
       textAlign: 'right',
 
     },
