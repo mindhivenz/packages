@@ -1,126 +1,53 @@
 import React from 'react'
 import { observer } from 'mobx-react'
-import { EditorState, RichUtils, Editor, convertFromRaw, convertToRaw } from 'draft-js'
+import { compose, branch, renderNothing, mapProps, withProps } from 'recompose'
+import withStore from '@mindhive/mobx/withStore'
+
+import { Editor } from 'draft-js'
 import { withStyles } from '@mindhive/styles'
 
 
+import EditorDomain from './components/EditorDomain'
 import EditorUnderline from './components/EditorUnderline'
 import EditorLabel from './components/EditorLabel'
 import EditorError from './components/EditorError'
 import EditorCommands from './components/EditorCommands'
 
-@observer
-class TextEditor extends React.Component {
+const TextEditor = ({
+  labelText,
+  styles,
+  prepareStyles,
+  errorText,
 
-  constructor(props) {
-    super(props)
+  editorDomain,
+}) =>
+  <div style={prepareStyles(styles.content)} onClick={editorDomain.focus}>
+    <EditorLabel
+      focused={editorDomain.focused}
+      shrink={editorDomain.focused || editorDomain.content.hasText()}
+      errorText={errorText}
+    >
+      {labelText}
+    </EditorLabel>
+    <EditorCommands
+      editorState={editorDomain.editorState}
+      focused={editorDomain.focused}
+      toggleStyle={editorDomain.toggleStyle}
+    />
+    <div style={prepareStyles(styles.editor)}>
+      <Editor
+        ref={editorDomain.registerNode}
+        editorState={editorDomain.editorState}
+        onChange={editorDomain.onChange}
+        handleKeyCommand={editorDomain.handleKeyCommand}
+        onFocus={editorDomain._handleOnFocus}
+        onBlur={editorDomain._handleOnBlur}
+      />
+      <EditorUnderline focus={editorDomain.focused} errorText={errorText} />
+      <EditorError errorText={errorText} />
+    </div>
 
-    this.initialInputValue = props.value
-    this.initialEditorState = this.initialInputValue ?
-      EditorState.createWithContent(convertFromRaw(JSON.parse(this.initialInputValue))) :
-      EditorState.createEmpty()
-    this.state = {
-      editorState: this.initialEditorState,
-      focused: false,
-    }
-  }
-
-  onChange = (editorState) => {
-    const { onChange } = this.props
-    const currentContent = editorState.getCurrentContent()
-    /*
-      The following is to work out if the content has actually changed.
-      // TODO remove when caps stored as JSON. Have a default empty state for
-     */
-    if (this.initialInputValue) {
-      const currentRawContent = convertToRaw(currentContent)
-      const isEqual = convertToRaw(this.initialEditorState.getCurrentContent()) === currentRawContent
-      if (! isEqual) {
-        onChange(JSON.stringify(currentRawContent))
-      }
-    } else if (currentContent.hasText()) {
-      onChange(JSON.stringify(convertToRaw(currentContent)))
-    } else {
-      onChange(this.initialInputValue)
-    }
-    this.setState({ editorState })
-  }
-
-  toggleStyle = (style) => {
-    this.onChange(RichUtils.toggleInlineStyle(
-      this.state.editorState,
-      style
-    ))
-  }
-
-  _setFocus = (focused) => {
-    this.setState({ focused })
-  }
-
-  _handleOnBlur = () => {
-    this.props.onBlur()
-    this._setFocus(false)
-  }
-
-  _handleOnFocus = () => {
-    this.props.onFocus()
-    this._setFocus(true)
-  }
-
-  focus = () => {
-    this.editor.focus()
-  }
-
-  handleKeyCommand = (command) => {
-    const { editorState } = this.state
-    const newState = RichUtils.handleKeyCommand(editorState, command)
-    if (newState) {
-      this.onChange(newState)
-      return true
-    }
-    return false
-  }
-
-  render() {
-    const {
-      labelText,
-      styles,
-      prepareStyles,
-      errorText,
-    } = this.props
-    const { focused, editorState } = this.state
-    const content = editorState.getCurrentContent()
-    return (
-      <div style={prepareStyles(styles.content)} onClick={this.focus}>
-        <EditorLabel
-          focused={focused}
-          shrink={focused || content.hasText()}
-          errorText={errorText}
-        >
-          {labelText}
-        </EditorLabel>
-        <EditorCommands
-          editorState={this.state.editorState}
-          focused={focused}
-          toggleStyle={this.toggleStyle}
-        />
-        <div style={prepareStyles(styles.editor)}>
-          <Editor
-            ref={node => { this.editor = node }}
-            editorState={editorState}
-            onChange={this.onChange}
-            handleKeyCommand={this.handleKeyCommand}
-            onFocus={this._handleOnFocus}
-            onBlur={this._handleOnBlur}
-          />
-          <EditorUnderline focus={focused} errorText={errorText}/>
-          <EditorError errorText={errorText} />
-        </div>
-
-      </div>
-    )
-  }
-}
+  </div>
 
 const mapThemeToStyles = ({
   spacing,
@@ -172,9 +99,11 @@ const mapThemeToStyles = ({
 
 })
 
-export default
-  withStyles(mapThemeToStyles)(
-    observer(
-      TextEditor
-    )
-  )
+export default compose(
+  observer,
+  withStore({
+    storeClass: EditorDomain,
+    propName: 'editorDomain',
+  }),
+  withStyles(mapThemeToStyles),
+)(TextEditor)
