@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import { isEqual } from 'lodash'
+import isEqual from 'lodash/isEqual'
 import { jss } from 'react-jss'
 import { createEagerElement, getDisplayName } from 'recompose'
 
