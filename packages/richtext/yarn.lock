@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@mindhive/styles@^0.0.22":
-  version "0.0.22"
-  resolved "https://registry.yarnpkg.com/@mindhive/styles/-/styles-0.0.22.tgz#3cd4356c676f4271e3196077d6175609e2cce125"
+"@mindhive/styles@^0.0.25":
+  version "0.0.25"
+  resolved "https://registry.yarnpkg.com/@mindhive/styles/-/styles-0.0.25.tgz#8242fe98c48e0be81d19f0bb9dd98285d246d2e2"
   dependencies:
     classnames "^2.2.5"
     lodash "^4.17.4"
@@ -266,6 +266,15 @@ react@^15.5.4:
 recompose@^0.22.0:
   version "0.22.0"
   resolved "https://registry.yarnpkg.com/recompose/-/recompose-0.22.0.tgz#f099d18385882ca41d9eec891718dadddc3204ef"
+  dependencies:
+    change-emitter "^0.1.2"
+    fbjs "^0.8.1"
+    hoist-non-react-statics "^1.0.0"
+    symbol-observable "^1.0.4"
+
+recompose@^0.24.0:
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/recompose/-/recompose-0.24.0.tgz#262e93f974439eb17e7779824d88cce90492a5dd"
   dependencies:
     change-emitter "^0.1.2"
     fbjs "^0.8.1"

@@ -1,18 +1,26 @@
 import React from 'react'
+import { compose, branch, renderNothing, mapProps, withProps } from 'recompose'
 import { stateToHTML } from 'draft-js-export-html'
 import { convertFromRaw } from 'draft-js'
+import { StyledHtml } from '@mindhive/styles'
 
 const TextView = ({
-  data,
+  rawHtml,
   style,
-}) => {
-  const content = convertFromRaw(JSON.parse(data))
-  let html = stateToHTML(content).replace(/<p><br><\/p>/g, '')
-  return (
-    content.hasText()
-      ? <div style={style} dangerouslySetInnerHTML={{ __html: html }} />
-      : null
-  )
-}
+}) =>
+  <StyledHtml style={style} rawHtml={rawHtml} />
 
-export default TextView
+
+export default compose(
+  withProps(({ data }) => ({
+    content: convertFromRaw(JSON.parse(data)),
+  })),
+  branch(
+    ({ content }) => ! (content.hasText()),
+    renderNothing,
+  ),
+  mapProps(({ content, style }) => ({
+    style,
+    rawHtml: stateToHTML(content).replace(/<p><br><\/p>/g, ''),
+  })),
+)(TextView)
