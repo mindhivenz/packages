@@ -2,7 +2,6 @@ import { action, observable, computed } from 'mobx'
 import { observer } from 'mobx-react'
 import { EditorState, RichUtils, convertFromRaw, convertToRaw } from 'draft-js'
 
-@observer
 class EditorDomain {
 
   _onChange = () => {}
@@ -13,11 +12,12 @@ class EditorDomain {
 
   initialInputValue
   initialEditorState
-  @observable editorState
+  @observable.ref editorState = EditorState.createEmpty()
   @observable focused = false
 
 
   constructor({ value, onChange, onBlur, onFocus }) {
+    // console.log(value, onChange, onBlur, onFocus )
     this.initialInputValue = value
     this._onChange = onChange
     this._onBlur = onBlur
@@ -33,6 +33,10 @@ class EditorDomain {
   init = () => {
     this.editorState = this.initialEditorState
     this.focused = false
+  }
+
+  @computed get hasText() {
+    return this.editorState && this.editorState.getCurrentContent().hasText()
   }
 
   onChange = (editorState) => {
@@ -53,6 +57,10 @@ class EditorDomain {
       this._onChange(this.initialInputValue)
     }
     this._setEditorState(editorState)
+  }
+
+  update(props) {
+    console.log('UPDATE!!', props)
   }
 
   toggleStyle = (style) => {

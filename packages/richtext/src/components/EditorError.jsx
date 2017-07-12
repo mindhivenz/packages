@@ -1,4 +1,7 @@
 import React from 'react'
+import { observer } from 'mobx-react'
+import { compose, withPropsOnChange, branch, renderNothing, mapProps, withProps } from 'recompose'
+
 import { withStyles } from '@mindhive/styles'
 
 class EditorError extends React.Component {
@@ -49,4 +52,7 @@ const mapThemeToStyles = ({
   });
 }
 
-export default withStyles(mapThemeToStyles)(EditorError)
+export default compose(
+  observer,
+  withStyles(mapThemeToStyles),
+)(EditorError)

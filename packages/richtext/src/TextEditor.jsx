@@ -24,7 +24,7 @@ const TextEditor = ({
   <div style={prepareStyles(styles.content)} onClick={editorDomain.focus}>
     <EditorLabel
       focused={editorDomain.focused}
-      shrink={editorDomain.focused || editorDomain.content.hasText()}
+      shrink={editorDomain.focused || editorDomain.hasText}
       errorText={errorText}
     >
       {labelText}
@@ -104,6 +104,16 @@ export default compose(
   withStore({
     storeClass: EditorDomain,
     propName: 'editorDomain',
+    mapPropsToArgs: ({ value, onChange, onBlur, onFocus }) => {
+      // console.log('mapPropsToArgs', value, onChange, onBlur, onFocus)
+      return ({ value, onChange, onBlur, onFocus })
+    },
+    updateStore: (store, props) => {
+      // console.log('updateStore', typeof store.update)
+      if (typeof store.update === 'function') store.update(props)
+    },
+
+    shouldRecreateStore: () => false,
   }),
   withStyles(mapThemeToStyles),
 )(TextEditor)
