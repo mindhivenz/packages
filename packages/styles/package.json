@@ -1,6 +1,6 @@
 {
   "name": "@mindhive/styles",
-  "version": "0.0.22",
+  "version": "0.0.24",
   "private": false,
   "description": "JSS and inline styles drawn from MUI theme",
   "contributors": [
@@ -29,7 +29,8 @@
   "main": "./build/index.js",
   "scripts": {
     "test": "../../scripts/test.sh",
-    "build": "../../scripts/build.sh"
+    "build": "../../scripts/build.sh",
+    "upgrade": "yarn upgrade"
   },
   "author": "Nick Virtue",
   "repository": {

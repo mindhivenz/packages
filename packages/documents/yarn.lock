@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@mindhive/styles@^0.0.20":
-  version "0.0.20"
-  resolved "https://registry.yarnpkg.com/@mindhive/styles/-/styles-0.0.20.tgz#cd5a84e530340309dbca7a64294d8a1d29cb4ee4"
+"@mindhive/styles@^0.0.22":
+  version "0.0.22"
+  resolved "https://registry.yarnpkg.com/@mindhive/styles/-/styles-0.0.22.tgz#3cd4356c676f4271e3196077d6175609e2cce125"
   dependencies:
     classnames "^2.2.5"
     lodash "^4.17.4"

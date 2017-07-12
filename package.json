@@ -50,7 +50,9 @@
     "prepub": "yarn run build --silent",
     "pub": "lerna publish --access public --silent",
 
-    "postinstall": "lerna bootstrap && yarn run build --silent"
+    "postinstall": "lerna bootstrap && yarn run build --silent",
+
+    "upgrade-packages": "lerna run upgrade"
   },
   "dependencies": {
     "@mindhive/components": "^4.5.35",
