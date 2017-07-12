@@ -10,7 +10,7 @@ import EditorError from './components/EditorError'
 import EditorCommands from './components/EditorCommands'
 
 @observer
-class DraftEditor extends React.Component {
+class TextEditor extends React.Component {
 
   constructor(props) {
     super(props)
@@ -175,6 +175,6 @@ const mapThemeToStyles = ({
 export default
   withStyles(mapThemeToStyles)(
     observer(
-      DraftEditor
+      TextEditor
     )
   )

@@ -2,7 +2,7 @@ import React from 'react'
 import { stateToHTML } from 'draft-js-export-html'
 import { convertFromRaw } from 'draft-js'
 
-const DraftHtmlView = ({
+const TextView = ({
   data,
   style,
 }) => {
@@ -15,4 +15,4 @@ const DraftHtmlView = ({
   )
 }
 
-export default DraftHtmlView
+export default TextView
