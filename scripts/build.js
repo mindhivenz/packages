@@ -31,7 +31,7 @@ const getPackages = require('./_getPackages')
 const OK = chalk.reset.inverse.bold.green(' DONE ')
 const SRC_DIR = 'src'
 const BUILD_DIR = 'build'
-const JS_FILES_PATTERN = ['**/*.js', '**/*.jsx']
+const JS_FILES_PATTERN = '**/*+(js|jsx)'
 const IGNORE_PATTERN = '**/__tests__/**'
 const PACKAGES_DIR = path.resolve(__dirname, '../packages')
 
@@ -85,14 +85,14 @@ function buildFile(file, silent) {
   const destPath = getBuildPath(file, BUILD_DIR)
 
   mkdirp.sync(path.dirname(destPath))
-  if (micromatch.isMatch(file, IGNORE_PATTERN)) {
+  if (micromatch.isMatch(file, IGNORE_PATTERN, {})) {
     silent ||
     process.stdout.write(
       chalk.dim('  \u2022 ') +
       path.relative(PACKAGES_DIR, file) +
       ' (ignore)\n'
     )
-  } else if (! micromatch([file], JS_FILES_PATTERN)) {
+  } else if (! micromatch.isMatch(file, JS_FILES_PATTERN, {})) {
     fs.createReadStream(file).pipe(fs.createWriteStream(destPath))
     silent ||
     process.stdout.write(
