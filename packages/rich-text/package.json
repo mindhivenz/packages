@@ -1,7 +1,7 @@
 {
-  "name": "@mindhive/draft",
+  "name": "@mindhive/rich-text",
   "version": "0.0.1",
-  "description": "Rich Text Edit componsnts based on draft from FB",
+  "description": "Rich Text Editing components based on draft from FB",
   "keywords": [],
   "author": "Nick Virtue",
   "private": false,
