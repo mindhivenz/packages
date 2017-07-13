@@ -1,8 +1,9 @@
 import React from 'react'
 import { observer } from 'mobx-react'
-import { compose, withPropsOnChange, branch, renderNothing, mapProps, withProps } from 'recompose'
+import compose from 'recompose/compose'
+// import { compose, withPropsOnChange, branch, renderNothing, mapProps, withProps } from 'recompose'
 
-import { withStyles } from '@mindhive/styles'
+import { injectErrorStyles } from './EditorStyles'
 
 class EditorError extends React.Component {
 
@@ -23,36 +24,13 @@ class EditorError extends React.Component {
       prepareStyles,
     } = this.props
 
-    return (<div style={prepareStyles(styles.error)}>{errorText || this.state.lastErrorText}</div>)
+    return (<div style={prepareStyles(styles)}>{errorText || this.state.lastErrorText}</div>)
 
   }
 }
 
 
-const mapThemeToStyles = ({
-  textField: {
-    errorColor,
-  },
-}, {
-  errorText,
-}) => {
-  const scale = errorText ? 1 : 0
-  const fontSize = 12
-  return ({
-    error: {
-      position: 'relative',
-      bottom: -8,
-      fontSize: fontSize,
-      fontWeight: 400,
-      lineHeight: `${fontSize}px`,
-      color: errorColor,
-      transition: 'transform 450ms ease-out',
-      transform: `scaleY(${scale})`,
-    },
-  });
-}
-
 export default compose(
+  injectErrorStyles,
   observer,
-  withStyles(mapThemeToStyles),
 )(EditorError)

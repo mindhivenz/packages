@@ -6,6 +6,8 @@ const iconSize = 15
 const btnPadding = 2
 const btnSize = iconSize + btnPadding
 
+const errorFontSize = 12
+
 export const injectButtonStyles = compose(withStyles(({
   palette,
   textField: {
@@ -121,4 +123,21 @@ export const injectUnderlineStyles = compose(withStyles(({
     focusedUnderline,
   })
 }))
+
+export const injectErrorStyles = compose(withStyles(({
+  textField: {
+    errorColor,
+  },
+}, {
+  errorText,
+}) => ({
+  position: 'relative',
+  bottom: -8,
+  fontSize: errorFontSize,
+  fontWeight: 400,
+  lineHeight: `${errorFontSize}px`,
+  color: errorColor,
+  transition: 'transform 450ms ease-out',
+  transform: `scaleY(${errorText ? 1 : 0})`,
+})))
 
