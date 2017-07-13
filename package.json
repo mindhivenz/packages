@@ -36,16 +36,13 @@
     "clean-build": "rm -rf ./packages/*/build",
 
     "bootstrap": "yarn run clean-all && yarn",
-    "build-lerna": "lerna run build",
+
+    "prebuild": "yarn run clean-build",
+    "build": "lerna run build",
 
     "new": "node ./scripts/new-package.js",
     "test": "lerna run test",
 
-    "prebuild": "yarn run clean-build",
-    "build": "node ./scripts/build.js",
-
-    "prewatch": "yarn run build --silent",
-    "watch": "node ./scripts/watch.js",
 
     "prepub": "yarn run build --silent",
     "pub": "lerna publish --access public --silent",

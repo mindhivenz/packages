@@ -153,14 +153,5 @@ export const injectCommandPanelStyles = compose(withStyles(({
     display: 'inline-block',
     float: 'right',
   },
-  icon: {
-    width: 20,
-    height: 20,
-  },
-  button: {
-    width: 24,
-    height: 24,
-    padding: 2,
-  },
 })))
 
