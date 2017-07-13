@@ -1,10 +1,10 @@
 import React from 'react'
 import IconButton from 'material-ui/IconButton'
-import { withStyles } from '@mindhive/styles'
+import { injectButtonStyles } from './EditorStyles'
 
-const preventDefault = (event) => event.preventDefault();
+const preventDefault = event => event.preventDefault()
 
-const wrapPrevent = (callback) =>
+const wrapPrevent = callback =>
   (event) => {
     event.preventDefault()
     callback()
@@ -38,28 +38,4 @@ const StyleButton = ({
     })}
   </IconButton>
 
-
-const mapThemeToStyles = ({
-  palette,
-  textField: {
-    focusColor,
-  },
-}, {
-  focused,
-  editorState,
-  inlineStyle,
-}) => ({
-  color: focused && editorState.getCurrentInlineStyle().has(inlineStyle) ? focusColor : palette.textColor,
-  icon: {
-    width: 20,
-    height: 20,
-  },
-  button: {
-    width: 24,
-    height: 24,
-    padding: 2,
-  },
-})
-
-
-export default withStyles(mapThemeToStyles)(StyleButton)
+export default injectButtonStyles(StyleButton)

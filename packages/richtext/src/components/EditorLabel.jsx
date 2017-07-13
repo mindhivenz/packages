@@ -20,8 +20,7 @@ const EditorLabel = ({
   </label>
 
 
-const mapThemeToStyles = (
-  {
+const mapThemeToStyles = ({
     textField: {
       floatingLabelColor,
       hintColor,
