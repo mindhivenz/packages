@@ -25,13 +25,12 @@
     "url": "https://github.com/mindhivenz/packages/issues"
   },
   "dependencies": {
-    "@mindhive/styles": "^0.0.22",
     "lodash": "^4.17.4",
     "recompose": "^0.22.0"
   },
   "peerDependencies": {
     "@mindhive/components": "^4.5.35",
-    "@mindhive/styles": "^0.0.22",
+    "@mindhive/styles": "^0.0.26",
     "material-ui": "^0.18.3"
   }
 }

@@ -20,8 +20,10 @@
   "bugs": {
     "url": "https://github.com/mindhivenz/packages/issues"
   },
+  "peerDependencies": {
+    "@mindhive/styles": "^0.0.26"
+  },
   "dependencies": {
-    "@mindhive/styles": "^0.0.26",
     "draft-js": "^0.10.1",
     "draft-js-export-html": "^0.5.4",
     "recompose": "^0.24.0"
