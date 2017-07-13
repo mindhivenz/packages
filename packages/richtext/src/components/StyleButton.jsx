@@ -39,6 +39,9 @@ export default compose(
     inlineStyle,
     children,
     styles,
+    focused, // eslint-disable-line no-unused-vars
+    theme, // eslint-disable-line no-unused-vars
+    prepareStyles, // eslint-disable-line no-unused-vars
     ...other
   }) => ({
     styles,
