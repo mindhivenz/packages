@@ -3,9 +3,10 @@ import { observer } from 'mobx-react'
 import compose from 'recompose/compose'
 
 import withStore from '@mindhive/mobx/withStore'
+import { withClassNames } from '@mindhive/styles'
 
 import { Editor } from 'draft-js'
-import { injectEditorStyles } from './components/EditorStyles'
+import { injectEditorStyles, injectEditorClasses  } from './components/EditorStyles'
 
 
 import EditorDomain from './components/EditorDomain'
@@ -17,6 +18,8 @@ import EditorCommands from './components/EditorCommands'
 const TextEditor = ({
   labelText,
   styles,
+  classNames,
+
   prepareStyles,
   errorText,
 
@@ -39,7 +42,7 @@ const TextEditor = ({
       toggleStyle={editorDomain.toggleStyle}
       debug={debug}
     />
-    <div style={prepareStyles(styles.editor, debug ? styles.debugEditor : {})}>
+    <div className={classNames}>
       <Editor
         ref={editorDomain.registerNode}
         editorState={editorDomain.editorState}
@@ -62,5 +65,13 @@ export default compose(
     shouldRecreateStore: () => false,
   }),
   injectEditorStyles,
+  injectEditorClasses,
+  withClassNames(({ editorDomain, editorClasses, debug }) => [
+    editorClasses.editorWrapper,
+    {
+      'focused': editorDomain.focused,
+      'debug': debug,
+    },
+  ]),
   observer,
 )(TextEditor)

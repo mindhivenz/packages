@@ -1,4 +1,5 @@
-import { withStyles } from '@mindhive/styles'
+import { withStyles, applyTheme } from '@mindhive/styles'
+
 import compose from 'recompose/compose'
 import transitions from 'material-ui/styles/transitions'
 
@@ -6,6 +7,7 @@ const iconSize = 20
 const btnPadding = 2
 const btnSize = btnPadding + iconSize + btnPadding
 const btnContainerSize = (btnSize * 3) + 2
+const commandTransitionMs = 250
 
 const labelLineHeight = 22
 const labelTop = 24
@@ -94,6 +96,56 @@ export const injectCommandPanelStyles = compose(withStyles(({
     float: 'right',
   },
 })))
+
+export const injectEditorClasses = compose(
+  applyTheme({
+    mapThemeToStyles: ({ spacing, typography }, { editorStyle }) => ({
+      editorWrapper: {
+        position: 'relative',
+        width: '100%',
+        transition: transitions.easeOut(),
+
+        display: 'inline-block',
+        paddingTop: spacing.desktopGutterMini,
+        fontWeight: typography.fontWeight300,
+        fontSize: 14,
+        ...editorStyle,
+        '&.debug': {
+          border: '1px dashed green',
+        },
+
+        '&.focused': {
+          opacity: 1,
+          width: `calc(100% - ${btnContainerSize}px)`,
+        },
+
+      },
+
+      commandPanel: {
+        opacity: 0,
+        width: 0,
+        transition: `opacity ${commandTransitionMs}ms ease-in,
+                    transform 0ms linear`,
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        position: 'relative',
+        display: 'inline-block',
+        paddingTop: spacing.desktopGutterMini,
+        float: 'right',
+
+        '&.debug': {
+          border: '1px dashed red',
+        },
+
+        '&.focused': {
+          opacity: 1,
+          width: btnContainerSize,
+        },
+      },
+    }),
+    classesName: 'editorClasses',
+  }),
+)
 
 export const injectButtonStyles = compose(withStyles(({
   palette,
@@ -204,7 +256,7 @@ export const injectUnderlineStyles = compose(withStyles(({
   let focusedUnderline = Object.assign({}, underline, styles.focus, focusStyle)
 
   if (disabled) underline = Object.assign({}, underline, styles.disabled, disabledStyle)
-  if (focus) focusedUnderline = Object.assign({}, focusedUnderline, {transform: 'scaleX(1)' })
+  if (focus) focusedUnderline = Object.assign({}, focusedUnderline, { transform: 'scaleX(1)' })
   if (errorText) focusedUnderline = Object.assign({}, focusedUnderline, styles.error)
 
   return ({
@@ -229,5 +281,3 @@ export const injectErrorStyles = compose(withStyles(({
   transition: 'transform 450ms ease-out',
   transform: `scaleY(${errorText ? 1 : 0})`,
 })))
-
-
