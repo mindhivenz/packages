@@ -141,3 +141,26 @@ export const injectErrorStyles = compose(withStyles(({
   transform: `scaleY(${errorText ? 1 : 0})`,
 })))
 
+export const injectCommandPanelStyles = compose(withStyles(({
+  textField: {
+    hintColor,
+    focusColor,
+  },
+}) => ({
+  focusColor,
+  hintColor,
+  buttons: {
+    display: 'inline-block',
+    float: 'right',
+  },
+  icon: {
+    width: 20,
+    height: 20,
+  },
+  button: {
+    width: 24,
+    height: 24,
+    padding: 2,
+  },
+})))
+

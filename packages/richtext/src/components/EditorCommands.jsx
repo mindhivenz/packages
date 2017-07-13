@@ -2,7 +2,9 @@ import React from 'react'
 import BoldIcon from 'material-ui/svg-icons/editor/format-bold'
 import UnderlineIcon from 'material-ui/svg-icons/editor/format-underlined'
 import ItalicIcon from 'material-ui/svg-icons/editor/format-italic'
-import { withStyles } from '@mindhive/styles'
+import compose from 'recompose/compose'
+
+import { injectCommandPanelStyles } from './EditorStyles'
 import StyleButton from './StyleButton'
 
 const EditorCommands = ({
@@ -42,27 +44,8 @@ const EditorCommands = ({
     </StyleButton>
   </div>
 
-const mapThemeToStyles = ({
-  textField: {
-    hintColor,
-    focusColor,
-  },
-}) => ({
-  focusColor,
-  hintColor,
-  buttons: {
-    display: 'inline-block',
-    float: 'right',
-  },
-  icon: {
-    width: 20,
-    height: 20,
-  },
-  button: {
-    width: 24,
-    height: 24,
-    padding: 2,
-  },
-})
 
-export default withStyles(mapThemeToStyles)(EditorCommands)
+export default compose(
+  injectCommandPanelStyles,
+)(EditorCommands)
+
