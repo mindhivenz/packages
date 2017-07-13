@@ -4,17 +4,16 @@ import UnderlineIcon from 'material-ui/svg-icons/editor/format-underlined'
 import ItalicIcon from 'material-ui/svg-icons/editor/format-italic'
 import compose from 'recompose/compose'
 
-import { injectCommandPanelStyles } from './EditorStyles'
 import StyleButton from './StyleButton'
 
 const EditorCommands = ({
-  styles,
-  prepareStyles,
   toggleStyle,
   editorState,
   focused,
+
+  classes,
 }) =>
-  <div style={prepareStyles(styles.buttons)}>
+  <div className={classes}>
     <StyleButton
       editorState={editorState}
       toggleStyle={toggleStyle}
@@ -46,6 +45,5 @@ const EditorCommands = ({
 
 
 export default compose(
-  injectCommandPanelStyles,
 )(EditorCommands)
 

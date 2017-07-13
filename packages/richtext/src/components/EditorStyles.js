@@ -115,7 +115,6 @@ export const injectEditorClasses = compose(
         },
 
         '&.focused': {
-          opacity: 1,
           width: `calc(100% - ${btnContainerSize}px)`,
         },
 
@@ -123,9 +122,8 @@ export const injectEditorClasses = compose(
 
       commandPanel: {
         opacity: 0,
-        width: 0,
-        transition: `opacity ${commandTransitionMs}ms ease-in,
-                    transform 0ms linear`,
+        width: `${0}px`,
+        transition: transitions.easeOut(),
         overflow: 'hidden',
         whiteSpace: 'nowrap',
         position: 'relative',
@@ -139,7 +137,7 @@ export const injectEditorClasses = compose(
 
         '&.focused': {
           opacity: 1,
-          width: btnContainerSize,
+          width: `${btnContainerSize}px`,
         },
       },
     }),

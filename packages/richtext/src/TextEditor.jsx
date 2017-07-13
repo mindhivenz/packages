@@ -40,9 +40,9 @@ const TextEditor = ({
       editorState={editorDomain.editorState}
       focused={editorDomain.focused}
       toggleStyle={editorDomain.toggleStyle}
-      debug={debug}
+      classes={classNames.commandsWrapper}
     />
-    <div className={classNames}>
+    <div className={classNames.editorWrapper}>
       <Editor
         ref={editorDomain.registerNode}
         editorState={editorDomain.editorState}
@@ -66,12 +66,21 @@ export default compose(
   }),
   injectEditorStyles,
   injectEditorClasses,
-  withClassNames(({ editorDomain, editorClasses, debug }) => [
-    editorClasses.editorWrapper,
-    {
-      'focused': editorDomain.focused,
-      'debug': debug,
-    },
-  ]),
+  withClassNames(({ editorDomain, editorClasses, debug }) => ({
+    editorWrapper: [
+      editorClasses.editorWrapper,
+      {
+        'focused': editorDomain.focused,
+        'debug': debug,
+      },
+    ],
+    commandsWrapper: [
+      editorClasses.commandPanel,
+      {
+        'focused': editorDomain.focused,
+        'debug': debug,
+      },
+    ],
+  })),
   observer,
 )(TextEditor)
