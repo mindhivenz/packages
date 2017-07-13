@@ -1,4 +1,5 @@
-import { withStyles, applyTheme } from '@mindhive/styles'
+import { withStyles, applyTheme, withClassNames } from '@mindhive/styles'
+import { observer } from 'mobx-react'
 
 import compose from 'recompose/compose'
 import transitions from 'material-ui/styles/transitions'
@@ -72,38 +73,15 @@ export const injectEditorStyles = compose(withStyles(({
 
 })))
 
-export const injectCommandPanelStyles = compose(withStyles(({
-  spacing,
-  typography,
-  textField: {
-    hintColor,
-    focusColor,
-  },
-}, {
-  debug,
-  focused,
-}) => ({
-  buttons: {
-    border: debug ? '1px dashed red' : 'none',
-    opacity: focused ? 1 : 0,
-    width: focused ? btnContainerSize : 0,
-    transition: transitions.easeOut(),
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    position: 'relative',
-    display: 'inline-block',
-    paddingTop: spacing.desktopGutterMini,
-    float: 'right',
-  },
-})))
 
 export const injectEditorClasses = compose(
+  observer,
   applyTheme({
     mapThemeToStyles: ({ spacing, typography }, { editorStyle }) => ({
-      editorWrapper: {
+      editorPanel: {
         position: 'relative',
         width: '100%',
-        transition: transitions.easeOut(),
+        transition: `width ${commandTransitionMs}ms ease-out`,
 
         display: 'inline-block',
         paddingTop: spacing.desktopGutterMini,
@@ -115,7 +93,8 @@ export const injectEditorClasses = compose(
         },
 
         '&.focused': {
-          width: `calc(100% - ${btnContainerSize}px)`,
+          width: `calc(100% - ${btnContainerSize + spacing.desktopGutterLess}px)`,
+          transition: `width ${commandTransitionMs}ms ease-out`,
         },
 
       },
@@ -123,7 +102,8 @@ export const injectEditorClasses = compose(
       commandPanel: {
         opacity: 0,
         width: `${0}px`,
-        transition: transitions.easeOut(),
+        transition: `width ${commandTransitionMs}ms ease-out,
+                    opacity ${commandTransitionMs}ms ease-out`,
         overflow: 'hidden',
         whiteSpace: 'nowrap',
         position: 'relative',
@@ -138,11 +118,31 @@ export const injectEditorClasses = compose(
         '&.focused': {
           opacity: 1,
           width: `${btnContainerSize}px`,
+          transition: `width ${commandTransitionMs}ms ease-out,
+                    opacity ${commandTransitionMs}ms ease-out`,
+
         },
       },
     }),
     classesName: 'editorClasses',
   }),
+  withClassNames(({ editorDomain, editorClasses, debug }) => ({
+    editorWrapper: [
+      editorClasses.editorPanel,
+      {
+        'focused': editorDomain.focused,
+        'debug': debug,
+      },
+    ],
+    commandsWrapper: [
+      editorClasses.commandPanel,
+      {
+        'focused': editorDomain.focused,
+        'debug': debug,
+      },
+    ],
+  })),
+
 )
 
 export const injectButtonStyles = compose(withStyles(({

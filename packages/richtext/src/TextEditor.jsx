@@ -3,7 +3,6 @@ import { observer } from 'mobx-react'
 import compose from 'recompose/compose'
 
 import withStore from '@mindhive/mobx/withStore'
-import { withClassNames } from '@mindhive/styles'
 
 import { Editor } from 'draft-js'
 import { injectEditorStyles, injectEditorClasses  } from './components/EditorStyles'
@@ -66,21 +65,5 @@ export default compose(
   }),
   injectEditorStyles,
   injectEditorClasses,
-  withClassNames(({ editorDomain, editorClasses, debug }) => ({
-    editorWrapper: [
-      editorClasses.editorWrapper,
-      {
-        'focused': editorDomain.focused,
-        'debug': debug,
-      },
-    ],
-    commandsWrapper: [
-      editorClasses.commandPanel,
-      {
-        'focused': editorDomain.focused,
-        'debug': debug,
-      },
-    ],
-  })),
   observer,
 )(TextEditor)
