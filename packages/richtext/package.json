@@ -1,6 +1,6 @@
 {
   "name": "@mindhive/richtext",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Rich Text Editing components based on draft from FB",
   "keywords": [],
   "author": "Nick Virtue",
@@ -21,7 +21,7 @@
     "url": "https://github.com/mindhivenz/packages/issues"
   },
   "dependencies": {
-    "@mindhive/styles": "^0.0.25",
+    "@mindhive/styles": "^0.0.26",
     "draft-js": "^0.10.1",
     "draft-js-export-html": "^0.5.4",
     "recompose": "^0.24.0"
