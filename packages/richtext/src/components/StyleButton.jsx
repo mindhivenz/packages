@@ -1,5 +1,6 @@
 import React from 'react'
 import IconButton from 'material-ui/IconButton'
+import compose from 'recompose/compose'
 import { injectButtonStyles } from './EditorStyles'
 
 const preventDefault = event => event.preventDefault()
@@ -38,4 +39,6 @@ const StyleButton = ({
     })}
   </IconButton>
 
-export default injectButtonStyles(StyleButton)
+export default compose(
+  injectButtonStyles,
+)(StyleButton)
