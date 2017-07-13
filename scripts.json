@@ -1,7 +1,8 @@
 {
   "scripts": {
-    "build-js": "node ./scripts/build.js",
-    "watch-js": "node ./scripts/watch.js",
+    "prebuild": "yarn run clean-build",
+    "build": "node ./scripts/build.js",
+    "watch": "node ./scripts/watch.js",
     "prewatch": "yarn run build --silent"
   }
 }

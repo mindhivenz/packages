@@ -37,7 +37,6 @@
 
     "bootstrap": "yarn run clean-all && yarn",
 
-    "prebuild": "yarn run clean-build",
     "build": "lerna run build",
 
     "new": "node ./scripts/new-package.js",

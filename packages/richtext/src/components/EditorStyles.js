@@ -2,11 +2,98 @@ import { withStyles } from '@mindhive/styles'
 import compose from 'recompose/compose'
 import transitions from 'material-ui/styles/transitions'
 
-const iconSize = 15
+const iconSize = 20
 const btnPadding = 2
-const btnSize = iconSize + btnPadding
+const btnSize = btnPadding + iconSize + btnPadding
+const btnContainerSize = (btnSize * 3) + 2
+
+const labelLineHeight = 22
+const labelTop = 24
 
 const errorFontSize = 12
+
+export const injectEditorStyles = compose(withStyles(({
+  spacing,
+  typography,
+
+  textField: {
+    hintColor,
+    focusColor,
+    errorColor,
+  },
+}, {
+  containerStyle = {},
+  editorStyle = {},
+  editorDomain,
+}) => ({
+  focusColor,
+  hintColor,
+  label: {
+    display: 'inline-block',
+    position: 'relative',
+    top: -5,
+
+    fontSize: 103,
+  },
+  content: {
+    position: 'relative',
+    cursor: 'initial',
+
+    fontSize: 16,
+    lineHeight: '24px',
+    width: '100%',
+    display: 'inline-block',
+
+    paddingTop: spacing.desktopGutterLess,
+    paddingBottom: spacing.desktopGutterMini,
+
+    ...containerStyle,
+  },
+  editor: {
+    position: 'relative',
+    width: `calc(100% - ${editorDomain.focused ? btnContainerSize : 0}px)`,
+    transition: transitions.easeOut(),
+
+    display: 'inline-block',
+    paddingTop: spacing.desktopGutterMini,
+    fontWeight: typography.fontWeight300,
+    fontSize: 14,
+    ...editorStyle,
+
+  },
+  debugEditor: {
+    border: '1px dashed green',
+  },
+  debugContent: {
+    border: '1px dashed yellow',
+  },
+
+})))
+
+export const injectCommandPanelStyles = compose(withStyles(({
+  spacing,
+  typography,
+  textField: {
+    hintColor,
+    focusColor,
+  },
+}, {
+  debug,
+  focused,
+}) => ({
+  buttons: {
+    border: debug ? '1px dashed red' : 'none',
+    opacity: focused ? 1 : 0,
+    width: focused ? btnContainerSize : 0,
+    transition: transitions.easeOut(),
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    position: 'relative',
+    display: 'inline-block',
+    paddingTop: spacing.desktopGutterMini,
+    float: 'right',
+  },
+})))
 
 export const injectButtonStyles = compose(withStyles(({
   palette,
@@ -38,6 +125,7 @@ export const injectLabelStyles = compose(withStyles(({
     errorColor,
   },
 }, {
+  debug,
   disabled,
   focused,
   shrink,
@@ -45,10 +133,11 @@ export const injectLabelStyles = compose(withStyles(({
   style,
   errorText,
 }) => ({
+  border: debug ? '1px dashed orange' : 'none',
   color: focused ? (errorText ? errorColor : focusColor) : hintColor,
   position: 'absolute',
-  lineHeight: '22px',
-  top: 24,
+  lineHeight: `${labelLineHeight}px`,
+  top: labelTop,
   transition: transitions.easeOut(),
   zIndex: 1, // Needed to display label above Chrome's autocomplete field background
   cursor: disabled ? 'not-allowed' : 'text',
@@ -58,7 +147,7 @@ export const injectLabelStyles = compose(withStyles(({
   userSelect: 'none',
   ...style,
   ...(shrink ? {
-    transform: 'scale(0.75) translate(0, -24px)',
+    transform: `scale(0.75) translate(0, -${labelTop}px)`,
     pointerEvents: 'none',
     ...shrinkStyle,
   } : {}),
@@ -141,17 +230,4 @@ export const injectErrorStyles = compose(withStyles(({
   transform: `scaleY(${errorText ? 1 : 0})`,
 })))
 
-export const injectCommandPanelStyles = compose(withStyles(({
-  textField: {
-    hintColor,
-    focusColor,
-  },
-}) => ({
-  focusColor,
-  hintColor,
-  buttons: {
-    display: 'inline-block',
-    float: 'right',
-  },
-})))
 

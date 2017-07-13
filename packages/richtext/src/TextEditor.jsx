@@ -1,10 +1,11 @@
 import React from 'react'
 import { observer } from 'mobx-react'
-import { compose, branch, renderNothing, mapProps, withProps } from 'recompose'
+import compose from 'recompose/compose'
+
 import withStore from '@mindhive/mobx/withStore'
 
 import { Editor } from 'draft-js'
-import { withStyles } from '@mindhive/styles'
+import { injectEditorStyles } from './components/EditorStyles'
 
 
 import EditorDomain from './components/EditorDomain'
@@ -20,12 +21,15 @@ const TextEditor = ({
   errorText,
 
   editorDomain,
+
+  debug,
 }) =>
-  <div style={prepareStyles(styles.content)} onClick={editorDomain.focus}>
+  <div style={prepareStyles(styles.content, debug ? styles.debugContent : {})} onClick={editorDomain.focus}>
     <EditorLabel
       focused={editorDomain.focused}
       shrink={editorDomain.focused || editorDomain.hasText}
       errorText={errorText}
+      debug={debug}
     >
       {labelText}
     </EditorLabel>
@@ -33,8 +37,9 @@ const TextEditor = ({
       editorState={editorDomain.editorState}
       focused={editorDomain.focused}
       toggleStyle={editorDomain.toggleStyle}
+      debug={debug}
     />
-    <div style={prepareStyles(styles.editor)}>
+    <div style={prepareStyles(styles.editor, debug ? styles.debugEditor : {})}>
       <Editor
         ref={editorDomain.registerNode}
         editorState={editorDomain.editorState}
@@ -49,68 +54,13 @@ const TextEditor = ({
 
   </div>
 
-const mapThemeToStyles = ({
-  spacing,
-  typography,
-  transitions,
-
-  textField: {
-    hintColor,
-    focusColor,
-    errorColor,
-  },
-}, {
-  containerStyle = {},
-  editorStyle = {},
-}) => ({
-  focusColor,
-  hintColor,
-  label: {
-    display: 'inline-block',
-    position: 'relative',
-    top: -5,
-
-    fontSize: 103,
-  },
-  content: {
-    position: 'relative',
-    cursor: 'initial',
-
-    fontSize: 16,
-    lineHeight: '24px',
-    width: '100%',
-    display: 'inline-block',
-
-    paddingTop: spacing.desktopGutterLess,
-    paddingBottom: spacing.desktopGutterMini,
-
-    ...containerStyle,
-  },
-  editor: {
-    position: 'relative',
-    width: 'calc(100% - 75px)',
-    display: 'inline-block',
-    paddingTop: spacing.desktopGutterMini,
-    fontWeight: typography.fontWeight300,
-    fontSize: 14,
-    ...editorStyle,
-
-  },
-
-})
-
 export default compose(
   withStore({
     storeClass: EditorDomain,
     propName: 'editorDomain',
     mapPropsToArgs: _props => _props,
-    // updateStore: (store, props) => {
-      // console.log('updateStore', typeof store.update)
-      // if (typeof store.update === 'function') store.update(props)
-    // },
-
     shouldRecreateStore: () => false,
   }),
-  withStyles(mapThemeToStyles),
+  injectEditorStyles,
   observer,
 )(TextEditor)
