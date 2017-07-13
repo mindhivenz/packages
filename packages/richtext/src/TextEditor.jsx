@@ -3,11 +3,9 @@ import { observer } from 'mobx-react'
 import compose from 'recompose/compose'
 
 import withStore from '@mindhive/mobx/withStore'
-import { withClassNames } from '@mindhive/styles'
 
-import { Editor } from 'draft-js'
-import { injectEditorClasses  } from './components/EditorStyles'
-
+import { Editor as DraftEditor } from 'draft-js'
+import { injectEditorClasses } from './components/EditorStyles'
 
 import EditorDomain from './components/EditorDomain'
 import EditorUnderline from './components/EditorUnderline'
@@ -37,7 +35,7 @@ const TextEditor = ({
       classes={classNames.commandsWrapper}
     />
     <div className={classNames.editorWrapper}>
-      <Editor
+      <DraftEditor
         ref={editorDomain.registerNode}
         editorState={editorDomain.editorState}
         onChange={editorDomain.handleEditorStateChange}
@@ -58,5 +56,6 @@ export default compose(
     mapPropsToArgs: _props => _props,
     shouldRecreateStore: () => false,
   }),
+  // observer,
   injectEditorClasses,
 )(TextEditor)
