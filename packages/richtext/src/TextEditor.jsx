@@ -38,7 +38,7 @@ const TextEditor = ({
       <Editor
         ref={editorDomain.registerNode}
         editorState={editorDomain.editorState}
-        onChange={editorDomain.onChange}
+        onChange={editorDomain.handleEditorStateChange}
         handleKeyCommand={editorDomain.handleKeyCommand}
         onFocus={editorDomain._handleOnFocus}
         onBlur={editorDomain._handleOnBlur}
@@ -100,20 +100,17 @@ const mapThemeToStyles = ({
 })
 
 export default compose(
-  observer,
   withStore({
     storeClass: EditorDomain,
     propName: 'editorDomain',
-    mapPropsToArgs: ({ value, onChange, onBlur, onFocus }) => {
-      // console.log('mapPropsToArgs', value, onChange, onBlur, onFocus)
-      return ({ value, onChange, onBlur, onFocus })
-    },
-    updateStore: (store, props) => {
+    mapPropsToArgs: _props => _props,
+    // updateStore: (store, props) => {
       // console.log('updateStore', typeof store.update)
-      if (typeof store.update === 'function') store.update(props)
-    },
+      // if (typeof store.update === 'function') store.update(props)
+    // },
 
     shouldRecreateStore: () => false,
   }),
   withStyles(mapThemeToStyles),
+  observer,
 )(TextEditor)

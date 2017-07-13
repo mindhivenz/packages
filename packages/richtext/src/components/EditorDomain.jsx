@@ -2,77 +2,78 @@ import { action, observable, computed } from 'mobx'
 import { observer } from 'mobx-react'
 import { EditorState, RichUtils, convertFromRaw, convertToRaw } from 'draft-js'
 
+const emptyEditorState = EditorState.createEmpty()
+
 class EditorDomain {
 
-  _onChange = () => {}
-  _onBlur = () => {}
-  _onFocus = () => {}
+  _userOnChange = () => {}
+  _userOnBlur = () => {}
+  _userOnFocus = () => {}
 
   editor
 
-  initialInputValue
-  initialEditorState
-  @observable.ref editorState = EditorState.createEmpty()
+  initialInputValue = undefined
+  initialEditorState = undefined
+  @observable.ref _editorState
   @observable focused = false
+  labelText
 
-
-  constructor({ value, onChange, onBlur, onFocus }) {
-    // console.log(value, onChange, onBlur, onFocus )
+  constructor({ value, labelText, onChange, onBlur, onFocus }) {
+    this.labelText = labelText
+    // console.log(`Constructor: ${labelText} value:`, value)
     this.initialInputValue = value
-    this._onChange = onChange
-    this._onBlur = onBlur
-    this._onFocus = onFocus
+    this._userOnChange = onChange
+    this._userOnBlur = onBlur
+    this._userOnFocus = onFocus
 
     this.initialEditorState = this.initialInputValue ?
       EditorState.createWithContent(convertFromRaw(JSON.parse(this.initialInputValue))) :
-      EditorState.createEmpty()
-    this.init()
+      emptyEditorState
+    this._setEditorState(this.initialEditorState)
   }
 
   @action
-  init = () => {
-    this.editorState = this.initialEditorState
-    this.focused = false
+  _setEditorState = (editorState) => {
+    this._editorState = editorState
+  }
+
+  @computed get editorState() {
+    // console.log( 'editorState', this._editorState )
+    return this._editorState || emptyEditorState
   }
 
   @computed get hasText() {
-    return this.editorState && this.editorState.getCurrentContent().hasText()
+    // console.log('hasText', this.editorState)
+    return this.editorState.getCurrentContent().hasText()
   }
 
-  onChange = (editorState) => {
-    const currentContent = editorState.getCurrentContent()
+  handleEditorStateChange = (newEditorState) => {
+    // console.log(`State Change!!: ${this.labelText}:`, newEditorState)
+
+    const newContent = newEditorState.getCurrentContent()
+    const newRawContent = convertToRaw(newContent)
     /*
       The following is to work out if the content has actually changed.
       // TODO remove when caps stored as JSON. Have a default empty state for
      */
     if (this.initialInputValue) {
-      const currentRawContent = convertToRaw(currentContent)
-      const isEqual = convertToRaw(this.initialEditorState.getCurrentContent()) === currentRawContent
+      const isEqual = convertToRaw(this.initialEditorState.getCurrentContent()) === newRawContent
       if (! isEqual) {
-        this._onChange(JSON.stringify(currentRawContent))
+        this._userOnChange(JSON.stringify(newRawContent))
       }
-    } else if (currentContent.hasText()) {
-      this._onChange(JSON.stringify(convertToRaw(currentContent)))
+    } else if (newContent.hasText()) {
+      this._userOnChange(JSON.stringify(newRawContent))
     } else {
-      this._onChange(this.initialInputValue)
+      this._userOnChange(this.initialInputValue)
     }
-    this._setEditorState(editorState)
-  }
-
-  update(props) {
-    console.log('UPDATE!!', props)
+    this._setEditorState(newEditorState)
   }
 
   toggleStyle = (style) => {
-    this.onChange(RichUtils.toggleInlineStyle(
+    this.handleEditorStateChange(RichUtils.toggleInlineStyle(
       this.editorState,
       style
     ))
-  }
-
-  @action
-  _setEditorState = (editorState) => {
-    this.editorState = editorState
   }
 
   @action
@@ -81,12 +82,12 @@ class EditorDomain {
   }
 
   _handleOnBlur = () => {
-    this._onBlur()
+    this._userOnBlur()
     this._setFocus(false)
   }
 
   _handleOnFocus = () => {
-    this._onFocus()
+    this._userOnFocus()
     this._setFocus(true)
   }
 
@@ -101,7 +102,7 @@ class EditorDomain {
   handleKeyCommand = (command) => {
     const newState = RichUtils.handleKeyCommand(this.editorState, command)
     if (newState) {
-      this.onChange(newState)
+      this.handleEditorStateChange(newState)
       return true
     }
     return false
