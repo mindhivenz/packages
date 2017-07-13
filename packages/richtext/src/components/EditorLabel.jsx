@@ -13,7 +13,7 @@ const EditorLabel = ({
 }) =>
   <label
     className={className}
-    style={prepareStyles(styles.root)}
+    style={prepareStyles(styles)}
     htmlFor={htmlFor}
   >
     {children}
