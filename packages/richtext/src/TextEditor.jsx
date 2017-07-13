@@ -26,7 +26,7 @@ const TextEditor = ({
 
   debug,
 }) =>
-  <div style={prepareStyles(styles.content, debug ? styles.debugContent : {})} onClick={editorDomain.focus}>
+  <div className={classNames.container} onClick={editorDomain.focus}>
     <EditorLabel
       focused={editorDomain.focused}
       shrink={editorDomain.focused || editorDomain.hasText}

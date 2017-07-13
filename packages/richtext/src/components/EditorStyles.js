@@ -4,11 +4,37 @@ import { observer } from 'mobx-react'
 import compose from 'recompose/compose'
 import transitions from 'material-ui/styles/transitions'
 
+
 const iconSize = 20
+const smallIconSize = 15
+
 const btnPadding = 2
+
 const btnSize = btnPadding + iconSize + btnPadding
+const smallBtnSize = btnPadding + smallIconSize + btnPadding
+
 const btnContainerSize = (btnSize * 3) + 2
+const smallBtnContainerSize = (smallBtnSize * 3) + 2
+
 const commandTransitionMs = 250
+
+const buttonSizes = {
+  iconSize,
+  padding: btnPadding,
+  btnSize,
+  containerHeight: btnSize,
+  containerWidth: btnContainerSize,
+  top: 24,
+}
+
+const smallButtonSizes = {
+  iconSize: smallIconSize,
+  padding: btnPadding,
+  btnSize: smallBtnSize,
+  containerHeight: smallBtnSize,
+  containerWidth: smallBtnContainerSize,
+  top: 32 + btnSize,
+}
 
 const labelLineHeight = 22
 const labelTop = 24
@@ -77,7 +103,22 @@ export const injectEditorStyles = compose(withStyles(({
 export const injectEditorClasses = compose(
   observer,
   applyTheme({
-    mapThemeToStyles: ({ spacing, typography }, { editorStyle }) => ({
+    mapThemeToStyles: ({ spacing, typography }, { editorStyle, containerStyle }) => ({
+      container: {
+        position: 'relative',
+        cursor: 'initial',
+
+        fontSize: 16,
+        lineHeight: '24px',
+        width: '100%',
+        display: 'inline-block',
+
+        paddingTop: spacing.desktopGutterLess,
+        paddingBottom: spacing.desktopGutterMini,
+
+        ...containerStyle,
+      },
+
       editorPanel: {
         position: 'relative',
         width: '100%',
@@ -93,23 +134,24 @@ export const injectEditorClasses = compose(
         },
 
         '&.focused': {
-          width: `calc(100% - ${btnContainerSize + spacing.desktopGutterLess}px)`,
+          width: `calc(100% - ${buttonSizes.containerWidth + spacing.desktopGutterLess}px)`,
           transition: `width ${commandTransitionMs}ms ease-out`,
         },
 
       },
 
       commandPanel: {
+        position: 'absolute',
+        right: 0,
+        top: buttonSizes.top,
+
         opacity: 0,
         width: `${0}px`,
         transition: `width ${commandTransitionMs}ms ease-out,
                     opacity ${commandTransitionMs}ms ease-out`,
         overflow: 'hidden',
         whiteSpace: 'nowrap',
-        position: 'relative',
         display: 'inline-block',
-        paddingTop: spacing.desktopGutterMini,
-        float: 'right',
 
         '&.debug': {
           border: '1px dashed red',
@@ -117,16 +159,37 @@ export const injectEditorClasses = compose(
 
         '&.focused': {
           opacity: 1,
-          width: `${btnContainerSize}px`,
+          width: `${buttonSizes.containerWidth}px`,
           transition: `width ${commandTransitionMs}ms ease-out,
                     opacity ${commandTransitionMs}ms ease-out`,
 
         },
       },
+      '@media (max-width: 550px)': {
+        commandPanel: {
+
+          top: smallButtonSizes.top,
+          width: `${buttonSizes.containerWidth}px`,
+        },
+        editorPanel: {
+          '&.focused': {
+            width: '100%',
+          },
+
+        },
+
+      },
     }),
     classesName: 'editorClasses',
   }),
   withClassNames(({ editorDomain, editorClasses, debug }) => ({
+    container: [
+      editorClasses.container,
+      {
+        'focused': editorDomain.focused,
+        'debug': debug,
+      },
+    ],
     editorWrapper: [
       editorClasses.editorPanel,
       {
