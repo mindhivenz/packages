@@ -1,10 +1,14 @@
 import React from 'react'
 import IconButton from 'material-ui/IconButton'
 import compose from 'recompose/compose'
+import omit from 'lodash/fp/omit'
+import withProps from 'recompose/withProps'
 import mapProps from 'recompose/mapProps'
 import { injectButtonStyles } from './EditorStyles'
 
 const preventDefault = event => event.preventDefault()
+
+const omitProps = keys => mapProps(props => omit(keys, props))
 
 const wrapPrevent = callback =>
   (event) => {
@@ -34,19 +38,8 @@ const StyleButton = ({
 
 export default compose(
   injectButtonStyles,
-  mapProps(({
-    toggleStyle,
-    inlineStyle,
-    children,
-    styles,
-    focused, // eslint-disable-line no-unused-vars
-    theme, // eslint-disable-line no-unused-vars
-    prepareStyles, // eslint-disable-line no-unused-vars
-    ...other
-  }) => ({
-    styles,
+  withProps(({ toggleStyle, inlineStyle }) => ({
     onTouchTap: wrapPrevent(() => toggleStyle(inlineStyle)),
-    children,
-    ...other,
-  }))
+  })),
+  omitProps(['editorState', 'focused', 'theme', 'prepareStyles', 'toggleStyle', 'inlineStyle']),
 )(StyleButton)

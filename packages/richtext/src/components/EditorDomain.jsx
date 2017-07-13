@@ -98,7 +98,7 @@ class EditorDomain {
 
   @action
   _setFocus = (focused) => {
-    console.log('FOCUS', focused)
+    // console.log('FOCUS', focused)
     this._focused = focused
   }
 
