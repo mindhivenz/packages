@@ -7,9 +7,12 @@ class EditDomain {
   lastFocusId = 'DOC_EDIT_LAST_FOCUS'
   firstFocusId = 'DOC_EDIT_FIRST_FOCUS'
 
+  listItem = undefined
+
   @observable _wantShow = false
   handleSubmit
   fields
+  scrollNew
 
 
   constructor(items = [], retrievers) {
@@ -19,6 +22,7 @@ class EditDomain {
 
   componentDidMount() {
     this.handleOpen()
+    this.handleScroll()
     // setTimeout(() => this.handleOpen(), 0)
   }
 
@@ -36,9 +40,10 @@ class EditDomain {
     this._wantShow = show
   }
 
-  @action update({ onCancel, handleSubmit, fields }) {
+  @action update({ onCancel, handleSubmit, fields, scrollNew }) {
     this.handleSubmit = handleSubmit
     this.fields = fields
+    this.scrollNew = scrollNew
     // console.log('SubMenu.update', menuItems)
     this.onCancel = onCancel
     // console.log('after update', this.menuItems)
@@ -56,6 +61,14 @@ class EditDomain {
     this.setShow(true)
   }
 
+  handleScroll() {
+    // console.log('this.scrollNew', this.scrollNew)
+    if (this.listItem && this.scrollNew) {
+      // console.log('Scroll', this.listItem.button.button.parentElement.parentElement.parentElement)
+      this.listItem.button.button.parentElement.parentElement.parentElement.scrollIntoView(true)
+    }
+  }
+
   discardChanges = () => {
     this.handleClose(this.onCancel)
   }
@@ -68,6 +81,12 @@ class EditDomain {
   registerFirstFocus = (node) => {
     if (this.firstFocusable === undefined) {
       this.firstFocusable = node
+    }
+  }
+
+  registerListItem = (node) => {
+    if (this.listItem === undefined) {
+      this.listItem = node
     }
   }
 

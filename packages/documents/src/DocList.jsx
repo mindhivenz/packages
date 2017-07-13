@@ -16,6 +16,7 @@ const DocList = ({
   noNewDocuments,
   documents = [],
   selected,
+  scrollNew,
   docProps,
   DocEdit,
   editProps,
@@ -46,12 +47,13 @@ const DocList = ({
         />
   })
   if (! noNewDocuments && selected.isNew) {
-    docComponents.splice(selected.atIndex, 0,
+    docComponents.splice(selected.scrollNew, 0,
       <DocEdit
         {...docProps}
         {...editProps}
         selected={selected}
-        key={`new-${selected.atIndex}`}
+        scrollNew={scrollNew}
+        key={`new-${selected.scrollNew}`}
       />
     )
   }

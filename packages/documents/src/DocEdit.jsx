@@ -49,6 +49,7 @@ const DocEdit = ({
       disableTouchRipple
       disableFocusRipple
 
+      ref={editDomain.registerListItem}
       style={Object.assign({}, styles.container, containerStyle, editDomain.show ? styles.shown : styles.hidden)}
       id={`${docType}-list-item-${id || 'new'}-selector`}
       leftIcon={showIcon ? <Icon ligature={docIcon} style={styles.icon} /> : null}
