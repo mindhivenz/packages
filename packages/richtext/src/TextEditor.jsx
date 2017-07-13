@@ -3,9 +3,10 @@ import { observer } from 'mobx-react'
 import compose from 'recompose/compose'
 
 import withStore from '@mindhive/mobx/withStore'
+import { withClassNames } from '@mindhive/styles'
 
 import { Editor } from 'draft-js'
-import { injectEditorStyles, injectEditorClasses  } from './components/EditorStyles'
+import { injectEditorClasses  } from './components/EditorStyles'
 
 
 import EditorDomain from './components/EditorDomain'
@@ -16,28 +17,22 @@ import EditorCommands from './components/EditorCommands'
 
 const TextEditor = ({
   labelText,
-  styles,
   classNames,
 
-  prepareStyles,
   errorText,
 
   editorDomain,
-
-  debug,
 }) =>
   <div className={classNames.container} onClick={editorDomain.focus}>
     <EditorLabel
-      focused={editorDomain.focused}
-      shrink={editorDomain.focused || editorDomain.hasText}
       errorText={errorText}
-      debug={debug}
+      className={classNames.editorLabel}
     >
       {labelText}
     </EditorLabel>
     <EditorCommands
       editorState={editorDomain.editorState}
-      focused={editorDomain.focused}
+      focused={editorDomain.isFocused}
       toggleStyle={editorDomain.toggleStyle}
       classes={classNames.commandsWrapper}
     />
@@ -50,7 +45,7 @@ const TextEditor = ({
         onFocus={editorDomain._handleOnFocus}
         onBlur={editorDomain._handleOnBlur}
       />
-      <EditorUnderline focus={editorDomain.focused} errorText={errorText} />
+      <EditorUnderline focus={editorDomain.isFocused} errorText={errorText} />
       <EditorError errorText={errorText} />
     </div>
 
@@ -63,7 +58,5 @@ export default compose(
     mapPropsToArgs: _props => _props,
     shouldRecreateStore: () => false,
   }),
-  injectEditorStyles,
   injectEditorClasses,
-  observer,
 )(TextEditor)

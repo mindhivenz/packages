@@ -15,7 +15,8 @@ class EditorDomain {
   initialInputValue = undefined
   initialEditorState = undefined
   @observable.ref _editorState
-  @observable focused = false
+  @observable _focused = false
+  @observable errorText = undefined
   labelText
 
   constructor({ value, labelText, onChange, onBlur, onFocus }) {
@@ -33,6 +34,11 @@ class EditorDomain {
   }
 
   @action
+  update({ errorText }) {
+    this.errorText = errorText
+  }
+
+  @action
   _setEditorState = (editorState) => {
     this._editorState = editorState
   }
@@ -45,6 +51,20 @@ class EditorDomain {
   @computed get hasText() {
     // console.log('hasText', this.editorState)
     return this.editorState.getCurrentContent().hasText()
+  }
+
+  @computed get isFocused() {
+    // console.log('hasText', this.editorState)
+    return this._focused
+  }
+
+  @computed get hasError() {
+    // console.log('hasText', this.editorState)
+    return this.errorText
+  }
+
+  @computed get shrinkLabel() {
+    return this.isFocused || this.hasText
   }
 
   handleEditorStateChange = (newEditorState) => {
@@ -78,7 +98,8 @@ class EditorDomain {
 
   @action
   _setFocus = (focused) => {
-    this.focused = focused
+    console.log('FOCUS', focused)
+    this._focused = focused
   }
 
   _handleOnBlur = () => {
