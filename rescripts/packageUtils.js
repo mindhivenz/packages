@@ -1,6 +1,8 @@
 const fs = require('fs')
 const path = require('path')
 const jsonfile = require('jsonfile')
+const { exit, cp, test } = require('shelljs')
+
 const {
   logError,
 } = require('./utils')
@@ -37,7 +39,7 @@ const packageData = (packagePath) => {
   const packageJsonData = exists ? jsonfile.readFileSync(packageJson) : {}
   return {
     exists,
-    path: packagePath,
+    dir: packagePath,
     json: {
       path: packageJson,
       data: packageJsonData,
@@ -46,12 +48,13 @@ const packageData = (packagePath) => {
 }
 
 const makePackageObj = (name) => {
-  const source = packageData(exports.getSourceDir(name))
+  const src = packageData(exports.getSourceDir(name))
   return {
     name,
-    version: source.version,
-    source,
-    dest: packageData(exports.getOutDir(name)),
+    npmName: `@mindhive/${name}`,
+    version: src.version,
+    src,
+    out: packageData(exports.getOutDir(name)),
   }
 }
 
@@ -59,5 +62,5 @@ exports.getPackageNames = () => packageNames(exports.PACKAGES_SRC_DIR)
 exports.getBuiltPackageNames = () => packageNames(exports.PACKAGES_OUT_DIR)
 
 
-exports.getPackages = DIR => packageNames(DIR).map(makePackageObj)
+exports.getSrcPackages = () => packageNames(exports.PACKAGES_SRC_DIR).map(makePackageObj)
 

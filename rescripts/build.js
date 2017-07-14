@@ -13,7 +13,7 @@ const {
   getPackageNames,
   getSourceDir,
   getOutDir,
-  getPackages,
+  getSrcPackages,
 } = require('./packageUtils')
 
 const {
@@ -30,11 +30,11 @@ const {
 
 // const BASE_PACKAGE_LOC = '../src/basePackage.json'
 
-const buildPackage = (packageName) => {
-  logTitle(`  Building ${packageName}...  `)
+const buildPackage = (packageData) => {
+  logTitle(`  Building ${packageData.npmName}...  `)
 
-  const sourceDir = getSourceDir(packageName)
-  const outDir = getOutDir(packageName)
+  const sourceDir = packageData.src.dir
+  const outDir = packageData.out.dir
 
   // const srcPackageJson = path.resolve(sourceDir, 'package.json')
   // const version = JSON.parse(fs.readFileSync(srcPackageJson, 'utf8').trim()).version
@@ -67,7 +67,7 @@ const buildPackage = (packageName) => {
   additionalProjectFiles.forEach((filename) => {
     const src = path.resolve(sourceDir, filename)
 
-    if (!test('-e', src)) return
+    if (! test('-e', src)) return
 
     cp('-Rf', src, outDir)
   })
@@ -87,8 +87,9 @@ const buildPackage = (packageName) => {
 }
 
 try {
-  const packageNames = getPackageNames()
-  packageNames.forEach(buildPackage)
+  // const packageNames = getPackageNames()
+  // packageNames.forEach(buildPackage)
+  getSrcPackages().forEach(buildPackage)
   // const packageName = `${process.argv[2]}`
   // if (packageName) {
   //   buildPackage(packageName)
