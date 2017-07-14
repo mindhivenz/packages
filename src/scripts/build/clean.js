@@ -1,7 +1,7 @@
-const { rm } = require('shelljs')
-const { log } = require('./utils')
+import { rm } from 'shelljs'
+import { log } from './utils'
 
-exports.default = (mhPackage) => {
+export default (mhPackage) => {
   if (mhPackage.out.exists) {
     log('Deleting compiled package...')
     rm('-rf', mhPackage.out.dir)

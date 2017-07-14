@@ -1,8 +1,8 @@
-const { log } = require('./utils')
-const path = require('path')
-const { cp, test } = require('shelljs')
+import path from 'path'
+import { cp, test } from 'shelljs'
+import { log } from './utils'
 
-exports.default = (packageData) => {
+export default (packageData) => {
   const sourceDir = packageData.src.dir
   const outDir = packageData.out.dir
 

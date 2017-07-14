@@ -1,20 +1,17 @@
-const fs = require('fs')
-const path = require('path')
-const jsonfile = require('jsonfile')
+import fs from 'fs'
+import path from 'path'
+import jsonfile from 'jsonfile'
 
-const {
+import {
   logError,
   fileExists,
   isDirectory,
-} = require('./utils')
+} from './utils'
 
-const {
+import {
   config,
   CONFIG_PATH,
-} = require('./config')
-
-exports.PACKAGES_SRC_DIR = config.sourcePath
-exports.PACKAGES_OUT_DIR = config.outPath
+} from './config'
 
 const ignorePackages = config.ignore
 
@@ -32,8 +29,8 @@ const makePackageNames = (DIR) => {
   return packageNames
 }
 
-exports.getSourceDir = packageName => path.resolve(config.sourcePath, packageName)
-exports.getOutDir = packageName => path.resolve(config.outPath, packageName)
+export const getSourceDir = packageName => path.resolve(config.sourcePath, packageName)
+export const getOutDir = packageName => path.resolve(config.outPath, packageName)
 
 const packageJsonFileName = 'package.json'
 
@@ -52,19 +49,19 @@ const packageData = (packagePath) => {
 }
 
 const makePackageObj = (name) => {
-  const src = packageData(exports.getSourceDir(name))
+  const src = packageData(getSourceDir(name))
   return {
     name,
     npmName: `@mindhive/${name}`,
     version: src.version,
     src,
-    out: packageData(exports.getOutDir(name)),
+    out: packageData(getOutDir(name)),
   }
 }
 
-exports.getPackageNames = () => makePackageNames(config.sourcePath)
-exports.getBuiltPackageNames = () => makePackageNames(config.outPath)
+export const getPackageNames = () => makePackageNames(config.sourcePath)
+export const getBuiltPackageNames = () => makePackageNames(config.outPath)
 
 
-exports.getSrcPackages = () => exports.getPackageNames().map(makePackageObj)
+export default () => getPackageNames().map(makePackageObj)
 

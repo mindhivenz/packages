@@ -1,11 +1,11 @@
-const glob = require('glob')
-const path = require('path')
-const { exit } = require('shelljs')
+import glob from 'glob'
+import path from 'path'
+import { exit } from 'shelljs'
 
-const { NODE_BIN } = require('./config')
-const { log, logError, exec, execLoud } = require('./utils')
+import { NODE_BIN } from './config'
+import { log, logError, exec, execLoud } from './utils'
 
-exports.default = (packageData) => {
+export default (packageData) => {
   const sourceDir = packageData.src.dir
   const outDir = packageData.out.dir
 

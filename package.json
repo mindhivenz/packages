@@ -1,22 +1,22 @@
 {
   "scripts": {
     "preclean-all": "yarn run clean-build",
-    "clean-all": "rm -rf ./node_modules && rm -rf ./packages/*/node_modules",
-    "xclean-build": "rm -rf ./packages/*/build",
+    "clean-all": "rm -rf ./node_modules && rm -rf ./src/packages/*/node_modules",
     "clean-build": "rm -rf ./packages/*",
     "bootstrap": "yarn run clean-all && yarn",
-    "build": "lerna run build",
-    "rebuild": "node rescripts/build.js",
-    "repub": "node rescripts/pub.js",
-    "new": "node ./scripts/new-package.js",
+    "build": "node scripts/build.js",
+    "pub": "node scripts/pub.js",
+    "build-scripts": "babel src/scripts  --out-dir scripts",
+    "new": "node scripts/new-package.js",
     "test": "lerna run test",
-    "xprepub": "yarn run build --silent",
-    "pub": "lerna publish --access public --silent",
-    "postinstall": "node rescripts/installNestedPackageDeps.js",
+    "prepub": "yarn run build --silent",
+    "postinstall": "node scripts/installNestedPackageDeps.js",
+
+    "xpub": "lerna publish --access public --silent",
     "xpostinstall": "lerna bootstrap && yarn run build --silent",
-    "upgrade-packages": "lerna run upgrade"
+    "xupgrade-packages": "lerna run upgrade"
   },
-  "devDependencies": {
+  "dependencies": {
     "@mindhive/components": "^4.5.35",
     "@mindhive/di": "^4.3.1",
     "@mindhive/mobx": "^2.1.2",
@@ -91,9 +91,7 @@
     "sinon": "^1.17.1",
     "string-length": "^1.0.1",
     "webpack": "^2.4.1",
-    "xstream": "^5.0.5"
-  },
-  "dependencies": {
+    "xstream": "^5.0.5",
     "jsonfile": "^3.0.1",
     "prompt": "^1.0.0"
   }
