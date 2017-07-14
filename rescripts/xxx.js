@@ -2,8 +2,9 @@
 /* eslint-disable import/no-dynamic-require, no-console */
 const fs = require('fs')
 const path = require('path')
-const { exit } = require('shelljs')
+const { exit, cp, test } = require('shelljs')
 const readline = require('readline-sync')
+const prompt = require('prompt')
 const semver = require('semver')
 
 const {
@@ -18,8 +19,8 @@ const {
   logError,
   logTitle,
 
-  // exec,
-  // execLoud,
+  exec,
+  execLoud,
 
   writeFile,
 } = require('./utils')
@@ -32,44 +33,42 @@ const publishPackage = (packageName) => {
   const outDir = path.resolve(PACKAGES_OUT_DIR, packageName)
 
   const SRC_VERSION_LOC = path.resolve(sourceDir, 'VERSION')
+  const srcPackageJson = path.resolve(sourceDir, 'package.json')
   const PACKAGE_JSON_LOC = path.resolve(outDir, 'package.json')
 
   const version = fs.readFileSync(SRC_VERSION_LOC, 'utf8').trim()
+  const releases = ['patch', 'minor', 'major', 'prepatch', 'preminor', 'premajor', 'prerelease']
+  const incVersion = release => semver.inc(version, release)
+  const releaseLabels = releases.map(release => `${release} = ${incVersion(release)}`)
 
-  let nextVersion = readline.question(
-    `Next version of ${packageName} (current version is ${version}): `, {
-      defaultInput: version,
-    }
-  )
-
-  while (! (! nextVersion || (semver.valid(nextVersion) && semver.gt(nextVersion, version)))) {
-    nextVersion = readline.question(
-      `Must provide a valid version that is greater than ${version}, ` +
-      'or leave blank to skip: ', {
-        defaultInput: version,
-      }
-    )
+  log(`Update version of ${packageName} (current version is ${version}): `)
+  const index = readline.keyInSelect(releaseLabels, 'Choose release [0..$<itemsCount>]: ', {
+    cancel: 'Exit release',
+    guide: false})
+  log(index)
+  if (index === -1) {
+    logError('Publish canceled!')
+    exit(0)
   }
+  const selectedRelease = releases[index]
+  const nextVersion = incVersion(selectedRelease)
 
-  if (! nextVersion) nextVersion = version
+
   log(`About to publish ${packageName}@${nextVersion} to npm.`)
   if (! readline.keyInYN('Sound good? ')) {
     log('OK. Stopping release.')
     exit(0)
   }
 
-  log('Updating package.json...')
-  const packageConfig = Object.assign(
-    {},
-    require(PACKAGE_JSON_LOC),
-    { version: nextVersion }
-  )
-  log('Updating package.json...', packageConfig)
+  if (exec(`cd ${sourceDir} && npm  --no-git-tag-version version ${selectedRelease}`) !== 0) {
+    logError('Version failed. Aborting release.')
+    exit(1)
+  }
 
-  writeFile(
-    PACKAGE_JSON_LOC,
-    JSON.stringify(packageConfig, null, 2)
-  )
+  log('Updating package.json...')
+  if (test('-e', srcPackageJson)) {
+    cp('-Rf', srcPackageJson, outDir)
+  }
 
   log('Publishing...')
   // if (exec(`cd ${outDir} && npm publish`).code !== 0) {
