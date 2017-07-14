@@ -6,6 +6,7 @@
       <sourceFolder url="file://$MODULE_DIR$/packages/documents/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/packages/styles/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/packages/richtext/src" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/lib" />
       <excludeFolder url="file://$MODULE_DIR$/packages/documents/build" />
       <excludeFolder url="file://$MODULE_DIR$/packages/richtext/build" />
       <excludeFolder url="file://$MODULE_DIR$/packages/styles/build" />
