@@ -4,7 +4,6 @@ const fs = require('fs')
 const path = require('path')
 const { exit, cp, test } = require('shelljs')
 const readline = require('readline-sync')
-const prompt = require('prompt')
 const semver = require('semver')
 
 const {
@@ -32,11 +31,9 @@ const publishPackage = (packageName) => {
   const sourceDir = path.resolve(PACKAGES_SRC_DIR, packageName)
   const outDir = path.resolve(PACKAGES_OUT_DIR, packageName)
 
-  const SRC_VERSION_LOC = path.resolve(sourceDir, 'VERSION')
   const srcPackageJson = path.resolve(sourceDir, 'package.json')
-  const PACKAGE_JSON_LOC = path.resolve(outDir, 'package.json')
 
-  const version = fs.readFileSync(SRC_VERSION_LOC, 'utf8').trim()
+  const version = JSON.parse(fs.readFileSync(srcPackageJson, 'utf8').trim()).version
   const releases = ['patch', 'minor', 'major', 'prepatch', 'preminor', 'premajor', 'prerelease']
   const incVersion = release => semver.inc(version, release)
   const releaseLabels = releases.map(release => `${release} = ${incVersion(release)}`)
@@ -44,8 +41,8 @@ const publishPackage = (packageName) => {
   log(`Update version of ${packageName} (current version is ${version}): `)
   const index = readline.keyInSelect(releaseLabels, 'Choose release [0..$<itemsCount>]: ', {
     cancel: 'Exit release',
-    guide: false})
-  log(index)
+    guide: false,
+  })
   if (index === -1) {
     logError('Publish canceled!')
     exit(0)
@@ -53,9 +50,7 @@ const publishPackage = (packageName) => {
   const selectedRelease = releases[index]
   const nextVersion = incVersion(selectedRelease)
 
-
-  log(`About to publish ${packageName}@${nextVersion} to npm.`)
-  if (! readline.keyInYN('Sound good? ')) {
+  if (! readline.keyInYN(`About to publish ${packageName}@${nextVersion} to npm. Sound good? `)) {
     log('OK. Stopping release.')
     exit(0)
   }
@@ -71,15 +66,12 @@ const publishPackage = (packageName) => {
   }
 
   log('Publishing...')
-  // if (exec(`cd ${outDir} && npm publish`).code !== 0) {
+  // if (exec(`cd ${outDir} && npm publish`) !== 0) {
   //   logError('Publish failed. Aborting release.')
   //   exit(1)
   // }
 
   logSuccess(`${packageName}@${nextVersion} was successfully published.`)
-
-  log('Updating VERSION file...')
-  writeFile(SRC_VERSION_LOC, `${nextVersion}\n`)
 
   log('Committing changes...')
   // const newTagName = `v${nextVersion}`

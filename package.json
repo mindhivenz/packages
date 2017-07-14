@@ -6,7 +6,7 @@
     "bootstrap": "yarn run clean-all && yarn",
     "build": "lerna run build",
     "rebuild": "node rescripts/build.js",
-    "xxx": "node rescripts/xxx.js",
+    "repub": "node rescripts/pub.js",
     "new": "node ./scripts/new-package.js",
     "test": "lerna run test",
     "prepub": "yarn run build --silent",
