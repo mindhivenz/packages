@@ -28,42 +28,17 @@ const {
   writeFile,
 } = require('./utils')
 
-const BASE_PACKAGE_LOC = '../src/basePackage.json'
+// const BASE_PACKAGE_LOC = '../src/basePackage.json'
 
 const buildPackage = (packageName) => {
   logTitle(`  Building ${packageName}...  `)
 
-  const versionLoc = path.resolve(PACKAGES_SRC_DIR, packageName, 'VERSION')
-  const version = fs.readFileSync(versionLoc, 'utf8').trim()
-  const nextVersion = version
-
-  // let nextVersion = readline.question(
-  //   `Next version of ${packageName} (current version is ${version}): `
-  // )
-  //
-  // while (
-  //   !(
-  //     !nextVersion ||
-  //     (semver.valid(nextVersion) && semver.gt(nextVersion, version))
-  //   )
-  //   ) {
-  //   nextVersion = readline.question(
-  //     `Must provide a valid version that is greater than ${version}, ` +
-  //     'or leave blank to skip: '
-  //   )
-  // }
-
-  // log('Running tests...')
-  //
-  // if (exec('yarn run lint && yarn test').code !== 0) {
-  //   logError('The test command did not exit cleanly. Aborting release.')
-  //   exit(1)
-  // }
-  //
-  // logSuccess('Tests were successful.')
-
   const sourceDir = path.resolve(PACKAGES_SRC_DIR, packageName)
   const outDir = path.resolve(PACKAGES_OUT_DIR, packageName)
+
+  // const srcPackageJson = path.resolve(sourceDir, 'package.json')
+  // const version = JSON.parse(fs.readFileSync(srcPackageJson, 'utf8').trim()).version
+
 
   log('Cleaning destination directory...')
   rm('-rf', outDir)
@@ -97,19 +72,18 @@ const buildPackage = (packageName) => {
     cp('-Rf', src, outDir)
   })
 
-  log('Generating package.json...')
-  const packageConfig = Object.assign(
-    { name: packageName, version: nextVersion },
-    require(BASE_PACKAGE_LOC),
-    require(path.resolve(sourceDir, 'package.json'))
-  )
-
-  writeFile(
-    path.resolve(outDir, 'package.json'),
-    JSON.stringify(packageConfig, null, 2)
-  )
-
-  logSuccess(`  ${packageName} built successfully  `)
+//   log('Generating package.json...')
+//   const packageConfig = Object.assign(
+//     require(BASE_PACKAGE_LOC),
+//     require(path.resolve(sourceDir, 'package.json'))
+//   )
+//
+//   writeFile(
+//     path.resolve(outDir, 'package.json'),
+//     JSON.stringify(packageConfig, null, 2)
+//   )
+//
+//   logSuccess(`  ${packageName} built successfully  `)
 }
 
 try {

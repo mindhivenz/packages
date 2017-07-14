@@ -55,25 +55,30 @@ const publishPackage = (packageName) => {
     exit(0)
   }
 
-  if (exec(`cd ${sourceDir} && npm  --no-git-tag-version version ${selectedRelease}`) !== 0) {
-    logError('Version failed. Aborting release.')
-    exit(1)
-  }
+  // if (exec(`cd ${sourceDir} && npm  --no-git-tag-version version ${selectedRelease}`) !== 0) {
+  //   logError('Version failed. Aborting release.')
+  //   exit(1)
+  // }
 
   log('Updating package.json...')
   if (test('-e', srcPackageJson)) {
     cp('-Rf', srcPackageJson, outDir)
   }
 
-  log('Publishing...')
-  // if (exec(`cd ${outDir} && npm publish`) !== 0) {
+  // log('Publishing...')
+  // const npmPublish = (addUser = false) => {
+  //   const cmd = addUser ? execLoud : exec
+  //   cmd(`cd ${outDir} && pwd && npm publish --access public`)
+  // }
+  // if (npmPublish() !== 0) {
+  //   npmPublish(true)
   //   logError('Publish failed. Aborting release.')
   //   exit(1)
   // }
 
-  logSuccess(`${packageName}@${nextVersion} was successfully published.`)
+  // logSuccess(`${packageName}@${nextVersion} was successfully published.`)
 
-  log('Committing changes...')
+  // log('Committing changes...')
   // const newTagName = `v${nextVersion}`
   // exec(`git commit -m "${packageName} ${newTagName}"`)
 
@@ -82,7 +87,7 @@ const publishPackage = (packageName) => {
   //   exec(`git tag ${newTagName}`)
   // }
 
-  log('Pushing to GitHub...')
+  // log('Pushing to GitHub...')
   // exec('git push')
   // exec('git push --tags')
 
