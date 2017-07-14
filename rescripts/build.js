@@ -30,20 +30,18 @@ const {
 
 // const BASE_PACKAGE_LOC = '../src/basePackage.json'
 
-const buildPackage = (packageData) => {
-  logTitle(`  Building ${packageData.npmName}...  `)
+const cleanDestination = (mhPackage) => {
+  if (mhPackage.out.exists) {
+    log('Deleting compiled package...')
+    rm('-rf', mhPackage.out.dir)
+  }
+}
 
+const compileSources = (packageData) => {
   const sourceDir = packageData.src.dir
   const outDir = packageData.out.dir
 
-  // const srcPackageJson = path.resolve(sourceDir, 'package.json')
-  // const version = JSON.parse(fs.readFileSync(srcPackageJson, 'utf8').trim()).version
-
-
-  log('Cleaning destination directory...')
-  rm('-rf', outDir)
-
-  log('Compiling source files...')
+  log('Compiling package...')
 
   const sourceFiles = glob
     .sync(`${sourceDir}/**/*+(js|jsx)`, {
@@ -60,9 +58,13 @@ const buildPackage = (packageData) => {
     logError('...failed')
     exit(execLoud(bCommand))
   }
+}
 
+const copyAdditionalFiles = (packageData) => {
+  const sourceDir = packageData.src.dir
+  const outDir = packageData.out.dir
 
-  log('Copying additional project files...')
+  log('Copying additional package files...')
   const additionalProjectFiles = ['README.md', '.npmignore', 'package.json']
   additionalProjectFiles.forEach((filename) => {
     const src = path.resolve(sourceDir, filename)
@@ -71,6 +73,20 @@ const buildPackage = (packageData) => {
 
     cp('-Rf', src, outDir)
   })
+}
+
+const buildPackage = (mhPackage) => {
+  logTitle(`  Building ${mhPackage.npmName}...  `)
+
+  // const srcPackageJson = path.resolve(sourceDir, 'package.json')
+  // const version = JSON.parse(fs.readFileSync(srcPackageJson, 'utf8').trim()).version
+
+  cleanDestination(mhPackage)
+
+  compileSources(mhPackage)
+
+  copyAdditionalFiles(mhPackage)
+
 
 //   log('Generating package.json...')
 //   const packageConfig = Object.assign(
