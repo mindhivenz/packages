@@ -9,6 +9,7 @@
 
     "build": "lerna run build",
     "rebuild": "node rescripts/build.js",
+    "xxx": "node rescripts/xxx.js",
 
     "new": "node ./scripts/new-package.js",
     "test": "lerna run test",

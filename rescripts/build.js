@@ -2,8 +2,7 @@
 /* eslint-disable import/no-dynamic-require, no-console */
 const fs = require('fs')
 const path = require('path')
-const { exec: execJs, exit, rm, cp, test } = require('shelljs')
-const chalk = require('chalk')
+const { exit, rm, cp, test } = require('shelljs')
 const { flowRight: compose } = require('lodash')
 const readline = require('readline-sync')
 const semver = require('semver')
@@ -17,20 +16,19 @@ const {
   getPackageNames,
 } = require('./getPackageNames')
 
+const {
+  log,
+  logSuccess,
+  logError,
+  logTitle,
+
+  exec,
+  execLoud,
+
+  writeFile,
+} = require('./utils')
+
 const BASE_PACKAGE_LOC = '../src/basePackage.json'
-
-const consoleLog = console.log.bind(console)
-const log = compose(consoleLog, chalk.white)
-const logSuccess = compose(consoleLog, chalk.reset.inverse.bold.white)
-const logError = compose(consoleLog, chalk.red.bold)
-const logTitle = compose(consoleLog, chalk.reset.bold.white.bgMagenta)
-
-
-const exec = (command) => execJs(command, { silent: true }).code
-const execLoud = command => execJs(command).code
-
-const writeFile = (filepath, string) =>
-  fs.writeFileSync(filepath, string, 'utf8')
 
 const buildPackage = (packageName) => {
   logTitle(`  Building ${packageName}...  `)
