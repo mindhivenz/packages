@@ -5,6 +5,9 @@
     "richtext",
     "styles"
   ],
+  "sourcePath": "./src/packages",
+  "outPath": "./packages",
+
   "registry": "https://registry.npmjs.org/",
   "version": "independent",
   "npmClient": "yarn"

@@ -12,7 +12,7 @@ const copyAdditionalFiles = require('./build/copyAdditionalFiles').default
 
 const {
   getSrcPackages,
-} = require('./packageUtils')
+} = require('./build/packageData')
 
 const {
   log,
@@ -21,11 +21,11 @@ const {
   logError,
   logTitle,
   logPackage,
-} = require('./utils')
+} = require('./build/utils')
 
 const buildPackage = (mhPackage) => {
   logBr()
-  logPackage(`        ${mhPackage.npmName}        `)
+  logPackage(mhPackage.npmName)
 
   cleanDestination(mhPackage)
   compileSources(mhPackage)

@@ -10,7 +10,7 @@ const {
   PACKAGES_SRC_DIR,
   PACKAGES_OUT_DIR,
   getBuiltPackageNames,
-} = require('./packageUtils')
+} = require('./build/packageData')
 
 const {
   log,
@@ -22,7 +22,7 @@ const {
   execLoud,
 
   writeFile,
-} = require('./utils')
+} = require('./build/utils')
 
 const publishPackage = (packageName) => {
 
