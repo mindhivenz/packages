@@ -2,7 +2,7 @@
 /* eslint-disable import/no-dynamic-require, no-console */
 const fs = require('fs')
 const path = require('path')
-const { exec, exit, rm, cp, test } = require('shelljs')
+const { exec: execJs, exit, rm, cp, test } = require('shelljs')
 const chalk = require('chalk')
 const { flowRight: compose } = require('lodash')
 const readline = require('readline-sync')
@@ -23,6 +23,9 @@ const consoleLog = console.log.bind(console)
 const log = compose(consoleLog, chalk.white.bold)
 const logSuccess = compose(consoleLog, chalk.green.bold)
 const logError = compose(consoleLog, chalk.red.bold)
+
+const exec = (command) => execJs(command, { silent: true }).code
+const execLoud = command => execJs(command).code
 
 const writeFile = (filepath, string) =>
   fs.writeFileSync(filepath, string, 'utf8')
@@ -67,22 +70,21 @@ const buildPackage = (packageName) => {
   log('Compiling source files...')
 
   const sourceFiles = glob
-    .sync(`${sourceDir}/**/*+(js|jsx)`, {
-      ignore: `${sourceDir}/node_modules/**/*.js`,
-    })
+    .sync(`${sourceDir}/**/*+(js|jsx)`)
     .map(to => path.relative(sourceDir, to))
 
-  exec(
-    `cd ${sourceDir} && ` +
+  const bCommand = `cd ${sourceDir} && ` +
     'cross-env BABEL_ENV=cjs ' +
     `${path.resolve(BIN)}/babel ${sourceFiles.join(' ')} ` +
-    `--out-dir ${path.resolve(outDir)}`,
-    { silent: true }
-  )
-
+    `--out-dir ${path.resolve(outDir)}`
+  const bCode = exec(bCommand)
+  if (bCode !== 0) {
+    logError('...failed')
+    exit(execLoud(bCommand))
+  }
   log('Copying additional project files...')
   const additionalProjectFiles = ['README.md', '.npmignore']
-  additionalProjectFiles.forEach(filename => {
+  additionalProjectFiles.forEach((filename) => {
     const src = path.resolve(sourceDir, filename)
 
     if (!test('-e', src)) return
