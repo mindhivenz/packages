@@ -76,7 +76,8 @@ const buildPackage = (packageName) => {
     `cd ${sourceDir} && ` +
     'cross-env BABEL_ENV=cjs ' +
     `${path.resolve(BIN)}/babel ${sourceFiles.join(' ')} ` +
-    `--out-dir ${path.resolve(outDir)}`
+    `--out-dir ${path.resolve(outDir)}`,
+    { silent: true }
   )
 
   log('Copying additional project files...')
