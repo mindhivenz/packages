@@ -10,7 +10,7 @@ const {
   PACKAGES_SRC_DIR,
   PACKAGES_OUT_DIR,
   getBuiltPackageNames,
-} = require('./getPackageNames')
+} = require('./packageUtils')
 
 const {
   log,

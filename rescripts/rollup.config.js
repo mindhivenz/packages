@@ -5,7 +5,7 @@ const replace = require('rollup-plugin-replace')
 const commonjs = require('rollup-plugin-commonjs')
 const uglify = require('rollup-plugin-uglify')
 const { pascalCase } = require('change-case')
-const { PACKAGES_SRC_DIR, PACKAGES_OUT_DIR } = require('./getPackageNames')
+const { PACKAGES_SRC_DIR, PACKAGES_OUT_DIR } = require('./packageUtils')
 
 const build = process.env.BUILD
 const packageName = process.env.PACKAGE_NAME

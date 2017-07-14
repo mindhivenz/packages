@@ -1,0 +1,11 @@
+{
+  "mindhive-packages": "0.0.1",
+  "ignore": [
+    "documents",
+    "richtext",
+    "styles"
+  ],
+  "registry": "https://registry.npmjs.org/",
+  "version": "independent",
+  "npmClient": "yarn"
+}

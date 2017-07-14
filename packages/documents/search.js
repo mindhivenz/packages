@@ -1,1 +1,3 @@
-module.exports = require('./build/search/index')
+'use strict';
+
+module.exports = require('./build/search/index');

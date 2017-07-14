@@ -2,14 +2,15 @@
   "scripts": {
     "preclean-all": "yarn run clean-build",
     "clean-all": "rm -rf ./node_modules && rm -rf ./packages/*/node_modules",
-    "clean-build": "rm -rf ./packages/*/build",
+    "xclean-build": "rm -rf ./packages/*/build",
+    "clean-build": "rm -rf ./packages/*",
     "bootstrap": "yarn run clean-all && yarn",
     "build": "lerna run build",
     "rebuild": "node rescripts/build.js",
     "repub": "node rescripts/pub.js",
     "new": "node ./scripts/new-package.js",
     "test": "lerna run test",
-    "prepub": "yarn run build --silent",
+    "xprepub": "yarn run build --silent",
     "pub": "lerna publish --access public --silent",
     "postinstall": "node rescripts/installNestedPackageDeps.js",
     "xpostinstall": "lerna bootstrap && yarn run build --silent",
@@ -93,6 +94,7 @@
     "xstream": "^5.0.5"
   },
   "dependencies": {
+    "jsonfile": "^3.0.1",
     "prompt": "^1.0.0"
   }
 }

@@ -15,6 +15,7 @@ exports.logTitle = compose(consoleLog, chalk.reset.bold.white.bgMagenta)
 exports.exec = command => execJs(command, { silent: true }).code
 exports.execLoud = command => execJs(command).code
 
+
 exports.writeFile = (filepath, string) =>
   fs.writeFileSync(filepath, string, 'utf8')
 
