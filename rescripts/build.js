@@ -20,9 +20,11 @@ const {
 const BASE_PACKAGE_LOC = '../src/basePackage.json'
 
 const consoleLog = console.log.bind(console)
-const log = compose(consoleLog, chalk.white.bold)
-const logSuccess = compose(consoleLog, chalk.green.bold)
+const log = compose(consoleLog, chalk.white)
+const logSuccess = compose(consoleLog, chalk.reset.inverse.bold.white)
 const logError = compose(consoleLog, chalk.red.bold)
+const logTitle = compose(consoleLog, chalk.reset.bold.white.bgMagenta)
+
 
 const exec = (command) => execJs(command, { silent: true }).code
 const execLoud = command => execJs(command).code
@@ -31,26 +33,27 @@ const writeFile = (filepath, string) =>
   fs.writeFileSync(filepath, string, 'utf8')
 
 const buildPackage = (packageName) => {
-  log(`Building ${packageName}...`)
+  logTitle(`  Building ${packageName}...  `)
 
   const versionLoc = path.resolve(PACKAGES_SRC_DIR, packageName, 'VERSION')
   const version = fs.readFileSync(versionLoc, 'utf8').trim()
+  const nextVersion = version
 
-  let nextVersion = readline.question(
-    `Next version of ${packageName} (current version is ${version}): `
-  )
-
-  while (
-    !(
-      !nextVersion ||
-      (semver.valid(nextVersion) && semver.gt(nextVersion, version))
-    )
-    ) {
-    nextVersion = readline.question(
-      `Must provide a valid version that is greater than ${version}, ` +
-      'or leave blank to skip: '
-    )
-  }
+  // let nextVersion = readline.question(
+  //   `Next version of ${packageName} (current version is ${version}): `
+  // )
+  //
+  // while (
+  //   !(
+  //     !nextVersion ||
+  //     (semver.valid(nextVersion) && semver.gt(nextVersion, version))
+  //   )
+  //   ) {
+  //   nextVersion = readline.question(
+  //     `Must provide a valid version that is greater than ${version}, ` +
+  //     'or leave blank to skip: '
+  //   )
+  // }
 
   // log('Running tests...')
   //
@@ -70,7 +73,9 @@ const buildPackage = (packageName) => {
   log('Compiling source files...')
 
   const sourceFiles = glob
-    .sync(`${sourceDir}/**/*+(js|jsx)`)
+    .sync(`${sourceDir}/**/*+(js|jsx)`, {
+      ignore: `${sourceDir}/node_modules/**/*.js`,
+    })
     .map(to => path.relative(sourceDir, to))
 
   const bCommand = `cd ${sourceDir} && ` +
@@ -82,6 +87,8 @@ const buildPackage = (packageName) => {
     logError('...failed')
     exit(execLoud(bCommand))
   }
+
+
   log('Copying additional project files...')
   const additionalProjectFiles = ['README.md', '.npmignore']
   additionalProjectFiles.forEach((filename) => {
@@ -104,13 +111,7 @@ const buildPackage = (packageName) => {
     JSON.stringify(packageConfig, null, 2)
   )
 
-  // const runRollup = build =>
-  // 'cross-env BABEL_ENV=rollup rollup --config rescripts/rollup.config.js ' +
-  // `--environment BUILD:${build},PACKAGE_NAME:${packageName}`
-  // if (exec(`babel ${sourceDir} --out-dir ${outDir}`).code !== 0) {
-  //   exit(1)
-  // }
-  logSuccess(`Finished: ${packageName}`)
+  logSuccess(`  ${packageName} built successfully  `)
 }
 
 try {
