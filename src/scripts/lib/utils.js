@@ -9,6 +9,7 @@ export const log = compose(consoleLog, chalk.white)
 export const logBr = () => log(' ')
 export const logSuccess = compose(consoleLog, chalk.green.bold)
 export const logError = compose(consoleLog, chalk.red.bold)
+export const logWarn = compose(consoleLog, chalk.yellow.bold)
 export const logPackage = compose(consoleLog, chalk.reset.bold.magenta)
 export const logTitle = compose(consoleLog, chalk.reset.bold.bgBlue.white)
 

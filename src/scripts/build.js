@@ -1,8 +1,8 @@
-import cleanDestination from './build/clean'
-import compileSources from './build/compileSources'
-import copyAdditionalFiles from './build/copyAdditionalFiles'
+import cleanDestination from './lib/clean'
+import compileSources from './lib/compileSources'
+import copyAdditionalFiles from './lib/copyAdditionalFiles'
 
-import getSrcPackages from './build/packageUtils'
+import getSrcPackages from './lib/packageUtils'
 
 import {
   logBr,
@@ -10,7 +10,7 @@ import {
   logError,
   logTitle,
   logPackage,
-} from './build/utils'
+} from './lib/utils'
 
 const buildPackage = (mhPackage) => {
   logBr()

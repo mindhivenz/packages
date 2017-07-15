@@ -11,8 +11,8 @@ pids
 *.seed
 *.pid.lock
 
-packages/
-scripts/
+/packages
+/scripts
 
 # Dependency directories
 node_modules/
