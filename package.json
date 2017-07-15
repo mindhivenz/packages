@@ -1,9 +1,9 @@
 {
   "name": "mhp",
   "config" : {
-    "scripts_dest" : "compiled_scripts",
+    "scripts_dest" : "lib/scripts",
     "scripts_src" : "src/scripts",
-    "packages_out" : "packages"
+    "packages_out" : "lib/packages"
   },
   "scripts": {
     "mhp:build": "node $npm_package_config_scripts_dest/build.js",
@@ -22,6 +22,8 @@
     "prebuild:scripts": "rm -rf -- $npm_package_config_scripts_dest",
     "build:scripts": "babel src/scripts  --out-dir $npm_package_config_scripts_dest",
     "build": "yarn mhp:build",
+
+    "new": "yarn mhp:new",
 
     "pub": "yarn mhp:pub",
 
