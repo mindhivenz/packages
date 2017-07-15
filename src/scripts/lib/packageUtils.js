@@ -8,10 +8,7 @@ import {
   isDirectory,
 } from './utils'
 
-import {
-  config,
-  CONFIG_PATH,
-} from './config'
+import config, { CONFIG_PATH } from './config'
 
 const ignorePackages = config.ignore
 

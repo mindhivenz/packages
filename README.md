@@ -4,11 +4,17 @@ for our NPM packages using [Lerna](https://github.com/lerna/lerna) and with insp
 from [Bable](https://github.com/babel/babel/tree/master/packages) and 
 [Jest](https://github.com/facebook/jest/tree/master/packages)
 
-### Basics
-1.  Create a new package: `yarn new my-package`
-1.  To add/remove npm dependencies, `cd ./packages/my-package` then `yarn add ?` and `yarn delete ?` as per normal
-1.  `package.json` in `root` is for packages required for this project, ie `bable` etc...
-### Commands
+### Getting started
+1. First thing run `yarn bootstrap` to install npm dependencies, compile build scripts and build any packages
+
+#### Basics
+1.  `yarn new <package>` creates a new package
+1.  `yarn build` builds all packages not `ignored`
+1.  `yarn clean:build` deletes all compiled packages
+1.  `yarn clean:all` runs `clean:build` then deletes all `node_modules` for all packages and the project
+1.  `yarn pub` not implemented yet....
+ 
+#### Commands
 
 in root dir 
 
@@ -57,10 +63,11 @@ in root dir
 ### Structure
 ```text
 root
-  |-init            ....    template/defaults for new package    
-  |-packages        ....    our **compiled** npm packages
+  |-compiled_scripts    ....    DON'T EDIT, see src/scripts    
+  |-init                ....    template/defaults for new package    
+  |-packages            ....    our COMPILED npm packages
   |-src
-  |-- scripts       ....    scripts ES6 source
-  |-- packages      ....    packages ES6 source
+  |-- scripts           ....    scripts ES6 source
+  |-- packages          ....    packages ES6 source
 
 ```
