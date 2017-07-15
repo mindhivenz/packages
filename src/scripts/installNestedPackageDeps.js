@@ -8,6 +8,6 @@ import {
 import getSrcPackages from './lib/packageUtils'
 
 getSrcPackages().forEach((mhPackage) => {
-  log(`yarn install in ${mhPackage}`)
+  log(`yarn install in ${mhPackage.npmName}`)
   exec(`cd ${mhPackage.sourceDir} && yarn`, { async: true })
 })

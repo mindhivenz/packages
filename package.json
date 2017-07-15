@@ -1,20 +1,31 @@
 {
+  "name": "mhp",
+  "config" : {
+    "scripts_dest" : "compiled_scripts",
+    "scripts_src" : "src/scripts",
+    "packages_out" : "packages"
+  },
   "scripts": {
-    "preclean-all": "yarn run clean-build",
-    "clean-all": "rm -rf ./node_modules && rm -rf ./src/packages/*/node_modules",
-    "clean-build": "rm -rf ./packages/*",
-    "bootstrap": "yarn run clean-all && yarn",
-    "build": "node scripts/build.js",
-    "pub": "node scripts/pub.js",
-    "build-scripts": "babel src/scripts  --out-dir scripts",
-    "new": "node scripts/new-package.js",
-    "test": "lerna run test",
-    "prepub": "yarn run build --silent",
-    "postinstall": "node scripts/installNestedPackageDeps.js",
+    "mhp:build": "node $npm_package_config_scripts_dest/build.js",
+    "mhp:clean": "node $npm_package_config_scripts_dest/clean.js",
+    "mhp:pub": "node $npm_package_config_scripts_dest/pub.js",
+    "mhp:new": "node $npm_package_config_scripts_dest/new-package.js",
+    "mhp:nested-install": "node $npm_package_config_scripts_dest/installNestedPackageDeps.js",
 
-    "xpub": "lerna publish --access public --silent",
-    "xpostinstall": "lerna bootstrap && yarn run build --silent",
-    "xupgrade-packages": "lerna run upgrade"
+    "bootstrap": "yarn run clean:all && yarn",
+
+    "clean:build": "yarn mhp:clean",
+
+    "preclean:all": "yarn clean:build",
+    "clean:all": "rm -rf ./node_modules & rm -rf ./src/packages/*/node_modules",
+
+    "prebuild:scripts": "rm -rf -- $npm_package_config_scripts_dest",
+    "build:scripts": "babel src/scripts  --out-dir $npm_package_config_scripts_dest",
+    "build": "yarn mhp:build",
+
+    "pub": "yarn mhp:pub",
+
+    "postinstall": "yarn build:scripts && yarn mhp:nested-install"
   },
   "dependencies": {
     "@mindhive/components": "^4.5.35",

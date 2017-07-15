@@ -12,7 +12,7 @@ pids
 *.pid.lock
 
 /packages
-/scripts
+/compiled_scripts
 
 # Dependency directories
 node_modules/
