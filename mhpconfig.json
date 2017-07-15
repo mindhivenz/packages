@@ -11,7 +11,7 @@
     "package.json"
   ],
   "sourcePath": "./src/packages",
-  "defaultsPath": "./src/default",
+  "basePackage": "./src/basePackage",
   "outPath": "./lib/packages",
   "registry": "https://registry.npmjs.org/"
 }

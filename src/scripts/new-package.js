@@ -1,7 +1,6 @@
 import init from 'init-package-json'
 import path from 'path'
-import ncp from 'ncp'
-import exit from 'shelljs'
+import { exit, cp } from 'shelljs'
 
 import { packageExists, getAllPackageNames } from './lib/packageUtils'
 import config from './lib/config'
@@ -20,9 +19,8 @@ const newPackageName = `${process.argv[2]}`
 process.newPackageName = newPackageName
 
 const packagesDirectory = path.resolve(config.sourcePath)
-const initDirectory = path.resolve(config.defaultsPath)
-const initFile = path.resolve(initDirectory, 'npm-init-defaults.js')
-const defaultPackageDir = path.resolve(initDirectory, 'default-package')
+const initFile = path.resolve('src', 'npm-init-defaults.js')
+const basePackage = path.resolve(config.basePackage)
 const newPackageDir = path.resolve(packagesDirectory, newPackageName)
 
 try {
@@ -32,15 +30,19 @@ try {
   logTitle('                                        ')
   logBr()
 
-  if (packageExists(newPackageDir)) {
-    logWarn(`Package directory already exists: ${newPackageDir}`)
+  if (packageExists(newPackageName)) {
+    logWarn(`Package directory already exists: ${config.sourcePath}/${newPackageName}`)
     logWarn('Existing packages:')
-    getAllPackageNames.forEach(log)
+    getAllPackageNames().forEach((p) => {
+      p === newPackageName ? logError(p) : log(p)
+    })
+    logBr()
 
     exit(0)
   }
   logPackage(`@mindhive/${newPackageName}`)
-  ncp(defaultPackageDir, newPackageDir)
+
+  cp('-Rf', basePackage, newPackageDir)
   init(newPackageDir, initFile, { '__pn': newPackageName }, () => {})
   logSuccess('Done!')
 } catch (err) {

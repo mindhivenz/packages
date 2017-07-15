@@ -7,7 +7,7 @@ export default {
   ignore: configJson.ignore,
   additionalFiles: configJson.additionalFiles,
   sourcePath: configJson.sourcePath,
-  defaultsPath: configJson.defaultsPath,
+  basePackage: configJson.basePackage,
   outPath: configJson.outPath,
   registry: configJson.registry,
 }
