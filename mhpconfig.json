@@ -9,6 +9,4 @@
   "outPath": "./packages",
 
   "registry": "https://registry.npmjs.org/",
-  "version": "independent",
-  "npmClient": "yarn"
 }

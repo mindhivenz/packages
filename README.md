@@ -10,44 +10,57 @@ from [Bable](https://github.com/babel/babel/tree/master/packages) and
 1.  `package.json` in `root` is for packages required for this project, ie `bable` etc...
 ### Commands
 
-* **`yarn`** in root dir will install all dependencies and build packages
+in root dir 
+
+* **`yarn bootstrap`** will:
+
+    1. Clean any compiled code and npm packages
+    1. Install all project and sub package npm dependencies
+    1. Compile build scripts from ES6 source
+    1. Compile all packages
 
 * **`yarn new package-name`**:
-    1. Creates `./packages/package-name`
+    1. Creates `src/packages/package-name`
     1. Copies `./init/default-package` -> `./packages/package-name`
     1. Runs `npm init` in `./packages/package-name` pulling default values from `./init/npm-init.js`
 
-* **`yarn build`** builds `./packages/*/src` -> `./packages/*/build`
-    1. `lerna` runs the `build` script in each package
-    1. By default, **all** build scripts point to `./scripts/build.sh`
+* **`yarn build`** builds `src/packages/*` -> `./packages/*`
+    1. runs the `build.js` script 
+    1. Iterates over `packages` building each in turn
     1. No need to update **EVERY** package if we change our build :)
+    1. `mhpconfig,json` sets packages to `ignore`
 
 * **`yarn test`** runs the `test` script in each package
     1. By default, **all** test scripts point to `./scripts/test.sh`
     1. No need to update **EVERY** package if we change our build :)
     
-* **`yarn clean-build`** removes all `./packages/*/build`
+* **`yarn clean:build`** removes all `./packages/*`
 
-* **`yarn clean-all`** removes all `./node_modules` && `./packages/*/node_modules` and runs `build-clean`
+* **`yarn clean:all`** removes all `./node_modules` && `./src/packages/*/node_modules` and runs `clean:build`
 
-* **`yarn pub`** publishes all changed packages to NPM, asking for versioning along the way. I've found that to get the 
-    package published for the first time I need to `npm publish --access public` in the package directory as well as `npm add user`, `mindhive`, `password`, `email`...... Once it's there it works fine with `yarn pub` in the root.
-     
-     _Maybe we should sign up for an organisation?_
 
-* **`yarn build-js`** builds `./packages/*/src` -> `./packages/*/build`
-    1. runs `./scripts/build.js`
-    2. mainly here for `watch` below
-    
-* **`yarn watch`** watches `./packages/*/src/*` for changes and builds those individual files
+### mhpconfig.json
+```json
+{
+  "mindhive-packages": "0.0.1",
+  "ignore": [
+    "documents",
+    "richtext",
+    "styles"
+  ],
+  "sourcePath": "./src/packages",
+  "outPath": "./packages",
 
+  "registry": "https://registry.npmjs.org/",
+}
+```
 ### Structure
 ```text
 root
   |-init            ....    template/defaults for new package    
-  |-packages        ....    our npm packages
-  |   |-documents   ....    DocView, DocEdit etc
-  |    -styles      ....    JSS, withStyles etc
-  |-scripts         ....    helper scripts
+  |-packages        ....    our **compiled** npm packages
+  |-src
+  |-- scripts       ....    scripts ES6 source
+  |-- packages      ....    packages ES6 source
 
 ```
