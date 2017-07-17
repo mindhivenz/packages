@@ -2,16 +2,21 @@ import fs from 'fs'
 import { exec as execJs, test } from 'shelljs'
 import chalk from 'chalk'
 import { flowRight as compose } from 'lodash'
+import npmlog from 'npmlog'
 
-const consoleLog = console.log.bind(console)
+// const npmLogInfo = console.log.bind(console)
+const npmLogInfo = npmlog.info.bind(npmlog)
+const npmLogError = npmlog.error.bind(npmlog)
+const npmLogWarn = npmlog.warn.bind(npmlog)
+const npmLogSilly = npmlog.silly.bind(npmlog)
 
-export const log = compose(consoleLog, chalk.white)
+export const log = compose(npmLogInfo, chalk.white)
 export const logBr = () => log(' ')
-export const logSuccess = compose(consoleLog, chalk.green.bold)
-export const logError = compose(consoleLog, chalk.red.bold)
-export const logWarn = compose(consoleLog, chalk.yellow.bold)
-export const logPackage = compose(consoleLog, chalk.reset.bold.magenta)
-export const logTitle = compose(consoleLog, chalk.reset.bold.bgBlue.white)
+export const logSuccess = compose(npmLogInfo, chalk.green.bold)
+export const logError = compose(npmLogError, chalk.red.bold)
+export const logWarn = compose(npmLogWarn, chalk.yellow.bold)
+export const logPackage = compose(npmLogInfo, chalk.reset.bold.magenta)
+export const logTitle = compose(npmLogInfo, chalk.reset.bold.bgBlue.white)
 
 export const exec = command => execJs(command, { silent: true }).code
 export const execLoud = command => execJs(command).code

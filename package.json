@@ -1,9 +1,15 @@
 {
   "name": "mhp",
-  "config" : {
-    "scripts_dest" : "lib/scripts",
-    "scripts_src" : "src/scripts",
-    "packages_out" : "lib/packages"
+  "config": {
+    "scripts_dest": "lib/scripts",
+    "scripts_src": "src/scripts",
+    "packages_out": "lib/packages"
+  },
+  "watch": {
+    "build:scripts": {
+      "patterns": ["src/scripts", "test"],
+      "extensions": "js"
+    }
   },
   "scripts": {
     "mhp:build": "node $npm_package_config_scripts_dest/build.js",
@@ -11,23 +17,17 @@
     "mhp:pub": "node $npm_package_config_scripts_dest/pub.js",
     "mhp:new": "node $npm_package_config_scripts_dest/new-package.js",
     "mhp:nested-install": "node $npm_package_config_scripts_dest/installNestedPackageDeps.js",
-
     "bootstrap": "yarn run clean:all && yarn",
-
     "clean:build": "yarn mhp:clean",
-
     "preclean:all": "yarn clean:build",
     "clean:all": "rm -rf ./node_modules & rm -rf ./src/packages/*/node_modules",
-
     "prebuild:scripts": "rm -rf -- $npm_package_config_scripts_dest",
     "build:scripts": "babel src/scripts  --out-dir $npm_package_config_scripts_dest",
     "build": "yarn mhp:build",
-
     "new": "yarn mhp:new",
-
     "pub": "yarn mhp:pub",
-
-    "postinstall": "yarn build:scripts && yarn mhp:nested-install"
+    "postinstall": "yarn build:scripts && yarn mhp:nested-install",
+    "watch": "npm-watch"
   },
   "dependencies": {
     "@mindhive/components": "^4.5.35",
@@ -73,6 +73,7 @@
     "husky": "^0.13.3",
     "init-package-json": "^1.10.1",
     "jest": "^20.0.4",
+    "jsonfile": "^3.0.1",
     "kefir": "^3.2.3",
     "lerna": "^2.0.0-rc.5",
     "lint-staged": "^3.4.0",
@@ -83,7 +84,10 @@
     "mocha": "^3.4.2",
     "most": "^1.0.2",
     "ncp": "^2.0.0",
+    "npm-watch": "^0.2.0",
+    "npmlog": "^4.1.2",
     "prettier": "^1.5.2",
+    "prompt": "^1.0.0",
     "prop-types": "^15.5.0",
     "react": "15.4.2",
     "react-addons-test-utils": "^15.0.0",
@@ -104,8 +108,6 @@
     "sinon": "^1.17.1",
     "string-length": "^1.0.1",
     "webpack": "^2.4.1",
-    "xstream": "^5.0.5",
-    "jsonfile": "^3.0.1",
-    "prompt": "^1.0.0"
+    "xstream": "^5.0.5"
   }
 }

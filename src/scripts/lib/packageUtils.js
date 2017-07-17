@@ -4,6 +4,7 @@ import jsonfile from 'jsonfile'
 
 import {
   logError,
+  logWarn,
   fileExists,
   isDirectory,
 } from './utils'
@@ -18,8 +19,8 @@ let excludedPackageNames
 
 const makeSrcPackageNames = () => {
   if (! allPackageNames) {
-    logError(`Ignoring packages (from ${CONFIG_PATH})`)
-    ignorePackages.forEach(ignore => logError(` - ${ignore}`))
+    logWarn(`Ignoring packages (from ${CONFIG_PATH})`)
+    ignorePackages.forEach(ignore => logWarn(` - ${ignore}`))
     allPackageNames = fs
       .readdirSync(configObj.sourcePath)
       .filter(file => isDirectory(path.resolve(configObj.sourcePath, file)))
