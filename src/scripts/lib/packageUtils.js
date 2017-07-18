@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import jsonfile from 'jsonfile'
+import fsUtils from '../utils/FileSystemUtilities'
 
 import {
   logError,
@@ -64,6 +65,7 @@ const makePackageObj = (name) => {
   }
 }
 
+export const packageDirExists = name => fsUtils.pathExistsSync(getSourceDir(name))
 export const packageExists = name => allPackageNames.indexOf(name) >= 0
 export const getAllPackageNames = () => allPackageNames
 export const getIncludedPackageNames = () => includedPackageNames

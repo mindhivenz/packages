@@ -7,7 +7,10 @@
   },
   "watch": {
     "build:scripts": {
-      "patterns": ["src/scripts", "test"],
+      "patterns": [
+        "src/scripts",
+        "test"
+      ],
       "extensions": "js"
     }
   },
@@ -72,6 +75,7 @@
     "gulp-print": "^2.0.1",
     "husky": "^0.13.3",
     "init-package-json": "^1.10.1",
+    "inquirer": "^3.2.0",
     "jest": "^20.0.4",
     "jsonfile": "^3.0.1",
     "kefir": "^3.2.3",
@@ -84,8 +88,10 @@
     "mocha": "^3.4.2",
     "most": "^1.0.2",
     "ncp": "^2.0.0",
+    "npm-safe-name": "^1.1.0",
     "npm-watch": "^0.2.0",
     "npmlog": "^4.1.2",
+    "path-exists": "^3.0.0",
     "prettier": "^1.5.2",
     "prompt": "^1.0.0",
     "prop-types": "^15.5.0",
