@@ -2,8 +2,10 @@ import init from 'init-package-json'
 import path from 'path'
 import { exit, cp } from 'shelljs'
 
-import { packageExists, getAllPackageNames } from './lib/packageUtils'
+import { packageExists, getAllPackageNames, packageFullName } from './lib/packageUtils'
 import config from './lib/config'
+import PromptUtilities from './utils/PromptUtilities'
+
 import inputPackageFields from './commands/inputNewPackageFields'
 
 import {
@@ -13,6 +15,7 @@ import {
   logError,
   logWarn,
   logHeader,
+  logTitle,
   logPackage,
 } from './lib/utils'
 
@@ -26,9 +29,23 @@ const newPackageDir = path.resolve(packagesDirectory, newPackageName)
 async function askQuestions() {
 
   logHeader('Create @mindhive/package')
-
+  let confirmProcede = false
+  let answers = { packageName: newPackageName }
   try {
-    const answers = await inputPackageFields(newPackageName)
+    while (! confirmProcede) {
+      answers = await inputPackageFields(answers)
+      logSuccess('New package details:')
+      logTitle(packageFullName(answers.packageScope, answers.packageName))
+      logSuccess(JSON.stringify(answers, null, '  '))
+      confirmProcede = await PromptUtilities.confirm('Create package?')
+      log(confirmProcede)
+    }
+    newPackageName = answers.packageName
+
+    logSuccess('Success')
+    logSuccess(newPackageName)
+
+    exit(0)
 
 
     // const answers = await PromptUtilities.prompt(questions(await getAuthor()))

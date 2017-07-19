@@ -16,17 +16,18 @@ const validateName = (name) => {
   if (typeof valid === 'string') return valid
   return validateDirNotExist(name)
 }
-const questions = ({ author, packageName }) => ([
+
+const questions = ({ packageScope, packageName, author, description, keywords }) => ([
   {
     type: 'input',
-    name: 'scope',
+    name: 'packageScope',
     message: 'Package scope',
-    default: '@mindhive',
+    default: packageScope || '@mindhive',
     validate: validateScope,
   },
   {
     type: 'input',
-    name: 'name',
+    name: 'packageName',
     message: 'Package name',
     default: packageName,
     validate: validateName,
@@ -41,18 +42,20 @@ const questions = ({ author, packageName }) => ([
     type: 'input',
     name: 'description',
     message: 'Description',
+    default: description,
   },
   {
     type: 'input',
     name: 'keywords',
     message: 'Keywords (aaa, bbb, ccc .....)',
+    default: keywords,
   },
 ])
 
-async function getUserInput(props) {
-  return PromptUtilities.prompt(questions(Object.assign({}, props, { author: await fullname() })))
+async function getUserInput(defaults) {
+  return PromptUtilities.questions(questions(Object.assign({}, { author: await fullname() }, defaults)))
 }
 
 
-export default packageName => getUserInput({ packageName })
+export default data => getUserInput(data)
 

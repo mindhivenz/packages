@@ -51,13 +51,29 @@ class PromptUtilities {
 
 }
 
-async function prompt(questions) {
+
+async function _prompt(questions) {
   log.pause()
   const answers = await inquirer.prompt(questions)
   log.resume()
   return answers
 }
 
+async function _confirm(message) {
+  const answers = await _prompt([{
+    type: 'expand',
+    name: 'confirm',
+    message,
+    default: 2, // default to help in order to avoid clicking straight through
+    choices: [
+      { key: 'y', name: 'Yes', value: true },
+      { key: 'n', name: 'No', value: false },
+    ],
+  }])
+  return answers.confirm
+}
+
 export default {
-  prompt,
+  questions: _prompt,
+  confirm: _confirm,
 }

@@ -1,6 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 import jsonfile from 'jsonfile'
+import npmSafeName from 'npm-safe-name'
+
 import fsUtils from '../utils/FileSystemUtilities'
 
 import {
@@ -65,6 +67,8 @@ const makePackageObj = (name) => {
   }
 }
 
+
+export const packageFullName = (scope, name) => npmSafeName(name, scope)
 export const packageDirExists = name => fsUtils.pathExistsSync(getSourceDir(name))
 export const packageExists = name => allPackageNames.indexOf(name) >= 0
 export const getAllPackageNames = () => allPackageNames
