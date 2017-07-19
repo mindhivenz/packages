@@ -6,7 +6,7 @@ import { packageExists, getAllPackageNames, packageFullName } from './lib/packag
 import config from './lib/config'
 import PromptUtilities from './utils/PromptUtilities'
 
-import inputPackageFields from './commands/inputNewPackageFields'
+import inputPackageData from './commands/inputNewPackageFields'
 
 import {
   logBr,
@@ -15,7 +15,6 @@ import {
   logError,
   logWarn,
   logHeader,
-  logTitle,
   logPackage,
 } from './lib/utils'
 
@@ -30,29 +29,31 @@ async function askQuestions() {
 
   logHeader('Create @mindhive/package')
   let confirmProcede = false
-  let answers = { packageName: newPackageName }
+  let packageData = { name: newPackageName }
   try {
     while (! confirmProcede) {
-      answers = await inputPackageFields(answers)
+      packageData = await inputPackageData(packageData)
+      logBr()
       logSuccess('New package details:')
-      logTitle(packageFullName(answers.packageScope, answers.packageName))
-      logSuccess(JSON.stringify(answers, null, '  '))
-      confirmProcede = await PromptUtilities.confirm('Create package?')
-      log(confirmProcede)
+      logPackage(packageFullName(packageData.scope, packageData.name))
+      log(`Author: ${packageData.author}`)
+      log(`Description: ${packageData.description}`)
+      log(`Key words: ${packageData.keywords}`)
+      confirmProcede = await PromptUtilities.confirm('Create package from above data?')
     }
-    newPackageName = answers.packageName
+    newPackageName = packageData.name
 
-    logSuccess('Success')
+    logSuccess('Creating new package:')
     logSuccess(newPackageName)
 
     exit(0)
 
 
-    // const answers = await PromptUtilities.prompt(questions(await getAuthor()))
-    // const answers = await inquirer.prompt(questions(await getAuthor()))
-    logSuccess(JSON.stringify(answers, null, '  '))
+    // const packageData = await PromptUtilities.prompt(questions(await getAuthor()))
+    // const packageData = await inquirer.prompt(questions(await getAuthor()))
+    logSuccess(JSON.stringify(packageData, null, '  '))
 
-    newPackageName = answers.name
+    newPackageName = packageData.name
 
     logSuccess(newPackageName)
 
