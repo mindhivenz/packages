@@ -1,5 +1,6 @@
 import npmSafeName from 'npm-safe-name'
 import fullname from 'fullname'
+import semver from 'semver'
 
 import { packageDirExists } from '../lib/packageUtils'
 import PromptUtilities from '../utils/PromptUtilities'
@@ -17,7 +18,8 @@ const validateName = (name) => {
   return validateDirNotExist(name)
 }
 
-const questions = ({ packageScope, packageName, author, description, keywords }) => ([
+const validateVersion = v => v !== null || 'Must be a valid semver version'
+const questions = ({ packageScope, packageName, version, author, description, keywords }) => ([
   {
     type: 'input',
     name: 'packageScope',
@@ -37,6 +39,14 @@ const questions = ({ packageScope, packageName, author, description, keywords })
     name: 'author',
     message: 'Author',
     default: author,
+  },
+  {
+    type: 'input',
+    name: 'version',
+    message: 'Version',
+    filter: semver.valid,
+    validate: validateVersion,
+    default: version || '0.0.0',
   },
   {
     type: 'input',

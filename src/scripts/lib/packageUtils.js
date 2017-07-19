@@ -69,6 +69,21 @@ const makePackageObj = (name) => {
 
 
 export const packageFullName = (scope, name) => npmSafeName(name, scope)
+
+export const updatePackageJson = (jsonPath, data) => {
+  const file = path.resolve(jsonPath, 'package.json')
+
+  jsonfile.writeFileSync(file, Object.assign(
+      {},
+      data,
+      jsonfile.readFileSync(file)
+    ),
+    {
+      spaces: 2 }
+    )
+}
+
+
 export const packageDirExists = name => fsUtils.pathExistsSync(getSourceDir(name))
 export const packageExists = name => allPackageNames.indexOf(name) >= 0
 export const getAllPackageNames = () => allPackageNames

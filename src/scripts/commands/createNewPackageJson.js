@@ -1,13 +1,9 @@
-import jsonfile from 'jsonfile'
-import path from 'path'
+import omit from 'lodash/omit'
 import pick from 'lodash/pick'
+import { updatePackageJson } from '../lib/packageUtils'
 
-export default (packagePath, data) => {
-  const file = path.resolve(packagePath, 'package.json')
-
-  jsonfile.writeFileSync(file, Object.assign({}, {
-    ...pick(data, ['name', 'author', 'description', 'keywords']),
-  }, jsonfile.readFileSync(file)), { spaces: 2 })
-
-}
+export default (packagePath, data) => updatePackageJson(packagePath, {
+  ...pick(data, ['name', 'version']),
+  ...omit(data, ['packageName', 'packageScope', 'name', 'version']),
+})
 
