@@ -58,35 +58,9 @@ async function askQuestions() {
 
     createNewPackageJson(newPackageDir, {
       name: fullPackageName,
-      ...pick(packageData, ['author', 'description', 'keywords'])
+      ...pick(packageData, ['author', 'description', 'keywords']),
     })
 
-    exit(0)
-
-
-    // const packageData = await PromptUtilities.prompt(questions(await getAuthor()))
-    // const packageData = await inquirer.prompt(questions(await getAuthor()))
-    logSuccess(JSON.stringify(packageData, null, '  '))
-
-    newPackageName = packageData.name
-
-    logSuccess(newPackageName)
-
-    exit(0)
-
-    if (packageExists(newPackageName)) {
-      logWarn(`Package directory already exists: ${config.sourcePath}/${newPackageName}`)
-      logWarn('Existing packages:')
-      getAllPackageNames().forEach((p) => {
-        p === newPackageName ? logError(p) : log(p)
-      })
-      logBr()
-
-      exit(0)
-    }
-    logPackage(`@mindhive/${newPackageName}`)
-
-    init(newPackageDir, initFile, { '__pn': newPackageName }, () => {})
     logSuccess('Done!')
 
   } catch (err) {
