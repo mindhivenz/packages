@@ -1,11 +1,11 @@
 import glob from 'glob'
 import path from 'path'
-import { exit } from 'shelljs'
+import { exit, exec as execJs } from 'shelljs'
 
 import { NODE_BIN } from './config'
-import { log, logError, exec, execLoud } from './utils'
+import { log, logError, logPackage, execLoud, execAsync } from './utils'
 
-export default (packageData) => {
+export default async (packageData) => {
   const sourceDir = packageData.src.dir
   const outDir = packageData.out.dir
 
@@ -21,9 +21,17 @@ export default (packageData) => {
     'cross-env BABEL_ENV=cjs ' +
     `${path.resolve(NODE_BIN)}/babel ${sourceFiles.join(' ')} ` +
     `--out-dir ${path.resolve(outDir)}`
-  const bCode = exec(bCommand)
-  if (bCode !== 0) {
-    logError('...failed')
-    exit(execLoud(bCommand))
-  }
+
+
+  await execJs(bCommand, { silent: true, async: true }, (error) => {
+    if (error) {
+      // console.error(`exec error: ${error}`)
+      exit(error)
+    } else {
+      logPackage(`Build ${packageData.name} finished!`)
+    }
+  })
+  // processObj.stdout.on('data', e => {
+    // gauge.pulse((packageData.name))
+  // })
 }

@@ -29,6 +29,7 @@ export const logHeader = (text) => {
 
 export const exec = command => execJs(command, { silent: true }).code
 export const execLoud = command => execJs(command).code
+export const execAsync = (command, callback) => execJs(command, callback)
 
 export const writeFile = (filepath, string) =>
   fs.writeFileSync(filepath, string, 'utf8')

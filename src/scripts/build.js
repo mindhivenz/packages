@@ -1,36 +1,46 @@
+import asyncNpm from 'async'
+
 import cleanDestination from './lib/clean'
 import compileSources from './lib/compileSources'
 import copyAdditionalFiles from './lib/copyAdditionalFiles'
 
-import getSrcPackages from './lib/packageUtils'
+import getSrcPackages, { printIgnoredPackages } from './lib/packageUtils'
 
 import {
   logBr,
   logSuccess,
   logError,
-  logTitle,
+  // logTitle,
   logPackage,
+  logHeader,
 } from './lib/utils'
 
-const buildPackage = (mhPackage) => {
+const buildPackage = async (mhPackage) => {
   logBr()
   logPackage(mhPackage.npmName)
-
   cleanDestination(mhPackage)
   compileSources(mhPackage)
   copyAdditionalFiles(mhPackage)
 
-  logSuccess('Done!')
-  logBr()
+  // logSuccess('Done!')
+  // logBr()
 }
 
 try {
-  logBr()
-  logTitle('                                            ')
-  logTitle('        Building @mindhive/packages.        ')
-  logTitle('                                            ')
-  logBr()
-  getSrcPackages().forEach(buildPackage)
+  logHeader('Building @mindhive/packages.')
+  printIgnoredPackages()
+  asyncNpm.parallel(getSrcPackages().map(mhPack =>
+      async (callback) => {
+        await buildPackage(mhPack)
+        callback(null, `${mhPack.npmName} DONE!`)
+      }
+    ),
+    () => {
+      logBr()
+      // logSuccess('Done!')
+    }
+  )
+
 } catch (error) {
   logError('Release failed due to an error', error)
 }

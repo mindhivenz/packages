@@ -20,10 +20,14 @@ let allPackageNames
 let includedPackageNames
 let excludedPackageNames
 
-const makeSrcPackageNames = () => {
-  if (! allPackageNames) {
+export const printIgnoredPackages = () => {
+  if (ignorePackages.length > 0) {
     logWarn(`Ignoring packages (from ${CONFIG_PATH})`)
     ignorePackages.forEach(ignore => logWarn(` - ${ignore}`))
+  }
+}
+const makeSrcPackageNames = () => {
+  if (! allPackageNames) {
     allPackageNames = fs
       .readdirSync(configObj.sourcePath)
       .filter(file => isDirectory(path.resolve(configObj.sourcePath, file)))
