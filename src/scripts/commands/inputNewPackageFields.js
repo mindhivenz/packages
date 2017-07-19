@@ -17,19 +17,19 @@ const validateName = (name) => {
   return validateDirNotExist(name)
 }
 
-const questions = ({ scope, name, author, description, keywords }) => ([
+const questions = ({ packageScope, packageName, author, description, keywords }) => ([
   {
     type: 'input',
-    name: 'scope',
+    name: 'packageScope',
     message: 'Package scope',
-    default: scope || '@mindhive',
+    default: packageScope || '@mindhive',
     validate: validateScope,
   },
   {
     type: 'input',
-    name: 'name',
+    name: 'packageName',
     message: 'Package name',
-    default: name,
+    default: packageName,
     validate: validateName,
   },
   {

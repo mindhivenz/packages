@@ -1,9 +1,7 @@
-import init from 'init-package-json'
 import path from 'path'
-import pick from 'lodash/pick'
 import { exit, cp } from 'shelljs'
 
-import { packageExists, getAllPackageNames, packageFullName } from './lib/packageUtils'
+import { packageFullName } from './lib/packageUtils'
 import config from './lib/config'
 import PromptUtilities from './utils/PromptUtilities'
 
@@ -20,23 +18,22 @@ import {
   logPackage,
 } from './lib/utils'
 
-let newPackageName = `${process.argv[2]}`
+const newPackageName = `${process.argv[2]}`
 const packagesDirectory = path.resolve(config.sourcePath)
-const initFile = path.resolve('src', 'npm-init-defaults.js')
 const basePackage = path.resolve(config.basePackage, 'src')
-
 
 async function askQuestions() {
 
   logHeader('Create @mindhive/package')
   let proceed = false
-  let packageData = { name: newPackageName }
+  let packageData = { packageName: newPackageName }
   try {
     while (! proceed) {
       packageData = await inputPackageData(packageData)
       logBr()
+      packageData.name = packageFullName(packageData.packageScope, packageData.packageName)
       logSuccess('New package details:')
-      logPackage(packageFullName(packageData.scope, packageData.name))
+      logPackage(packageData.name)
       log(`Author: ${packageData.author}`)
       log(`Description: ${packageData.description}`)
       log(`Key words: ${packageData.keywords}`)
@@ -47,19 +44,15 @@ async function askQuestions() {
       }
 
     }
-    const newPackageDir = path.resolve(packagesDirectory, packageData.name)
+    const newPackageDir = path.resolve(packagesDirectory, packageData.packageName)
 
     logSuccess('Creating new package:')
-    const fullPackageName = packageFullName(packageData.scope, packageData.name)
-    logPackage(fullPackageName)
+    logPackage(packageData.name)
     log(`In: ${newPackageDir}`)
 
     cp('-Rf', basePackage, newPackageDir)
 
-    createNewPackageJson(newPackageDir, {
-      name: fullPackageName,
-      ...pick(packageData, ['author', 'description', 'keywords']),
-    })
+    createNewPackageJson(newPackageDir, packageData)
 
     logSuccess('Done!')
 
