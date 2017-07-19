@@ -28,10 +28,10 @@ const newPackageDir = path.resolve(packagesDirectory, newPackageName)
 async function askQuestions() {
 
   logHeader('Create @mindhive/package')
-  let confirmProcede = false
+  let proceed = false
   let packageData = { name: newPackageName }
   try {
-    while (! confirmProcede) {
+    while (! proceed) {
       packageData = await inputPackageData(packageData)
       logBr()
       logSuccess('New package details:')
@@ -39,12 +39,16 @@ async function askQuestions() {
       log(`Author: ${packageData.author}`)
       log(`Description: ${packageData.description}`)
       log(`Key words: ${packageData.keywords}`)
-      confirmProcede = await PromptUtilities.confirm('Create package from above data?')
+      proceed = await PromptUtilities.confirm('Create package from above data?', true)
+      if (proceed === 'quit') {
+        logWarn('Quit without creating package!')
+        exit(0)
+      }
     }
     newPackageName = packageData.name
 
     logSuccess('Creating new package:')
-    logSuccess(newPackageName)
+    logPackage(packageFullName(packageData.scope, packageData.name))
 
     exit(0)
 
