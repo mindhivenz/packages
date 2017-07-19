@@ -19,7 +19,7 @@ const validateName = (name) => {
 }
 
 const validateVersion = v => v !== null || 'Must be a valid semver version'
-const questions = ({ packageScope, packageName, version, author, description, keywords }) => ([
+const questions = ({ packageScope, packageName, version, author, description }) => ([
   {
     type: 'input',
     name: 'packageScope',
@@ -54,12 +54,12 @@ const questions = ({ packageScope, packageName, version, author, description, ke
     message: 'Description',
     default: description,
   },
-  {
-    type: 'input',
-    name: 'keywords',
-    message: 'Keywords (aaa, bbb, ccc .....)',
-    default: keywords,
-  },
+  // {
+  //   type: 'input',
+  //   name: 'keywords',
+  //   message: 'Keywords (aaa, bbb, ccc .....)',
+  //   default: keywords,
+  // },
 ])
 
 async function getUserInput(defaults) {

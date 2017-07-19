@@ -1,9 +1,10 @@
 import path from 'path'
 import { exit, cp } from 'shelljs'
 
-import { packageFullName } from './lib/packageUtils'
+import { packageFullName, getSourceDir } from './lib/packageUtils'
 import config from './lib/config'
 import PromptUtilities from './utils/PromptUtilities'
+import fsUtils from './utils/FileSystemUtilities'
 
 import inputPackageData from './commands/inputNewPackageFields'
 import createNewPackageJson from './commands/createNewPackageJson'
@@ -19,7 +20,6 @@ import {
 } from './lib/utils'
 
 const newPackageName = `${process.argv[2]}`
-const packagesDirectory = path.resolve(config.sourcePath)
 const basePackage = path.resolve(config.basePackage, 'src')
 
 async function askQuestions() {
@@ -36,7 +36,7 @@ async function askQuestions() {
       logPackage(packageData.name)
       log(`Author: ${packageData.author}`)
       log(`Description: ${packageData.description}`)
-      log(`Key words: ${packageData.keywords}`)
+      // log(`Key words: ${packageData.keywords}`)
       proceed = await PromptUtilities.confirm('Create package from above data?', true)
       if (proceed === 'quit') {
         logWarn('Quit without creating package!')
@@ -44,13 +44,14 @@ async function askQuestions() {
       }
 
     }
-    const newPackageDir = path.resolve(packagesDirectory, packageData.packageName)
+
+    const newPackageDir = getSourceDir(packageData.packageName)
 
     logSuccess('Creating new package:')
     logPackage(packageData.name)
     log(`In: ${newPackageDir}`)
 
-    cp('-Rf', basePackage, newPackageDir)
+    fsUtils.copySync(basePackage, newPackageDir)
 
     createNewPackageJson(newPackageDir, packageData)
 
