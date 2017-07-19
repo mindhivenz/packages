@@ -10,12 +10,6 @@
       "email": "damon@mindhive.co.nz"
     }
   ],
-  "scripts": {
-    "test": "../../scripts/test.sh",
-    "build": "../../scripts/build.sh",
-    "upgrade": "yarn upgrade"
-  },
-  "author": "Nick Virtue",
   "repository": {
     "old": "git",
     "url": "git@github.com:mindhivenz/packages.git"

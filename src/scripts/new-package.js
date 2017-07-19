@@ -1,5 +1,6 @@
 import init from 'init-package-json'
 import path from 'path'
+import pick from 'lodash/pick'
 import { exit, cp } from 'shelljs'
 
 import { packageExists, getAllPackageNames, packageFullName } from './lib/packageUtils'
@@ -7,6 +8,7 @@ import config from './lib/config'
 import PromptUtilities from './utils/PromptUtilities'
 
 import inputPackageData from './commands/inputNewPackageFields'
+import createNewPackageJson from './commands/createNewPackageJson'
 
 import {
   logBr,
@@ -21,8 +23,7 @@ import {
 let newPackageName = `${process.argv[2]}`
 const packagesDirectory = path.resolve(config.sourcePath)
 const initFile = path.resolve('src', 'npm-init-defaults.js')
-const basePackage = path.resolve(config.basePackage)
-const newPackageDir = path.resolve(packagesDirectory, newPackageName)
+const basePackage = path.resolve(config.basePackage, 'src')
 
 
 async function askQuestions() {
@@ -44,11 +45,21 @@ async function askQuestions() {
         logWarn('Quit without creating package!')
         exit(0)
       }
+
     }
-    newPackageName = packageData.name
+    const newPackageDir = path.resolve(packagesDirectory, packageData.name)
 
     logSuccess('Creating new package:')
-    logPackage(packageFullName(packageData.scope, packageData.name))
+    const fullPackageName = packageFullName(packageData.scope, packageData.name)
+    logPackage(fullPackageName)
+    log(`In: ${newPackageDir}`)
+
+    cp('-Rf', basePackage, newPackageDir)
+
+    createNewPackageJson(newPackageDir, {
+      name: fullPackageName,
+      ...pick(packageData, ['author', 'description', 'keywords'])
+    })
 
     exit(0)
 
@@ -75,7 +86,6 @@ async function askQuestions() {
     }
     logPackage(`@mindhive/${newPackageName}`)
 
-    cp('-Rf', basePackage, newPackageDir)
     init(newPackageDir, initFile, { '__pn': newPackageName }, () => {})
     logSuccess('Done!')
 
