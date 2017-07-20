@@ -4,6 +4,8 @@ import cleanDestination from './lib/clean'
 import compileSources from './lib/compileSources'
 import copyAdditionalFiles from './lib/copyAdditionalFiles'
 
+import PackageUtilities from './package/PackageUtilities'
+
 import getSrcPackages, { printIgnoredPackages } from './lib/packageUtils'
 
 import {
@@ -12,12 +14,13 @@ import {
   logError,
   // logTitle,
   logPackage,
+  logPackageTitle,
   logHeader,
-} from './lib/utils'
+} from './utils/CliUtils'
 
 const buildPackage = async (mhPackage) => {
   logBr()
-  logPackage(mhPackage.npmName)
+  logPackageTitle(mhPackage.scope, mhPackage.name)
   cleanDestination(mhPackage)
   compileSources(mhPackage)
   copyAdditionalFiles(mhPackage)
@@ -26,8 +29,17 @@ const buildPackage = async (mhPackage) => {
   // logBr()
 }
 
+
 try {
-  logHeader('Building @mindhive/packages.')
+  logHeader('Building @mindhive/packages.....')
+  const packages = PackageUtilities.getPackages()
+  // console.log('===========================================')
+  // console.log(packages)
+  // const ignoredPackages = PackageUtilities.filterIgnoredPackages(packages)
+  const includedPackages = PackageUtilities.filterIncludedPackages(packages)
+  // console.log('===========================================')
+  console.log(includedPackages)
+
   printIgnoredPackages()
   asyncNpm.parallel(getSrcPackages().map(mhPack =>
       async (callback) => {

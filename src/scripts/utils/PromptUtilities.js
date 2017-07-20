@@ -52,6 +52,19 @@ class PromptUtilities {
 }
 
 
+async function _select(message, choices) {
+  log.pause()
+  const answers = await inquirer.prompt([{
+    type: 'list',
+    name: 'prompt',
+    message,
+    choices,
+    pageSize: choices.length,
+  }])
+  log.resume()
+  return answers.prompt
+}
+
 async function _prompt(questions) {
   log.pause()
   const answers = await inquirer.prompt(questions)
@@ -81,4 +94,5 @@ async function _confirm(message, quit = false) {
 export default {
   questions: _prompt,
   confirm: _confirm,
+  select: _select,
 }

@@ -4,7 +4,6 @@ import chalk from 'chalk'
 import { flowRight as compose } from 'lodash'
 import npmlog from 'npmlog'
 
-npmlog.heading = 'mhp'
 
 const npmLogInfo = npmlog.info.bind(npmlog)
 const npmLogError = npmlog.error.bind(npmlog)

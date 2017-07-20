@@ -63,6 +63,7 @@ const packageData = (packagePath) => {
 const makePackageObj = (name) => {
   const src = packageData(getSourceDir(name))
   return {
+    scope: 'mindhive' ,
     name,
     npmName: `@mindhive/${name}`,
     version: src.version,
@@ -74,13 +75,15 @@ const makePackageObj = (name) => {
 
 export const packageFullName = (scope, name) => npmSafeName(name, scope)
 
+export const getPackageJson = jsonPath => jsonfile.readFileSync(jsonPath)
+
 export const updatePackageJson = (jsonPath, data) => {
   const file = path.resolve(jsonPath, 'package.json')
 
   jsonfile.writeFileSync(file, Object.assign(
       {},
       data,
-      jsonfile.readFileSync(file)
+      getPackageJson(file),
     ),
     {
       spaces: 2 }
