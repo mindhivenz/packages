@@ -27,9 +27,8 @@ try {
   logBr()
 
   PackageUtilities.runParallel(includedPackages, packageToBuild => (cb) => {
+    tracker.package('Building package......')
     try {
-      tracker.package(packageToBuild, 'Building package......')
-      // tracker.info(packageToBuild.name, 'Building package......')
       cleanDestination(packageToBuild, tracker)
       copyAdditionalFiles(packageToBuild, tracker)
       compileSources(packageToBuild, tracker, () => {

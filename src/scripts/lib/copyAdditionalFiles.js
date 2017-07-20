@@ -1,6 +1,5 @@
 import path from 'path'
 import { cp, test } from 'shelljs'
-import { log } from './utils'
 
 import config from './config'
 
