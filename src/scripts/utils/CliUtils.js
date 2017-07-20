@@ -7,7 +7,6 @@ npmlog.enableProgress()
 
 const DEF_COLLUMS = 80
 const TERMINAL_COLUMNS = process.stdout.columns || DEF_COLLUMS
-var EE = require('events').EventEmitter
 npmlog.heading = ''
 npmlog.addLevel('info', 2000, { fg: 'green' }, '')
 npmlog.addLevel('warn', 4000, { fg: 'yellow' }, 'WARN')
@@ -19,10 +18,24 @@ const npmLogWarn = npmlog.warn.bind(npmlog)
 
 const DONE = chalk.reset.inverse.bold.green(' DONE ')
 const styleSuccess = chalk.green.bold
-const styleWhite = chalk.white
+const styleWhite = chalk.reset.white
+const styleWhiteDim = styleWhite.dim
 const styleWhiteBold = styleWhite.bold
 
+export const stylePackage = chalk.reset.bold.magenta
+export const stylePackagePrefix = ({ scope, name }, message) =>
+  `${styleWhiteDim('@')}${styleWhite(scope)}${styleWhiteDim('/')}${stylePackage(name)} ${styleSuccess(message)}`
+// `${styleWhiteBold('@')}${styleWhite(scope)}${styleWhiteBold('/')}${stylePackage(name)} ${styleSuccess(message)}`
+
 export const newGroup = name => npmlog.newGroup(name)
+
+export const newTracker = (name, group = 'mhp') => {
+  const tracker = newGroup(group).newItem(name)
+  tracker.package = (pkg, msg) => {
+    tracker.info(stylePackagePrefix(pkg, msg))
+  }
+  return tracker
+}
 export const log = compose(npmLogInfo, styleWhite)
 export const logBr = () => npmLogInfo('')
 export const logSuccess = compose(npmLogInfo, styleSuccess)
@@ -51,8 +64,8 @@ const repeat = (char, times) => char.repeat(times)
 const repeatSpace = times => repeat(' ', times)
 
 
-export const stylePackage = chalk.reset.bold.magenta
 export const logPackage = compose(npmLogInfo, stylePackage)
+
 
 export const logPackageTitle = (scope, name) => {
   const _scope = `@${scope}`

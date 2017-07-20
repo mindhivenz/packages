@@ -20,10 +20,10 @@ let allPackageNames
 let includedPackageNames
 let excludedPackageNames
 
-export const printIgnoredPackages = () => {
-  if (ignorePackages.length > 0) {
+export const printIgnoredPackages = (ignoredPackages) => {
+  if (ignoredPackages.length > 0) {
     logWarn(`Ignoring packages (from ${CONFIG_PATH})`)
-    ignorePackages.forEach(ignore => logWarn(` - ${ignore}`))
+    ignoredPackages.forEach(ignore => logWarn(` - ${ignore.npmName}`))
   }
 }
 const makeSrcPackageNames = () => {

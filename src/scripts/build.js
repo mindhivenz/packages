@@ -8,33 +8,33 @@ import { printIgnoredPackages } from './lib/packageUtils'
 
 import {
   logBr,
-  newGroup,
+  newTracker,
   logError,
   logHeader,
 } from './utils/CliUtils'
 
-const logger = newGroup('build.js')
 
 try {
 
   logHeader('Building @mindhive/packages.....')
   const packages = PackageUtilities.getPackages()
   const includedPackages = PackageUtilities.filterIncludedPackages(packages)
-  const tracker = logger.newItem('buildPackages')
+  const ignoreddPackages = PackageUtilities.filterIgnoredPackages(packages)
+  const tracker = newTracker('buildPackages')
   tracker.addWork(includedPackages.length * 3)
 
-  printIgnoredPackages()
+  printIgnoredPackages(ignoreddPackages)
   logBr()
 
   PackageUtilities.runParallel(includedPackages, packageToBuild => (cb) => {
     try {
-      tracker.info(packageToBuild.name, 'Building package......')
+      tracker.package(packageToBuild, 'Building package......')
+      // tracker.info(packageToBuild.name, 'Building package......')
       cleanDestination(packageToBuild, tracker)
       copyAdditionalFiles(packageToBuild, tracker)
       compileSources(packageToBuild, tracker, () => {
-        tracker.info(packageToBuild.name, 'DONE!!')
+        tracker.package(packageToBuild, 'DONE!!')
       })
-
     } catch (err) {
       tracker.error(packageToBuild.name, err)
       cb(err)

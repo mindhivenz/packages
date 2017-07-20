@@ -70,7 +70,7 @@ export default class PackageUtilities {
    * and do not match the ignore glob
    *
    */
-  static filterPackages(packagesToFilter, { scope, ignore }) {
+  static filterPackages(packagesToFilter, { scope, ignore }, negate = true) {
     let packages = packagesToFilter.slice()
     if (scope) {
       packages = packages.filter(pkg => filterPackage(pkg.npmName, scope))
@@ -81,7 +81,7 @@ export default class PackageUtilities {
     }
 
     if (ignore) {
-      packages = packages.filter(pkg => filterPackage(pkg.npmName, ignore, true))
+      packages = packages.filter(pkg => filterPackage(pkg.npmName, ignore, negate))
 
       if (! packages.length) {
         throw new Error(`No packages remain after ignoring '${ignore}'`)
@@ -95,6 +95,11 @@ export default class PackageUtilities {
   static filterIncludedPackages(packagesToFilter) {
     return this.filterPackages(packagesToFilter, { ignore: config.ignore }
     )
+  }
+
+
+  static filterIgnoredPackages(packagesToFilter) {
+    return this.filterPackages(packagesToFilter, { ignore: config.ignore }, false)
   }
 
   static runParallel(tasks, makeTask, concurrency, callback) {
