@@ -1,10 +1,10 @@
 import glob from 'glob'
 import path from 'path'
-import { exit, exec as execJs } from 'shelljs'
+import { exec as execJs } from 'shelljs'
 
 import { NODE_BIN } from './config'
 
-export default async ({ buildLocation, sourceLocation, name }, tracker) => {
+export default ({ buildLocation, sourceLocation, name }, tracker, cb) => {
 
   tracker.verbose(name, 'Compiling ......')
 
@@ -20,18 +20,5 @@ export default async ({ buildLocation, sourceLocation, name }, tracker) => {
     `--out-dir ${path.resolve(buildLocation)}`
 
 
-  await execJs(bCommand, { silent: true, async: true }, (error) => {
-    if (error) {
-      // console.error(`exec error: ${error}`)
-      exit(error)
-    } else {
-      // tracker.info(' ')
-      tracker.info(name, 'Built!!')
-      tracker.completeWork(1)
-
-    }
-  })
-  // processObj.stdout.on('data', e => {
-    // gauge.pulse((packageData.name))
-  // })
+  execJs(bCommand, { silent: true, async: true }, cb)
 }

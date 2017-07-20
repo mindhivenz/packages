@@ -97,7 +97,7 @@ export default class PackageUtilities {
     )
   }
 
-  static runParalle(tasks, makeTask, concurrency, callback) {
+  static runParallel(tasks, makeTask, concurrency, callback) {
     async.parallelLimit(tasks.map(makeTask), concurrency, callback)
   }
 
