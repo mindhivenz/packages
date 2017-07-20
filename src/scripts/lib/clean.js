@@ -2,9 +2,12 @@ import { rm } from 'shelljs'
 import { log } from './utils'
 import FileSystemUtilities from '../utils/FileSystemUtilities'
 
-export default ({ buildLocation }) => {
+export default ({ buildLocation, name }, tracker) => {
+  tracker.info(name, 'Cleaning compiled package...')
+
   if (FileSystemUtilities.pathExistsSync(buildLocation)) {
-    log('Deleting compiled package...')
     rm('-rf', buildLocation)
+    tracker.info(name, 'Clean!')
+    tracker.completeWork(1)
   }
 }

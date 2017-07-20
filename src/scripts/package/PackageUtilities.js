@@ -2,6 +2,8 @@ import glob from 'glob'
 import minimatch from 'minimatch'
 import path from 'path'
 import readPkg from 'read-pkg'
+import async from 'async'
+
 
 import Package from './Package'
 import config from '../lib/config'
@@ -27,16 +29,14 @@ function filterPackage(name, globs, negate = false) {
   if (! Array.isArray(_globs)) _globs = [_globs]
 
   if (negate) {
-    return _globs.every((_glob) => {
+    return _globs.every(_glob => 
       // console.log('negate', _glob, name)
-      return ! minimatch(name, _glob)
-    })
+       ! minimatch(name, _glob))
   }
 
-  return _globs.some((_glob) => {
+  return _globs.some(_glob => 
     // console.log(_glob, name)
-    return minimatch(name, _glob)
-  })
+     minimatch(name, _glob))
   
 }
 
@@ -96,4 +96,11 @@ export default class PackageUtilities {
     return this.filterPackages(packagesToFilter, { ignore: config.ignore }
     )
   }
+
+  static runParallelBatches(batches, makeTask, concurrency, callback) {
+    async.series(batches.map(batch => (cb) => {
+      async.parallelLimit(batch.map(makeTask), concurrency, cb)
+    }), callback)
+  }
+
 }

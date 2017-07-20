@@ -20,6 +20,7 @@ const styleSuccess = chalk.green.bold
 const styleWhite = chalk.white
 const styleWhiteBold = styleWhite.bold
 
+export const newGroup = name => npmlog.newGroup(name)
 export const log = compose(npmLogInfo, styleWhite)
 export const logBr = () => npmLogInfo('')
 export const logSuccess = compose(npmLogInfo, styleSuccess)

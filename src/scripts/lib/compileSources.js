@@ -3,11 +3,10 @@ import path from 'path'
 import { exit, exec as execJs } from 'shelljs'
 
 import { NODE_BIN } from './config'
-import { log, logError, logPackage, execLoud, execAsync } from './utils'
 
-export default async ({ buildLocation, sourceLocation, name }) => {
+export default async ({ buildLocation, sourceLocation, name }, tracker) => {
 
-  log('Compiling package...')
+  tracker.info(name, 'Compiling package source')
 
   const sourceFiles = glob
     .sync(`${sourceLocation}/**/*+(js|jsx)`, {
@@ -26,7 +25,9 @@ export default async ({ buildLocation, sourceLocation, name }) => {
       // console.error(`exec error: ${error}`)
       exit(error)
     } else {
-      logPackage(`Build ${name} finished!`)
+      tracker.info(name, 'Compiled!')
+      tracker.completeWork(1)
+
     }
   })
   // processObj.stdout.on('data', e => {

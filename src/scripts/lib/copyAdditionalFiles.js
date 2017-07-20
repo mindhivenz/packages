@@ -4,9 +4,11 @@ import { log } from './utils'
 
 import config from './config'
 
-export default ({ buildLocation, sourceLocation }) => {
+export default ({ buildLocation, sourceLocation, name }, tracker) => {
 
-  log('Copying additional package files...')
+  tracker.info(name, 'Copying additional package files...')
+  // log('Copying additional package files...')
+  tracker.addWork(config.additionalFiles.length)
   config.additionalFiles.forEach((filename) => {
     const src = path.resolve(sourceLocation, filename)
 
@@ -14,4 +16,7 @@ export default ({ buildLocation, sourceLocation }) => {
 
     cp('-Rf', src, buildLocation)
   })
+  tracker.info(name, 'Copied!')
+  tracker.completeWork(1)
+
 }

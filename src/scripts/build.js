@@ -10,6 +10,7 @@ import getSrcPackages, { printIgnoredPackages } from './lib/packageUtils'
 
 import {
   logBr,
+  newGroup,
   logSuccess,
   logError,
   // logTitle,
@@ -18,20 +19,23 @@ import {
   logHeader,
 } from './utils/CliUtils'
 
-const buildPackage = async (packageT0build) => {
+const logger = newGroup('build.js')
+
+const buildPackage = async (packageT0build, tracker) => {
   const { name, scope } = packageT0build.scopedName
   logBr()
+  tracker.verbose('publishing', packageT0build.name)
   logPackageTitle(scope, name)
-  cleanDestination(packageT0build)
-  compileSources(packageT0build)
-  copyAdditionalFiles(packageT0build)
+  cleanDestination(packageT0build, tracker)
+  compileSources(packageT0build, tracker)
+  copyAdditionalFiles(packageT0build, tracker)
 
   // logSuccess('Done!')
   // logBr()
 }
 
-
 try {
+
   logHeader('Building @mindhive/packages.....')
   const packages = PackageUtilities.getPackages()
   // console.log('===========================================')
@@ -41,10 +45,13 @@ try {
   // console.log('===========================================')
   // console.log(includedPackages)
 
+  const tracker = logger.newItem('buildPackages')
+  tracker.addWork(includedPackages.length * 3)
+
   printIgnoredPackages()
   asyncNpm.parallel(includedPackages.map(packageToBuild =>
       async (callback) => {
-        await buildPackage(packageToBuild)
+        await buildPackage(packageToBuild, tracker)
         callback(null, `${packageToBuild.name} DONE!`)
       }
     ),
