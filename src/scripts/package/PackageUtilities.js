@@ -73,7 +73,7 @@ export default class PackageUtilities {
   static filterPackages(packagesToFilter, { scope, ignore }) {
     let packages = packagesToFilter.slice()
     if (scope) {
-      packages = packages.filter(pkg => filterPackage(pkg.name, scope))
+      packages = packages.filter(pkg => filterPackage(pkg.npmName, scope))
 
       if (! packages.length) {
         throw new Error(`No packages found that match scope '${scope}'`)
@@ -81,7 +81,7 @@ export default class PackageUtilities {
     }
 
     if (ignore) {
-      packages = packages.filter(pkg => filterPackage(pkg.name, ignore, true))
+      packages = packages.filter(pkg => filterPackage(pkg.npmName, ignore, true))
 
       if (! packages.length) {
         throw new Error(`No packages remain after ignoring '${ignore}'`)

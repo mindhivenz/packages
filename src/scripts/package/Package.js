@@ -1,3 +1,5 @@
+import { action, observable, computed } from 'mobx'
+
 import dedent from 'dedent'
 import log from 'npmlog'
 import path from 'path'
@@ -8,13 +10,34 @@ import npmSafeName from 'npm-safe-name'
 // import NpmUtilities from './NpmUtilities'
 
 export default class Package {
+  @observable _scope
+  @observable _name
+
   constructor(pkg, srcLocation, buildLocation) {
-    this._package = pkg
     this._sourceLocation = srcLocation
     this._buildLocation = buildLocation
+    this.init(pkg)
   }
 
+  @action
+  init = (pkg) => {
+    this._package = pkg
+    const { name, scope } = npmSafeName(pkg.name)
+    this._scope = scope
+    this._name = name
+  }
+
+  @computed
   get name() {
+    return this._name
+  }
+
+  @computed
+  get scope() {
+    return this._scope
+  }
+
+  get npmName() {
     return this._package.name
   }
 
