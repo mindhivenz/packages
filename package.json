@@ -18,7 +18,7 @@
     "mhp:build": "node $npm_package_config_scripts_dest/build.js",
     "mhp:clean": "node $npm_package_config_scripts_dest/clean.js",
     "mhp:pub": "node $npm_package_config_scripts_dest/pub.js",
-    "mhp:new": "node $npm_package_config_scripts_dest/new-package.js",
+    "mhp:new": "node $npm_package_config_scripts_dest/new.js",
     "mhp:nested-install": "node $npm_package_config_scripts_dest/installNestedPackageDeps.js",
     "bootstrap": "yarn run clean:all && yarn",
     "clean:build": "yarn mhp:clean",

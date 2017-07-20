@@ -10,7 +10,7 @@ const someSafeNpmName = 'valid-name'
 const validateScope = scope => npmSafeName(someSafeNpmName, scope) !== null || 'Please enter a valid scope'
 
 const validateDirNotExist = name => ! packageDirExists(name) || 'Package directory already exists'
-const validateNmpName = name => npmSafeName(name) !== null || 'Please enter a valid name'
+const validateNmpName = name => (name && npmSafeName(name) !== null) || 'Please enter a valid name'
 
 const validateName = (name) => {
   const valid = validateNmpName(name)
