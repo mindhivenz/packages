@@ -1,13 +1,13 @@
 import path from 'path'
 import { exit, cp } from 'shelljs'
 
-import { packageFullName, getSourceDir } from './lib/packageUtils'
+import { packageFullName, getSourceDir } from './package/packageUtils'
 import config from './lib/config'
 import PromptUtilities from './utils/PromptUtilities'
 import fsUtils from './utils/FileSystemUtilities'
 
-import inputPackageData from './commands/inputNewPackageFields'
-import createNewPackageJson from './commands/createNewPackageJson'
+import inputPackageData from './lib/inputNewPackageFields'
+import createNewPackageJson from './lib/createNewPackageJson'
 
 import {
   logBr,

@@ -4,7 +4,7 @@ import copyAdditionalFiles from './lib/copyAdditionalFiles'
 
 import PackageUtilities from './package/PackageUtilities'
 
-import { printIgnoredPackages } from './lib/packageUtils'
+import { printIgnoredPackages } from './package/packageUtils'
 
 import {
   logBr,

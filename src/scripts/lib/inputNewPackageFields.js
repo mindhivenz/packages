@@ -2,7 +2,7 @@ import npmSafeName from 'npm-safe-name'
 import fullname from 'fullname'
 import semver from 'semver'
 
-import { packageDirExists } from '../lib/packageUtils'
+import { packageDirExists } from '../package/packageUtils'
 import PromptUtilities from '../utils/PromptUtilities'
 
 const someSafeNpmName = 'valid-name'

@@ -5,7 +5,7 @@ import {
   exec,
 } from './lib/utils'
 
-import getSrcPackages from './lib/packageUtils'
+import getSrcPackages from './package/packageUtils'
 
 getSrcPackages().forEach((mhPackage) => {
   log(`yarn install in ${mhPackage.npmName}`)

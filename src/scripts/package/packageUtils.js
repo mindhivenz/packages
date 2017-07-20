@@ -6,13 +6,12 @@ import npmSafeName from 'npm-safe-name'
 import fsUtils from '../utils/FileSystemUtilities'
 
 import {
-  logError,
   logWarn,
   fileExists,
   isDirectory,
-} from './utils'
+} from '../utils/utils'
 
-import configObj, { CONFIG_PATH } from './config'
+import configObj, { CONFIG_PATH } from '../lib/config'
 
 const ignorePackages = configObj.ignore
 
