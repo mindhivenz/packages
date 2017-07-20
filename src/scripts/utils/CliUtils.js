@@ -3,6 +3,8 @@ import { flowRight as compose } from 'lodash'
 import npmlog from 'npmlog'
 import stringLength from 'string-length'
 
+npmlog.enableProgress()
+
 const DEF_COLLUMS = 80
 const TERMINAL_COLUMNS = process.stdout.columns || DEF_COLLUMS
 var EE = require('events').EventEmitter

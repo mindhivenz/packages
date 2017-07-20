@@ -6,7 +6,7 @@ import { NODE_BIN } from './config'
 
 export default async ({ buildLocation, sourceLocation, name }, tracker) => {
 
-  tracker.info(name, 'Compiling package source')
+  tracker.verbose(name, 'Compiling ......')
 
   const sourceFiles = glob
     .sync(`${sourceLocation}/**/*+(js|jsx)`, {
@@ -25,7 +25,8 @@ export default async ({ buildLocation, sourceLocation, name }, tracker) => {
       // console.error(`exec error: ${error}`)
       exit(error)
     } else {
-      tracker.info(name, 'Compiled!')
+      // tracker.info(' ')
+      tracker.info(name, 'Built!!')
       tracker.completeWork(1)
 
     }

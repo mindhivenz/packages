@@ -24,8 +24,8 @@ const logger = newGroup('build.js')
 const buildPackage = async (packageT0build, tracker) => {
   const { name, scope } = packageT0build.scopedName
   logBr()
-  tracker.verbose('publishing', packageT0build.name)
-  logPackageTitle(scope, name)
+  tracker.info(packageT0build.name, 'Building package......', )
+  // logPackageTitle(scope, name)
   cleanDestination(packageT0build, tracker)
   compileSources(packageT0build, tracker)
   copyAdditionalFiles(packageT0build, tracker)
@@ -49,17 +49,36 @@ try {
   tracker.addWork(includedPackages.length * 3)
 
   printIgnoredPackages()
-  asyncNpm.parallel(includedPackages.map(packageToBuild =>
-      async (callback) => {
-        await buildPackage(packageToBuild, tracker)
-        callback(null, `${packageToBuild.name} DONE!`)
-      }
-    ),
-    () => {
-      logBr()
-      // logSuccess('Done!')
+  logBr()
+
+  PackageUtilities.runParallelBatches([includedPackages], packageTobuild => (cb) => {
+    try {
+      // const { name, scope } = packageTobuild.scopedName
+      tracker.info(packageTobuild.name, 'Building package......')
+      // logPackageTitle(scope, name)
+      cleanDestination(packageTobuild, tracker)
+      compileSources(packageTobuild, tracker)
+      copyAdditionalFiles(packageTobuild, tracker)
+    } catch (err) {
+      cb(err)
     }
-  )
+  }, 4, (err) => {
+    if (err) logError(err)
+    tracker.info(name, 'DONE!!')
+    tracker.finish()
+  })
+
+  // asyncNpm.parallel(includedPackages.map(packageToBuild =>
+  //     async (callback) => {
+  //       await buildPackage(packageToBuild, tracker)
+  //       callback(null, `${packageToBuild.name} DONE!`)
+  //     }
+  //   ),
+  //   () => {
+  //     logBr()
+  //     // logSuccess('Done!')
+  //   }
+  // )
 
 } catch (error) {
   logError('Release failed due to an error', error)

@@ -6,7 +6,7 @@ import config from './config'
 
 export default ({ buildLocation, sourceLocation, name }, tracker) => {
 
-  tracker.info(name, 'Copying additional package files...')
+  tracker.verbose(name, 'Copying additional package files...')
   // log('Copying additional package files...')
   tracker.addWork(config.additionalFiles.length)
   config.additionalFiles.forEach((filename) => {
@@ -16,7 +16,7 @@ export default ({ buildLocation, sourceLocation, name }, tracker) => {
 
     cp('-Rf', src, buildLocation)
   })
-  tracker.info(name, 'Copied!')
+  tracker.verbose(name, 'Copied!')
   tracker.completeWork(1)
 
 }

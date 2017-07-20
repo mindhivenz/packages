@@ -1,9 +1,9 @@
 {
   "mindhive-packages": "0.0.1",
   "ignore": [
-    "@mindhive/documents",
-    "@mindhive/richtext",
-    "@mindhive/styles2"
+    "@mindhive/documentss",
+    "@mindhive/richtexts",
+    "@mindhive/styles2s"
   ],
   "additionalFiles": [
     "README.md", 
