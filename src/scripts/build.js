@@ -26,13 +26,15 @@ try {
   printIgnoredPackages(ignoreddPackages)
   logBr()
 
+
   PackageUtilities.runParallel(includedPackages, packageToBuild => (cb) => {
-    tracker.package('Building package......')
+    tracker.package(packageToBuild, 'Building package......')
     try {
       cleanDestination(packageToBuild, tracker)
       copyAdditionalFiles(packageToBuild, tracker)
       compileSources(packageToBuild, tracker, () => {
         tracker.package(packageToBuild, 'DONE!!')
+        tracker.finish()
       })
     } catch (err) {
       tracker.error(packageToBuild.name, err)
@@ -40,7 +42,6 @@ try {
     }
   }, 4, () => {
   })
-  tracker.finish()
 
 
 } catch (error) {

@@ -34,8 +34,6 @@ export const newTracker = (name, group = 'mhp') => {
   tracker.package = (pkg, msg) => {
     tracker.info(stylePackagePrefix(pkg, msg))
   }
-  tracker.getPackageMethod = pkg => message => tracker.package(pkg, message)
-  tracker.getPackageMethodVerbose = pkg => message => tracker.verbose(pkg.name, message)
   return tracker
 }
 export const log = compose(npmLogInfo, styleWhite)
