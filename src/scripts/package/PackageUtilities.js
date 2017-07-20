@@ -10,7 +10,7 @@ import config from '../lib/config'
  * A predicate that determines if a given package name satisfies a glob.
  *
  * @param {!String} name The package name
- * @param {String|Array<String>} glob The glob (or globs) to match a package name against
+ * @param {String|Array<String>} globs The glob (or globs) to match a package name against
  * @param {Boolean} negate Negate glob pattern matches
  * @return {Boolean} The packages with a name matching the glob
  */
@@ -28,13 +28,13 @@ function filterPackage(name, globs, negate = false) {
 
   if (negate) {
     return _globs.every((_glob) => {
-      console.log('negate', _glob, name)
+      // console.log('negate', _glob, name)
       return ! minimatch(name, _glob)
     })
   }
 
   return _globs.some((_glob) => {
-    console.log(_glob, name)
+    // console.log(_glob, name)
     return minimatch(name, _glob)
   })
   
@@ -49,18 +49,20 @@ export default class PackageUtilities {
       strict: true,
       absolute: true,
     }
-    glob.sync(path.join(config.sourcePath, '**/package.json'), globOpts)
+    glob.sync(path.join(config.sourcePath, '*/'), globOpts)
       .forEach((globResult) => {
         // https://github.com/isaacs/node-glob/blob/master/common.js#L104
         // glob always returns '\\' as '/' in windows, so everyone
         // gets normalized because we can't have nice things.
-        const packageConfigPath = path.normalize(globResult)
-        const packageDir = path.dirname(packageConfigPath)
-        const packageJson = readPkg.sync(packageConfigPath, { normalize: false })
-        packages.push(new Package(packageJson, packageDir))
+        const packagePath = path.normalize(globResult)
+        const buildDir = path.resolve(config.outPath, path.basename(packagePath))
+        const packageJson = readPkg.sync(packagePath, { normalize: false })
+        packages.push(new Package(packageJson, packagePath, buildDir))
       })
 
+
     return packages
+
   }
 
   /**

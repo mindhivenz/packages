@@ -4,16 +4,14 @@ import { log } from './utils'
 
 import config from './config'
 
-export default (packageData) => {
-  const sourceDir = packageData.src.dir
-  const outDir = packageData.out.dir
+export default ({ buildLocation, sourceLocation }) => {
 
   log('Copying additional package files...')
   config.additionalFiles.forEach((filename) => {
-    const src = path.resolve(sourceDir, filename)
+    const src = path.resolve(sourceLocation, filename)
 
     if (! test('-e', src)) return
 
-    cp('-Rf', src, outDir)
+    cp('-Rf', src, buildLocation)
   })
 }

@@ -2,26 +2,36 @@ import dedent from 'dedent'
 import log from 'npmlog'
 import path from 'path'
 import semver from 'semver'
+import npmSafeName from 'npm-safe-name'
 
 // import dependencyIsSatisfied from './utils/dependencyIsSatisfied'
 // import NpmUtilities from './NpmUtilities'
 
 export default class Package {
-  constructor(pkg, location) {
+  constructor(pkg, srcLocation, buildLocation) {
     this._package = pkg
-    this._location = location
+    this._sourceLocation = srcLocation
+    this._buildLocation = buildLocation
   }
 
   get name() {
     return this._package.name
   }
 
-  get location() {
-    return this._location
+  get scopedName() {
+    return npmSafeName(this._package.name)
+  }
+
+  get sourceLocation() {
+    return this._sourceLocation
+  }
+
+  get buildLocation() {
+    return this._buildLocation
   }
 
   get nodeModulesLocation() {
-    return path.join(this._location, 'node_modules')
+    return path.join(this._sourceLocation, 'node_modules')
   }
 
   get version() {

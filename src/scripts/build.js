@@ -18,12 +18,13 @@ import {
   logHeader,
 } from './utils/CliUtils'
 
-const buildPackage = async (mhPackage) => {
+const buildPackage = async (packageT0build) => {
+  const { name, scope } = packageT0build.scopedName
   logBr()
-  logPackageTitle(mhPackage.scope, mhPackage.name)
-  cleanDestination(mhPackage)
-  compileSources(mhPackage)
-  copyAdditionalFiles(mhPackage)
+  logPackageTitle(scope, name)
+  cleanDestination(packageT0build)
+  compileSources(packageT0build)
+  copyAdditionalFiles(packageT0build)
 
   // logSuccess('Done!')
   // logBr()
@@ -38,13 +39,13 @@ try {
   // const ignoredPackages = PackageUtilities.filterIgnoredPackages(packages)
   const includedPackages = PackageUtilities.filterIncludedPackages(packages)
   // console.log('===========================================')
-  console.log(includedPackages)
+  // console.log(includedPackages)
 
   printIgnoredPackages()
-  asyncNpm.parallel(getSrcPackages().map(mhPack =>
+  asyncNpm.parallel(includedPackages.map(packageToBuild =>
       async (callback) => {
-        await buildPackage(mhPack)
-        callback(null, `${mhPack.npmName} DONE!`)
+        await buildPackage(packageToBuild)
+        callback(null, `${packageToBuild.name} DONE!`)
       }
     ),
     () => {

@@ -5,22 +5,20 @@ import { exit, exec as execJs } from 'shelljs'
 import { NODE_BIN } from './config'
 import { log, logError, logPackage, execLoud, execAsync } from './utils'
 
-export default async (packageData) => {
-  const sourceDir = packageData.src.dir
-  const outDir = packageData.out.dir
+export default async ({ buildLocation, sourceLocation, name }) => {
 
   log('Compiling package...')
 
   const sourceFiles = glob
-    .sync(`${sourceDir}/**/*+(js|jsx)`, {
-      ignore: `${sourceDir}/node_modules/**/*.js`,
+    .sync(`${sourceLocation}/**/*+(js|jsx)`, {
+      ignore: `${sourceLocation}/node_modules/**/*.js`,
     })
-    .map(to => path.relative(sourceDir, to))
+    .map(to => path.relative(sourceLocation, to))
 
-  const bCommand = `cd ${sourceDir} && ` +
+  const bCommand = `cd ${sourceLocation} && ` +
     'cross-env BABEL_ENV=cjs ' +
     `${path.resolve(NODE_BIN)}/babel ${sourceFiles.join(' ')} ` +
-    `--out-dir ${path.resolve(outDir)}`
+    `--out-dir ${path.resolve(buildLocation)}`
 
 
   await execJs(bCommand, { silent: true, async: true }, (error) => {
@@ -28,7 +26,7 @@ export default async (packageData) => {
       // console.error(`exec error: ${error}`)
       exit(error)
     } else {
-      logPackage(`Build ${packageData.name} finished!`)
+      logPackage(`Build ${name} finished!`)
     }
   })
   // processObj.stdout.on('data', e => {
