@@ -156,26 +156,26 @@ export default class Command {
   get options() {
     if (! this._options) {
       // Command config object is either "commands" or "command".
-      const { commands, command } = this.repository.lernaJson
+      // const { commands, command } = this.repository.lernaJson
 
       // The current command always overrides otherCommandConfigs
-      const lernaCommandOverrides = [
-        this.name,
-        ...this.otherCommandConfigs,
-      ].map(name => (commands || command || {})[name])
+      // const lernaCommandOverrides = [
+      //   this.name,
+      //   ...this.otherCommandConfigs,
+      // ].map(name => (commands || command || {})[name])
 
       this._options = _.defaults(
         {},
         // CLI flags, which if defined overrule subsequent values
         this._flags,
         // Namespaced command options from `lerna.json`
-        ...lernaCommandOverrides,
+        // ...lernaCommandOverrides,
         // Global options from `lerna.json`
-        this.repository.lernaJson,
+        // this.repository.lernaJson,
         // Command specific defaults
         this.defaultOptions,
         // Deprecated legacy options in `lerna.json`
-        this._legacyOptions()
+        // this._legacyOptions()
       )
     }
 
@@ -191,10 +191,6 @@ export default class Command {
 
   run() {
     log.info('version', this.lernaVersion)
-
-    if (this.repository.isIndependent()) {
-      log.info('versioning', 'independent')
-    }
 
     this.runValidations()
     this.runPreparations()
