@@ -1,5 +1,6 @@
 {
-  "mindhive-packages": "0.0.1",
+  "name": "mindhive-packages",
+  "version": "0.0.1",
   "ignore": [
     "@mindhive/styles2"
   ],

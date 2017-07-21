@@ -3,7 +3,6 @@ import { exit } from 'shelljs'
 
 import { getSourceDir } from '../package/packageUtils'
 import config from '../tasks/config'
-import PromptUtilities from '../utils/PromptUtilities'
 import fsUtils from '../utils/FileSystemUtilities'
 
 import inputPackageData from '../tasks/inputNewPackageFields'
@@ -13,11 +12,11 @@ import createNewPackageJson from '../tasks/createNewPackageJson'
 import Command from './Command'
 
 import {
-  logBr,
   log,
+  logBr,
+  logError,
   logSuccess,
   newTracker,
-  logWarn,
   logHeader,
   logPackage,
 } from '../utils/CliUtils'
@@ -33,28 +32,22 @@ export default class NewCommand extends Command {
   async initialize(callback) {
     logHeader('Create @mindhive/package')
     let proceed = false
-    this.tracker = newTracker('new')
+    const tracker = newTracker('new')
 
     this.packageData = { packageName: newPackageName || null }
+
     try {
       while (! proceed) {
         this.packageData = await inputPackageData(this.packageData)
-        // proceed = confirmPackageData(this.packageData)
-        logBr()
-        log('Package to be created:')
-        this.tracker.info('name        ', this.packageData.name)
-        this.tracker.info('version     ', this.packageData.version)
-        this.tracker.info('author      ', this.packageData.author)
-        this.tracker.info('description ', this.packageData.description)
-        // log(`Key words: ${packageData.keywords}`)
-        proceed = await PromptUtilities.confirm('Do you want to create this package?', true)
+        proceed = await confirmPackageData(this.packageData, tracker)
         if (proceed === 'quit') {
-          logWarn('Quit without creating package!')
-          exit(0)
+          tracker.warn('Quit without creating package!')
+          logBr()
         }
 
       }
     } catch (err) {
+      logError(err)
     }
     callback(null, true)
   }
@@ -70,7 +63,7 @@ export default class NewCommand extends Command {
     createNewPackageJson(newPackageDir, this.packageData)
 
     logSuccess('Done!')
-    callback(null, true)
+    callback()
 
   }
 }

@@ -96,15 +96,8 @@ export default class Command {
     // log.silly('flags', filterFlags(flags))
 
     this.config = config
-    console.log(this.config.rootPath)
-    console.log(this.config.ignore)
-    console.log(this.config.additionalFiles)
-    console.log(this.config.sourcePath)
-    console.log(this.config.basePackage)
-    console.log(this.config.outPath)
-    console.log(this.config.registry)
 
-    // this.lernaVersion = require('../package.json').version
+    this.mhpVersion = this.config.version
     // this.repository = new Repository(cwd)
     this.logger = log.newGroup(this.name)
 
@@ -200,7 +193,7 @@ export default class Command {
   }
 
   run() {
-    log.info('version', this.lernaVersion)
+    log.info('version', this.mhpVersion)
 
     this.runValidations()
     this.runPreparations()

@@ -72,14 +72,12 @@ async function _prompt(questions) {
   return answers
 }
 
-async function _confirm(message, quit = false) {
-  const choices = [
-    { key: 'y', name: 'Yes', value: true },
-    { key: 'n', name: 'No', value: false },
-  ]
-  if (quit) {
-    choices.push({ key: 'q', name: 'Quit', value: 'quit' })
-  }
+const CONFIRM_CHOICES = [
+  { key: 'y', name: 'Yes', value: true },
+  { key: 'n', name: 'No', value: false },
+]
+
+async function _confirm(message, choices = CONFIRM_CHOICES) {
   const defaultChoice = choices.length + 1 // default to help in order to avoid clicking straight through
   const answers = await _prompt([{
     type: 'expand',

@@ -3,6 +3,7 @@ import fullname from 'fullname'
 import semver from 'semver'
 import { packageFullName, packageDirExists } from '../package/packageUtils'
 import PromptUtilities from '../utils/PromptUtilities'
+import { logBr } from '../utils/CliUtils'
 
 const someSafeNpmName = 'valid-name'
 
@@ -35,17 +36,17 @@ const questions = ({ packageScope, packageName, version, author, description }) 
   },
   {
     type: 'input',
-    name: 'author',
-    message: 'Author',
-    default: author,
-  },
-  {
-    type: 'input',
     name: 'version',
     message: 'Version',
     filter: semver.valid,
     validate: validateVersion,
     default: version || '0.0.0',
+  },
+  {
+    type: 'input',
+    name: 'author',
+    message: 'Author',
+    default: author,
   },
   {
     type: 'input',
@@ -61,17 +62,10 @@ const questions = ({ packageScope, packageName, version, author, description }) 
   // },
 ])
 
-const getUserInput = async (defaults) => {
+export default async (defaults) => {
+  logBr()
   const questionDefaults = Object.assign({}, { author: await fullname() }, defaults)
   const packageData = await PromptUtilities.questions(questions(questionDefaults))
   packageData.name = packageFullName(packageData.packageScope, packageData.packageName)
   return packageData
 }
-
-// const getUserInput = async (defaults) => {
-//   return PromptUtilities.questions(questions(Object.assign({}, { author: await fullname() }, defaults)))
-// }
-//
-
-export default data => getUserInput(data)
-
