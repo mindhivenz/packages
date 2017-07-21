@@ -1,16 +1,13 @@
 import cleanDestination from '../tasks/clean'
 import compileSources from '../tasks/compileSources'
 import copyFiles from '../tasks/copyFiles'
-import selectSpecificPackage from '../tasks/selectPackageToBuild'
+import selectSpecificPackage from '../tasks/selectSpecificPackage'
 
 import { printIgnoredPackages } from '../package/packageUtils'
 
 import {
   logBr,
   logHeader,
-  logError,
-  log,
-  logSuccess,
 } from '../utils/CliUtils'
 
 import PackageUtilities from '../package/PackageUtilities'

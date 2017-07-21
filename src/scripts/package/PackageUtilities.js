@@ -110,6 +110,7 @@ export default class PackageUtilities {
     async.parallelLimit(tasks.map(makeTask), concurrency, callback)
   }
 
+
   static runParallelBatches(batches, makeTask, concurrency, callback) {
     async.series(batches.map(batch => (cb) => {
       async.parallelLimit(batch.map(makeTask), concurrency, cb)

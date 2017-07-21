@@ -51,6 +51,18 @@ class PromptUtilities {
 
 }
 
+async function _input(message, { filter, validate } = {}) {
+  log.pause()
+  const answers = await inquirer.prompt([{
+    type: 'input',
+    name: 'input',
+    message,
+    filter,
+    validate,
+  }])
+  log.resume()
+  return answers.input
+}
 
 async function _select(message, choices) {
   log.pause()
@@ -93,4 +105,5 @@ export default {
   questions: _prompt,
   confirm: _confirm,
   select: _select,
+  input: _input,
 }
