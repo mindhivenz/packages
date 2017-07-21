@@ -4,6 +4,7 @@
 
 // import { getSourceDir } from '../package/packageUtils'
 // import config from '../tasks/config'
+import confirmVersions from '../tasks/confirmVersions'
 import getVersionsForPackages from '../tasks/getVersionsForPackages'
 import PackageUtilities from '../package/PackageUtilities'
 
@@ -15,7 +16,7 @@ import PackageUtilities from '../package/PackageUtilities'
 import Command from './Command'
 
 import {
-  // logBr,
+  logBr,
   log,
   // logSuccess,
   // logWarn,
@@ -34,18 +35,24 @@ export default class NewCommand extends Command {
   async initialize(callback) {
     logHeader('Publish @mindhive/package')
     const packages = PackageUtilities.getPackages()
-    getVersionsForPackages(packages, (versions) => {
-      packages.forEach((pkg) => {
-        log(pkg.npmName, versions[pkg.npmName])
-      })
+    getVersionsForPackages(packages, async (versions) => {
+      if (! await confirmVersions(packages, versions, this.logger)) {
+        this.logger.warn('Quit without creating package!')
+        logBr()
+        callback(null, false)
+        return
+      }
+      callback(null, true)
     })
-    callback(null, false)
   }
 
   execute(callback) {
+    log('Execute command!')
+
     callback(null, true)
 
   }
+
 
 }
 

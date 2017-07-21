@@ -18,6 +18,7 @@ const npmLogWarn = npmlog.warn.bind(npmlog)
 
 const DONE = chalk.reset.inverse.bold.green(' DONE ')
 const styleSuccess = chalk.keyword('lime').bold
+export const styleError = chalk.red.bold
 const styleWhite = chalk.reset.white
 const styleWhiteDim = styleWhite.dim
 const styleWhiteBold = styleWhite.bold
