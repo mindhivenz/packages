@@ -85,22 +85,26 @@ export default class Command {
   constructor(input, flags, cwd) {
     this._cwd = cwd
     log.pause()
+    this.logger = newLogger(this.name)
 
     if (flags.loglevel) {
       log.level = flags.loglevel
     }
 
     this.input = input
+    // this.logger.info('input', input)
+    // this.logger.info('flags', flags)
+
     this._flags = flags
 
-    log.silly('input', input)
+    // log.silly('input', input)
+    // log.silly('flags',flags)
     // log.silly('flags', filterFlags(flags))
 
     this.config = config
 
     this.mhpVersion = this.config.version
     // this.repository = new Repository(cwd)
-    this.logger = newLogger(this.name)
 
     log.resume()
   }

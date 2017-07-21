@@ -6,9 +6,13 @@ import { printIgnoredPackages } from '../package/packageUtils'
 import {
   logBr,
   logHeader,
+  logError,
+  log,
+  logSuccess,
 } from '../utils/CliUtils'
 
 import PackageUtilities from '../package/PackageUtilities'
+import Errors from '../package/Errors'
 
 import Command from './Command'
 
@@ -20,9 +24,27 @@ export default class BuildCommand extends Command {
   initialize(callback) {
     logHeader('Building @mindhive/packages.....')
     const packages = PackageUtilities.getPackages()
-    this.packagesToBuild = PackageUtilities.filterIncludedPackages(packages)
+    const specifiedPackage = this.input[0]
+    try {
+      if (specifiedPackage) {
+        this.packagesToBuild = PackageUtilities.filterPackagesByName(packages, specifiedPackage)
+        this.logger.info('Building one package:', specifiedPackage)
+      } else {
+        this.packagesToBuild = PackageUtilities.filterIncludedPackages(packages)
+        printIgnoredPackages(PackageUtilities.filterIgnoredPackages(packages), this.logger)
+      }
+    } catch (err) {
+      logError(err)
+      if (err.is(Errors.PackageNotFoundError)) {
+        logBr()
+        logSuccess('Available packages')
+        packages.forEach(pkg => log(' + ', pkg.npmName))
+      }
+      logBr()
+      callback(null, false)
+      return
+    }
     this.additionalFiles = this.config.additionalFiles
-    printIgnoredPackages(PackageUtilities.filterIgnoredPackages(packages), this.logger)
     logBr()
     callback(null, true)
   }

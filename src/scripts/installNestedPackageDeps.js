@@ -3,7 +3,7 @@
 import {
   log,
   exec,
-} from './lib/utils'
+} from './utils/utils'
 
 import getSrcPackages from './package/packageUtils'
 

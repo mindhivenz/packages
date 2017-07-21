@@ -11,8 +11,6 @@ import {
   logHeader,
 } from '../utils/CliUtils'
 
-const newPackageName = process.argv[2]
-
 export default class NewCommand extends Command {
   get requiresGit() {
     return false
@@ -20,10 +18,11 @@ export default class NewCommand extends Command {
 
   async initialize(callback) {
     logHeader('Create @mindhive/package')
+    this.newPackageName = this.input[0]
 
     let proceed = false
 
-    this.packageData = { packageName: newPackageName || null }
+    this.packageData = { packageName: this.newPackageName || null }
     this.basePackage = this.config.basePackageSource
 
     try {

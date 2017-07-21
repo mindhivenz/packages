@@ -1,4 +1,5 @@
-import BuildCommand from './commands/BuildCommand'
+import yargs from 'yargs'
+import { handler } from './commands/BuildCommand'
 
-new BuildCommand(process.argv, {}, null).run()
+handler(yargs.argv)
 

@@ -121,6 +121,7 @@
     "sinon": "^1.17.1",
     "string-length": "^1.0.1",
     "webpack": "^2.4.1",
-    "xstream": "^5.0.5"
+    "xstream": "^5.0.5",
+    "yargs": "^8.0.2"
   }
 }

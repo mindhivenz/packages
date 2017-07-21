@@ -1,4 +1,8 @@
-import NewCommand from './commands/NewCommand'
+import yargs from 'yargs'
+import { handler } from './commands/NewCommand'
+// import NewCommand, { handler } from './commands/NewCommand'
 
-new NewCommand(process.argv, {}, null).run()
+handler(yargs.argv)
+
+// new NewCommand(process.argv, {}, null).run()
 

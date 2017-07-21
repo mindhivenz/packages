@@ -7,6 +7,7 @@ import async from 'async'
 
 import Package from './Package'
 import config from '../tasks/config'
+import Errors from './Errors'
 
 /**
  * A predicate that determines if a given package name satisfies a glob.
@@ -76,7 +77,7 @@ export default class PackageUtilities {
       packages = packages.filter(pkg => filterPackage(pkg.npmName, scope))
 
       if (! packages.length) {
-        throw new Error(`No packages found that match scope '${scope}'`)
+        throw new Errors.PackageNotFoundError(`No packages found that match '${scope}'`)
       }
     }
 
@@ -84,7 +85,7 @@ export default class PackageUtilities {
       packages = packages.filter(pkg => filterPackage(pkg.npmName, ignore, negate))
 
       if (! packages.length) {
-        throw new Error(`No packages remain after ignoring '${ignore}'`)
+        throw new Errors.NoPackagesLeftError(`No packages remain after ignoring '${ignore}'`)
       }
     }
 
@@ -92,9 +93,12 @@ export default class PackageUtilities {
   }
 
 
+  static filterPackagesByName(packagesToFilter, name) {
+    return this.filterPackages(packagesToFilter, { scope: name })
+  }
+
   static filterIncludedPackages(packagesToFilter) {
-    return this.filterPackages(packagesToFilter, { ignore: config.ignore }
-    )
+    return this.filterPackages(packagesToFilter, { ignore: config.ignore })
   }
 
 
