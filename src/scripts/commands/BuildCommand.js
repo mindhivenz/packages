@@ -1,6 +1,8 @@
 import cleanDestination from '../tasks/clean'
 import compileSources from '../tasks/compileSources'
 import copyFiles from '../tasks/copyFiles'
+import selectSpecificPackage from '../tasks/selectPackageToBuild'
+
 import { printIgnoredPackages } from '../package/packageUtils'
 
 import {
@@ -12,7 +14,6 @@ import {
 } from '../utils/CliUtils'
 
 import PackageUtilities from '../package/PackageUtilities'
-import Errors from '../package/Errors'
 
 import Command from './Command'
 
@@ -21,29 +22,21 @@ export default class BuildCommand extends Command {
     return false
   }
 
-  initialize(callback) {
+  async initialize(callback) {
     logHeader('Building @mindhive/packages.....')
     const packages = PackageUtilities.getPackages()
     const specifiedPackage = this.input[0]
-    try {
-      if (specifiedPackage) {
-        this.packagesToBuild = PackageUtilities.filterPackagesByName(packages, specifiedPackage)
-        this.logger.info('Building one package:', specifiedPackage)
-      } else {
-        this.packagesToBuild = PackageUtilities.filterIncludedPackages(packages)
-        printIgnoredPackages(PackageUtilities.filterIgnoredPackages(packages), this.logger)
+    if (specifiedPackage) {
+      this.packagesToBuild = selectSpecificPackage(packages, specifiedPackage, this.logger)
+      if (this.packagesToBuild === null) {
+        callback(null, false)
+        return
       }
-    } catch (err) {
-      logError(err)
-      if (err.is(Errors.PackageNotFoundError)) {
-        logBr()
-        logSuccess('Available packages')
-        packages.forEach(pkg => log(' + ', pkg.npmName))
-      }
-      logBr()
-      callback(null, false)
-      return
+    } else {
+      this.packagesToBuild = PackageUtilities.filterIncludedPackages(packages)
+      printIgnoredPackages(PackageUtilities.filterIgnoredPackages(packages), this.logger)
     }
+
     this.additionalFiles = this.config.additionalFiles
     logBr()
     callback(null, true)
