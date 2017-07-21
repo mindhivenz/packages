@@ -101,9 +101,18 @@ async function _confirm(message, choices = CONFIRM_CHOICES) {
   return answers.confirm
 }
 
+const _confirmRedo = async message => await _confirm(
+  message, [
+    { key: 'y', name: 'Yes', value: true },
+    { key: 'n', name: 'No, enter data again', value: false },
+    { key: 'q', name: 'Quit', value: 'quit' },
+  ]
+)
+
 export default {
   questions: _prompt,
   confirm: _confirm,
+  confirmRedo: _confirmRedo,
   select: _select,
   input: _input,
 }

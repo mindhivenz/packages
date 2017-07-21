@@ -17,11 +17,11 @@ const npmLogError = npmlog.error.bind(npmlog)
 const npmLogWarn = npmlog.warn.bind(npmlog)
 
 const DONE = chalk.reset.inverse.bold.green(' DONE ')
-const styleSuccess = chalk.keyword('lime').bold
+export const styleSuccess = chalk.keyword('lime').bold
 export const styleError = chalk.red.bold
 const styleWhite = chalk.reset.white
 const styleWhiteDim = styleWhite.dim
-const styleWhiteBold = styleWhite.bold
+export const styleWhiteBold = styleWhite.bold
 
 export const stylePackage = chalk.reset.bold.magenta
 export const stylePackagePrefix = ({ scope, name }, message) =>
