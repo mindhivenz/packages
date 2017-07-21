@@ -4,9 +4,9 @@ import { exec as execJs } from 'shelljs'
 
 import { NODE_BIN } from './config'
 
-export default ({ buildLocation, sourceLocation, name }, tracker, cb) => {
+export default ({ buildLocation, sourceLocation, name }, logger, cb) => {
 
-  tracker.verbose(name, 'Compiling ......')
+  logger.verbose(name, 'Compiling ......')
 
   const sourceFiles = glob
     .sync(`${sourceLocation}/**/*+(js|jsx)`, {

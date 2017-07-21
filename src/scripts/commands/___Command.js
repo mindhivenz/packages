@@ -29,18 +29,18 @@ export default class BuildCommand extends Command {
   }
 
   execute(callback) {
-    const tracker = this.logger.newItem('clean')
-    tracker.addWork(this.directoriesToDelete.length)
+    const logger = this.logger.newItem('clean')
+    logger.addWork(this.directoriesToDelete.length)
 
     async.parallelLimit(this.directoriesToDelete.map(dirPath => (cb) => {
-      tracker.info('clean', 'removing', dirPath)
+      logger.info('clean', 'removing', dirPath)
       // FileSystemUtilities.rimraf(dirPath, (err) => {
-      //   tracker.completeWork(1);
+      //   logger.completeWork(1);
       //   cb(err)
       cb(null)
       // });
     }), this.concurrency, (err) => {
-      tracker.finish()
+      logger.finish()
 
       if (err) {
         callback(err)

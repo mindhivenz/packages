@@ -17,7 +17,7 @@ const npmLogError = npmlog.error.bind(npmlog)
 const npmLogWarn = npmlog.warn.bind(npmlog)
 
 const DONE = chalk.reset.inverse.bold.green(' DONE ')
-const styleSuccess = chalk.green.bold
+const styleSuccess = chalk.keyword('lime').bold
 const styleWhite = chalk.reset.white
 const styleWhiteDim = styleWhite.dim
 const styleWhiteBold = styleWhite.bold
@@ -29,12 +29,12 @@ export const stylePackagePrefix = ({ scope, name }, message) =>
 
 export const newGroup = name => npmlog.newGroup(name)
 
-export const newTracker = (name, group = 'mhp') => {
-  const tracker = newGroup(group).newItem(name)
-  tracker.package = (pkg, msg) => {
-    tracker.info(stylePackagePrefix(pkg, msg))
+export const newLogger = (name, group = 'mhp') => {
+  const logger = newGroup(group).newItem(name)
+  logger.package = (pkg, msg) => {
+    logger.info(stylePackagePrefix(pkg, msg))
   }
-  return tracker
+  return logger
 }
 export const log = compose(npmLogInfo, styleWhite)
 export const logBr = () => npmLogInfo('')

@@ -3,6 +3,7 @@ import dedent from 'dedent'
 import log from 'npmlog'
 
 import config from '../tasks/config'
+import { newLogger } from '../utils/CliUtils'
 
 // import ChildProcessUtilities from '../utils/ChildProcessUtilities'
 // import FileSystemUtilities from '../utils/FileSystemUtilities'
@@ -99,7 +100,7 @@ export default class Command {
 
     this.mhpVersion = this.config.version
     // this.repository = new Repository(cwd)
-    this.logger = log.newGroup(this.name)
+    this.logger = newLogger(this.name)
 
     log.resume()
   }

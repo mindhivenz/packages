@@ -1,0 +1,31 @@
+{
+  "name": "@mindhive/richtext",
+  "version": "0.0.8",
+  "description": "Rich Text Editing components based on draft from FB",
+  "keywords": [],
+  "author": "Nick Virtue",
+  "private": false,
+  "main": "index.js",
+  "scripts": {
+    "test": "../../scripts/test.sh",
+    "build": "../../scripts/build.sh",
+    "upgrade": "yarn upgrade"
+  },
+  "repository": {
+    "old": "git",
+    "url": "git+ssh://git@github.com/mindhivenz/packages.git"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/mindhivenz/packages",
+  "bugs": {
+    "url": "https://github.com/mindhivenz/packages/issues"
+  },
+  "peerDependencies": {
+    "@mindhive/styles": "^0.0.26"
+  },
+  "dependencies": {
+    "draft-js": "^0.10.1",
+    "draft-js-export-html": "^0.5.4",
+    "recompose": "^0.24.0"
+  }
+}

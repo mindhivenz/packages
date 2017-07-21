@@ -4,9 +4,7 @@ import copyFiles from '../tasks/copyFiles'
 import { printIgnoredPackages } from '../package/packageUtils'
 
 import {
-  log,
   logBr,
-  newTracker,
   logHeader,
 } from '../utils/CliUtils'
 
@@ -24,37 +22,41 @@ export default class BuildCommand extends Command {
     const packages = PackageUtilities.getPackages()
     this.packagesToBuild = PackageUtilities.filterIncludedPackages(packages)
     this.additionalFiles = this.config.additionalFiles
-    printIgnoredPackages(PackageUtilities.filterIgnoredPackages(packages))
+    printIgnoredPackages(PackageUtilities.filterIgnoredPackages(packages), this.logger)
     logBr()
     callback(null, true)
   }
 
 
   execute(callback) {
-    const tracker = newTracker('build')
-    tracker.addWork(this.packagesToBuild.length)
-    PackageUtilities.runParallel(this.packagesToBuild, packageToBuild => (cb) => {
-      tracker.package(packageToBuild, 'Building package......')
+    const logger = this.logger
+    logger.addWork(this.packagesToBuild.length * 3)
+    PackageUtilities.runParallel(this.packagesToBuild, pkg => (cb) => {
+      logger.package(pkg, 'Building package......')
       try {
-        cleanDestination(packageToBuild, tracker)
-        copyFiles(packageToBuild, this.additionalFiles, tracker)
-        compileSources(packageToBuild, tracker, () => {
-          tracker.package(packageToBuild, 'DONE!!')
-          tracker.finish()
+        cleanDestination(pkg, logger)
+        copyFiles(pkg, this.additionalFiles, logger)
+        compileSources(pkg, logger, () => {
+          logger.package(pkg, '...complete!')
+          logger.completeWork(1)
+          cb()
         })
       } catch (err) {
-        tracker.error(packageToBuild.name, err)
+        logger.error(pkg.name, err)
         cb(err)
       }
     }, this.concurrency, (err) => {
-      tracker.finish()
-
+      logBr()
       if (err) {
+        logger.error('build', 'Failed!')
+        logger.error(err)
         callback(err)
       } else {
-        this.logger.success('build', 'finished')
+        logger.info('build', 'Completed successfully!')
         callback(null, true)
       }
+      logBr()
+      logger.finish()
     })
 
 

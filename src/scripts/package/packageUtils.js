@@ -6,12 +6,11 @@ import npmSafeName from 'npm-safe-name'
 import fsUtils from '../utils/FileSystemUtilities'
 
 import {
-  logWarn,
   fileExists,
   isDirectory,
 } from '../utils/utils'
 
-import configObj, { CONFIG_PATH } from '../tasks/config'
+import configObj, { CONFIG_FILE } from '../tasks/config'
 
 const ignorePackages = configObj.ignore
 
@@ -19,12 +18,13 @@ let allPackageNames
 let includedPackageNames
 let excludedPackageNames
 
-export const printIgnoredPackages = (ignoredPackages) => {
+export const printIgnoredPackages = (ignoredPackages, logger) => {
   if (ignoredPackages.length > 0) {
-    logWarn(`Ignoring packages (from ${CONFIG_PATH})`)
-    ignoredPackages.forEach(ignore => logWarn(` - ${ignore.npmName}`))
+    logger.warn(`Ignoring packages (from ${CONFIG_FILE})`)
+    ignoredPackages.forEach(ignore => logger.info('ignore', ignore.npmName))
   }
 }
+
 const makeSrcPackageNames = () => {
   if (! allPackageNames) {
     allPackageNames = fs

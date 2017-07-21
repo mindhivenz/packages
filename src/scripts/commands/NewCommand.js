@@ -1,28 +1,17 @@
-import path from 'path'
-import { exit } from 'shelljs'
-
-import { getSourceDir } from '../package/packageUtils'
-import config from '../tasks/config'
-import fsUtils from '../utils/FileSystemUtilities'
-
 import inputPackageData from '../tasks/inputNewPackageFields'
 import confirmPackageData from '../tasks/confirmNewPackageData'
-import createNewPackageJson from '../tasks/createNewPackageJson'
+import createNewPackage from '../tasks/createNewPackage'
 
 import Command from './Command'
 
 import {
-  log,
   logBr,
   logError,
   logSuccess,
-  newTracker,
   logHeader,
-  logPackage,
 } from '../utils/CliUtils'
 
 const newPackageName = process.argv[2]
-const basePackage = path.resolve(config.basePackage, 'src')
 
 export default class NewCommand extends Command {
   get requiresGit() {
@@ -31,18 +20,21 @@ export default class NewCommand extends Command {
 
   async initialize(callback) {
     logHeader('Create @mindhive/package')
+
     let proceed = false
-    const tracker = newTracker('new')
 
     this.packageData = { packageName: newPackageName || null }
+    this.basePackage = this.config.basePackageSource
 
     try {
       while (! proceed) {
         this.packageData = await inputPackageData(this.packageData)
-        proceed = await confirmPackageData(this.packageData, tracker)
+        proceed = await confirmPackageData(this.packageData, this.logger)
         if (proceed === 'quit') {
-          tracker.warn('Quit without creating package!')
+          this.logger.warn('Quit without creating package!')
           logBr()
+          callback(null, false)
+          return
         }
 
       }
@@ -52,19 +44,11 @@ export default class NewCommand extends Command {
     callback(null, true)
   }
 
-  execute(callback) {
-    const newPackageDir = getSourceDir(this.packageData.packageName)
-    logSuccess('Creating new package:')
-    logPackage(this.packageData.name)
-    log(`In: ${newPackageDir}`)
-
-    fsUtils.copySync(basePackage, newPackageDir)
-
-    createNewPackageJson(newPackageDir, this.packageData)
-
-    logSuccess('Done!')
-    callback()
-
+  async execute(callback) {
+    const success = await createNewPackage(this.basePackage, this.packageData, this.logger)
+    if (success) logSuccess('Package created successfully')
+    logBr()
+    callback(null, success)
   }
 }
 
