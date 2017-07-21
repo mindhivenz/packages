@@ -2,6 +2,8 @@ import _ from 'lodash'
 import dedent from 'dedent'
 import log from 'npmlog'
 
+import config from '../tasks/config'
+
 // import ChildProcessUtilities from '../utils/ChildProcessUtilities'
 // import FileSystemUtilities from '../utils/FileSystemUtilities'
 // import GitUtilities from '../utils/GitUtilities'
@@ -92,6 +94,15 @@ export default class Command {
 
     log.silly('input', input)
     // log.silly('flags', filterFlags(flags))
+
+    this.config = config
+    console.log(this.config.rootPath)
+    console.log(this.config.ignore)
+    console.log(this.config.additionalFiles)
+    console.log(this.config.sourcePath)
+    console.log(this.config.basePackage)
+    console.log(this.config.outPath)
+    console.log(this.config.registry)
 
     // this.lernaVersion = require('../package.json').version
     // this.repository = new Repository(cwd)

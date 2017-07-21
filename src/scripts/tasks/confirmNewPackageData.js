@@ -1,8 +1,7 @@
 import npmSafeName from 'npm-safe-name'
 import fullname from 'fullname'
 import semver from 'semver'
-
-import { packageDirExists } from '../package/packageUtils'
+import { packageFullName, packageDirExists } from '../package/packageUtils'
 import PromptUtilities from '../utils/PromptUtilities'
 
 const someSafeNpmName = 'valid-name'
@@ -62,10 +61,17 @@ const questions = ({ packageScope, packageName, version, author, description }) 
   // },
 ])
 
-async function getUserInput(defaults) {
-  return PromptUtilities.questions(questions(Object.assign({}, { author: await fullname() }, defaults)))
+const getUserInput = async (defaults) => {
+  const questionDefaults = Object.assign({}, { author: await fullname() }, defaults)
+  const packageData = await PromptUtilities.questions(questions(questionDefaults))
+  packageData.name = packageFullName(packageData.packageScope, packageData.packageName)
+  return packageData
 }
 
+// const getUserInput = async (defaults) => {
+//   return PromptUtilities.questions(questions(Object.assign({}, { author: await fullname() }, defaults)))
+// }
+//
 
 export default data => getUserInput(data)
 

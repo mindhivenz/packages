@@ -6,7 +6,7 @@ import async from 'async'
 
 
 import Package from './Package'
-import config from '../lib/config'
+import config from '../tasks/config'
 
 /**
  * A predicate that determines if a given package name satisfies a glob.

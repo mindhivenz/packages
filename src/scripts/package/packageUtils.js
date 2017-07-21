@@ -11,7 +11,7 @@ import {
   isDirectory,
 } from '../utils/utils'
 
-import configObj, { CONFIG_PATH } from '../lib/config'
+import configObj, { CONFIG_PATH } from '../tasks/config'
 
 const ignorePackages = configObj.ignore
 
@@ -72,7 +72,7 @@ const makePackageObj = (name) => {
 }
 
 
-export const packageFullName = (scope, name) => npmSafeName(name, scope)
+export const packageFullName = (scope, name) => npmSafeName(name, scope).toString()
 
 export const getPackageJson = jsonPath => jsonfile.readFileSync(jsonPath)
 

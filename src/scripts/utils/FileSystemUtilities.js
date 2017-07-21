@@ -1,12 +1,11 @@
-import pathExists from 'path-exists'
+import { cp, test } from 'shelljs'
 import log from 'npmlog'
 import fs from 'fs'
-import { cp } from 'shelljs'
 
-
-const pathExistsSync = (filePath) => {
-  log.silly('existsSync', filePath)
-  return pathExists.sync(filePath)
+const _pathExistsSync = (path) => {
+  log.silly('existsSync', path)
+  return test('-e', path)
+  // return pathExists.sync(filePath)
 }
 
 const _writeFileSync = (filePath, string) => {
@@ -14,13 +13,13 @@ const _writeFileSync = (filePath, string) => {
   fs.writeFileSync(filePath, string, 'utf8')
 }
 
-const _copySync = async (fromPath, toPath) => {
+const _copySync = (fromPath, toPath) => {
   log.silly('copySync', fromPath, toPath)
   cp('-Rf', fromPath, toPath)
 }
 
 export default {
-  pathExistsSync,
+  pathExistsSync: _pathExistsSync,
   writeFileSync: _writeFileSync,
   copySync: _copySync,
 }

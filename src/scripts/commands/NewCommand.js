@@ -1,13 +1,14 @@
 import path from 'path'
 import { exit } from 'shelljs'
 
-import { packageFullName, getSourceDir } from '../package/packageUtils'
-import config from '../lib/config'
+import { getSourceDir } from '../package/packageUtils'
+import config from '../tasks/config'
 import PromptUtilities from '../utils/PromptUtilities'
 import fsUtils from '../utils/FileSystemUtilities'
 
-import inputPackageData from '../lib/inputNewPackageFields'
-import createNewPackageJson from '../lib/createNewPackageJson'
+import inputPackageData from '../tasks/inputNewPackageFields'
+import confirmPackageData from '../tasks/confirmNewPackageData'
+import createNewPackageJson from '../tasks/createNewPackageJson'
 
 import Command from './Command'
 
@@ -15,12 +16,13 @@ import {
   logBr,
   log,
   logSuccess,
+  newTracker,
   logWarn,
   logHeader,
   logPackage,
 } from '../utils/CliUtils'
 
-const newPackageName = `${process.argv[2]}`
+const newPackageName = process.argv[2]
 const basePackage = path.resolve(config.basePackage, 'src')
 
 export default class NewCommand extends Command {
@@ -31,18 +33,21 @@ export default class NewCommand extends Command {
   async initialize(callback) {
     logHeader('Create @mindhive/package')
     let proceed = false
-    this.packageData = { packageName: newPackageName }
+    this.tracker = newTracker('new')
+
+    this.packageData = { packageName: newPackageName || null }
     try {
       while (! proceed) {
         this.packageData = await inputPackageData(this.packageData)
+        // proceed = confirmPackageData(this.packageData)
         logBr()
-        this.packageData.name = packageFullName(this.packageData.packageScope, this.packageData.packageName)
-        logSuccess('New package details:')
-        logPackage(this.packageData.name)
-        log(`Author: ${this.packageData.author}`)
-        log(`Description: ${this.packageData.description}`)
+        log('Package to be created:')
+        this.tracker.info('name        ', this.packageData.name)
+        this.tracker.info('version     ', this.packageData.version)
+        this.tracker.info('author      ', this.packageData.author)
+        this.tracker.info('description ', this.packageData.description)
         // log(`Key words: ${packageData.keywords}`)
-        proceed = await PromptUtilities.confirm('Create package from above data?', true)
+        proceed = await PromptUtilities.confirm('Do you want to create this package?', true)
         if (proceed === 'quit') {
           logWarn('Quit without creating package!')
           exit(0)
