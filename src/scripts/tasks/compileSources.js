@@ -2,7 +2,7 @@ import glob from 'glob'
 import path from 'path'
 import { exec as execJs } from 'shelljs'
 
-import { NODE_BIN } from './config'
+import { NODE_BIN } from '../commands/config'
 
 export default ({ buildLocation, sourceLocation, name }, logger, cb) => {
 

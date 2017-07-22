@@ -6,7 +6,7 @@ import async from 'async'
 
 
 import Package from './Package'
-import config from '../tasks/config'
+import config from '../commands/config'
 import Errors from './Errors'
 
 export const SKIP = 'SKIP'

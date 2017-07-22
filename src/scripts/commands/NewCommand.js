@@ -1,5 +1,5 @@
 import inputPackageData from '../tasks/inputNewPackageFields'
-import printNewPackageDataConfirm from '../tasks/printNewPackageDataConfirm'
+import printNewPackageDataConfirm from '../package/printNewPackageDataConfirm'
 import createNewPackage from '../tasks/createNewPackage'
 import PromptUtilities from '../utils/PromptUtilities'
 

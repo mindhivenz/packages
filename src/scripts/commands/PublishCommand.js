@@ -1,5 +1,5 @@
 import getVersionsForPackages from '../tasks/getVersionsForPackages'
-import printVersionsConfirm, { printPackageVersions } from '../tasks/printVersionsConfirm'
+import printVersionsConfirm, { printPackageVersions } from '../package/printVersionsConfirm'
 import PackageUtilities from '../package/PackageUtilities'
 import PromptUtilities from '../utils/PromptUtilities'
 
@@ -26,7 +26,6 @@ export default class NewCommand extends Command {
         data => printVersionsConfirm(packages, data, logger),
       )
     } catch (e) {
-      logger.warn(e)
       logger.warn('Quit without publishing!')
       logBr()
       callback(null, false)

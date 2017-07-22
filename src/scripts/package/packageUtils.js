@@ -10,7 +10,7 @@ import {
   isDirectory,
 } from '../utils/utils'
 
-import configObj, { CONFIG_FILE } from '../tasks/config'
+import configObj, { CONFIG_FILE } from '../commands/config'
 
 const ignorePackages = configObj.ignore
 

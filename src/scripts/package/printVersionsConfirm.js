@@ -1,5 +1,5 @@
 import { logBr, log, styleWhiteBold, styleError, styleDisabled } from '../utils/CliUtils'
-import PackageUtilities from '../package/PackageUtilities'
+import PackageUtilities from './PackageUtilities'
 
 export const printPackageVersions = ({ updating, skipping }, versions, logger) => {
   if (updating) {

@@ -4,21 +4,21 @@ import Errors from '../package/Errors'
 
 // import PromptUtilities from '../utils/PromptUtilities'
 
-export default (packages, specifiedPackage, logger) => {
-  let packagesToBuild
+export default (allPackages, name, logger) => {
+  let packages
   try {
-    packagesToBuild = PackageUtilities.filterPackagesByName(packages, specifiedPackage)
-    logger.info('Building one package:', specifiedPackage)
+    packages = PackageUtilities.filterPackagesByName(allPackages, name)
+    logger.info('Building one package:', name)
   } catch (err) {
-    logError(err)
+    logger(err)
     if (err.is(Errors.PackageNotFoundError)) {
       logBr()
       logSuccess('Available packages')
-      packages.forEach(pkg => log(' + ', pkg.npmName))
+      allPackages.forEach(pkg => log(' + ', pkg.npmName))
     }
     logBr()
     return null
   }
-  return packagesToBuild
+  return packages
 }
 

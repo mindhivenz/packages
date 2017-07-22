@@ -1,18 +1,18 @@
 import asyncJs from 'async'
-// import PackageUtilities from '../package/PackageUtilities'
 import promptVersion from './promptVersion'
 
 
-export default async packagesToUpdate => new Promise((resolve, reject) => {
-  asyncJs.mapLimit(packagesToUpdate, 1, async (pkg, cb) => {
-    cb(null, await promptVersion(pkg.npmName, pkg.version))
+export default async packages => new Promise((resolve, reject) => {
+  const NUM_PARALLEL_PROCESSES = 1
+  asyncJs.mapLimit(packages, NUM_PARALLEL_PROCESSES, async ({ npmName, version }, cb) => {
+    cb(null, await promptVersion(npmName, version))
   }, (err, versions) => {
     if (err) {
       reject(err)
       return
     }
-    packagesToUpdate.forEach((pkg, index) => {
-      versions[pkg.npmName] = versions[index]
+    packages.forEach(({ npmName }, index) => {
+      versions[npmName] = versions[index]
     })
 
     resolve(versions)

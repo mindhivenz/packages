@@ -2,7 +2,7 @@ import _ from 'lodash'
 import dedent from 'dedent'
 import log from 'npmlog'
 
-import config from '../tasks/config'
+import config from './config'
 import { newLogger } from '../utils/CliUtils'
 
 // import ChildProcessUtilities from '../utils/ChildProcessUtilities'
