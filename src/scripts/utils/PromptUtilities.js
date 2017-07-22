@@ -68,22 +68,32 @@ const _confirmOrEdit = async (message) => {
 }
 
 
-const _repeatUntilConfirm = async (getData, printDataSummary, confirmMessage) => { // eslint-disable-line max-len
-  let proceed = false
-  let data
-  while (! proceed) {
-    data = await getData()
-    printDataSummary(data)
-    proceed = await _confirmOrEdit(confirmMessage)
+const _repeatUntilConfirm = async (input, processTask, confirmTask) => { // eslint-disable-line max-len
+  let confirmed = false
+  let data = input
+  while (! confirmed) {
+    data = await processTask.run(data)
+    confirmed = await confirmTask.run(data)
   }
   return data
 }
+
+// const _repeatUntilConfirm = async (getData, printDataSummary, confirmMessage) => { // eslint-disable-line max-len
+//   let proceed = false
+//   let data
+//   while (! proceed) {
+//     data = await getData()
+//     printDataSummary(data)
+//     proceed = await _confirmOrEdit(confirmMessage)
+//   }
+//   return data
+// }
 
 export default {
   questions: _prompt,
   confirm: _confirm,
   confirmOrEdit: _confirmOrEdit,
-  repeatUntilConfirm: _repeatUntilConfirm,
+  processUntilConfirm: _repeatUntilConfirm,
   select: _select,
   input: _input,
 }

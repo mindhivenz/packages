@@ -21,7 +21,7 @@ export default class NewCommand extends Command {
     const packages = PackageUtilities.getPackages()
     const logger = this.logger
     try {
-      this.versions = await PromptUtilities.repeatUntilConfirm(
+      this.versions = await PromptUtilities.processUntilConfirm(
         () => getVersionsForPackages(packages),
         data => printVersionsConfirm(packages, data, logger),
       )

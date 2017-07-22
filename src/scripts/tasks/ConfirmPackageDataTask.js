@@ -2,7 +2,7 @@ import ConfirmRedoTask from './ConfirmRedoTask'
 
 import { logBr, log } from '../utils/CliUtils'
 
-export default class ConfirmNewPackageDataTask extends ConfirmRedoTask {
+export default class ConfirmPackageDataTask extends ConfirmRedoTask {
 
   async execute(pkg) {
     const { name, version, author, description } = pkg

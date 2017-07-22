@@ -55,15 +55,9 @@ const questions = ({ packageScope, packageName, version, author, description }) 
     message: 'Description',
     default: description,
   },
-  // {
-  //   type: 'input',
-  //   name: 'keywords',
-  //   message: 'Keywords (aaa, bbb, ccc .....)',
-  //   default: keywords,
-  // },
 ])
 
-export default class GetPackageDataTask extends AsyncTask {
+export default class ProcessPackageDataTask extends AsyncTask {
 
   async execute(defaults) {
     logBr()
