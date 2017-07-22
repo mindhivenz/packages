@@ -1,5 +1,5 @@
 import getVersionsForPackages from '../tasks/getVersionsForPackages'
-import printVersionsConfirm from '../tasks/printVersionsConfirm'
+import printVersionsConfirm, { printPackageVersions } from '../tasks/printVersionsConfirm'
 import PackageUtilities from '../package/PackageUtilities'
 import PromptUtilities from '../utils/PromptUtilities'
 
@@ -18,23 +18,30 @@ export default class NewCommand extends Command {
 
   async initialize(callback) {
     logHeader('Publish @mindhive/package')
-    this.packages = PackageUtilities.getPackages()
+    const packages = PackageUtilities.getPackages()
+    const logger = this.logger
     try {
       this.versions = await PromptUtilities.repeatUntilConfirm(
-        () => getVersionsForPackages(this.packages),
-        data => printVersionsConfirm(this.packages, data, this.logger),
+        () => getVersionsForPackages(packages),
+        data => printVersionsConfirm(packages, data, logger),
       )
     } catch (e) {
-      this.logger.warn('Quit without publishing!')
+      logger.warn(e)
+      logger.warn('Quit without publishing!')
       logBr()
       callback(null, false)
       return
     }
+    this.packages = PackageUtilities.filterSkippedPackages(packages, this.versions)
     callback(null, true)
   }
 
   execute(callback) {
     log('Execute command!')
+    logBr()
+
+    printPackageVersions(this.packages, this.versions, this.logger)
+    logBr()
 
     callback(null, true)
   }

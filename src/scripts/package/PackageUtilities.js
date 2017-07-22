@@ -9,14 +9,9 @@ import Package from './Package'
 import config from '../tasks/config'
 import Errors from './Errors'
 
-/**
- * A predicate that determines if a given package name satisfies a glob.
- *
- * @param {!String} name The package name
- * @param {String|Array<String>} globs The glob (or globs) to match a package name against
- * @param {Boolean} negate Negate glob pattern matches
- * @return {Boolean} The packages with a name matching the glob
- */
+export const SKIP = 'SKIP'
+
+
 function filterPackage(name, globs, negate = false) {
   let _globs = globs
   // If there isn't a filter then we can just return the package.
@@ -104,6 +99,22 @@ export default class PackageUtilities {
 
   static filterIgnoredPackages(packagesToFilter) {
     return this.filterPackages(packagesToFilter, { ignore: config.ignore }, false)
+  }
+
+  static filterSkippedPackages(allPackages, versions) {
+    const updating = []
+    const skipping = []
+    allPackages.forEach((pkg, index) => {
+      if (versions[index] !== SKIP) {
+        updating.push(pkg)
+      } else {
+        skipping.push(pkg)
+      }
+    })
+    return {
+      updating: updating.length ? updating : undefined,
+      skipping: skipping.length ? skipping : undefined,
+    }
   }
 
   static runParallel(tasks, makeTask, concurrency, callback) {

@@ -1,26 +1,29 @@
-import { logBr, log, logSuccess, styleWhiteBold, styleError, styleDisabled } from '../utils/CliUtils'
+import { logBr, log, styleWhiteBold, styleError, styleDisabled } from '../utils/CliUtils'
+import PackageUtilities from '../package/PackageUtilities'
 
-export default (packages, versions, logger) => {
-  const skipped = []
-  logSuccess('Changes:')
-  packages.forEach((pkg) => {
-    const { npmName, version } = pkg
-    const newVersion = versions[npmName]
-    if (newVersion === 'SKIP') {
-      skipped.push(pkg)
-    } else {
+export const printPackageVersions = ({ updating, skipping }, versions, logger) => {
+  if (updating) {
+    logBr()
+    logger.info(styleWhiteBold('Updating:'))
+    updating.forEach((pkg) => {
+      const { npmName, version: currentVersion } = pkg
+      const newVersion = versions[npmName]
       logger.info(
         `${npmName}:`,
-        `${version} => ${styleWhiteBold(newVersion)} ${pkg.isPrivate() ? styleError('private') : ''}`
+        `${currentVersion} => ${styleWhiteBold(newVersion)} ${pkg.isPrivate() ? styleError('private') : ''}`
       )
-    }
-  })
-  if (skipped.length) {
+    })
+  }
+  if (skipping) {
     logBr()
     log('Skipping:')
-    skipped.forEach((pkg) => {
+    skipping.forEach((pkg) => {
       logger.info(styleDisabled(pkg.npmName))
     })
   }
+  logBr()
 }
 
+export default (allPackages, versions, logger) => {
+  printPackageVersions(PackageUtilities.filterSkippedPackages(allPackages, versions), versions, logger)
+}

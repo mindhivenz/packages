@@ -1,7 +1,7 @@
 import semver from 'semver'
 import PromptUtilities from '../utils/PromptUtilities'
 
-// import PromptUtilities from '../utils/PromptUtilities'
+import { SKIP } from '../package/PackageUtilities'
 
 export default async (packageName, currentVersion) => {
   // console.log('promptVersion', packageName, currentVersion)
@@ -18,6 +18,7 @@ export default async (packageName, currentVersion) => {
   if (packageName) message += ` for ${packageName}`
   message += ` (currently ${currentVersion})`
 
+
   const choice = await PromptUtilities.select(message, [
       { value: patch, name: `Patch (${patch})` },
       { value: minor, name: `Minor (${minor})` },
@@ -27,7 +28,7 @@ export default async (packageName, currentVersion) => {
       { value: premajor, name: `Premajor (${premajor})` },
       { value: 'PRERELEASE', name: 'Prerelease' },
       { value: 'CUSTOM', name: 'Custom' },
-      { value: 'SKIP', name: 'Skip this package' },
+      { value: SKIP, name: 'Skip this package' },
   ])
 
   switch (choice) {

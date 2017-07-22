@@ -22,7 +22,7 @@ export const styleError = chalk.red.bold
 export const styleDisabled = chalk.hex('#404040')
 // export const styleDisabled = chalk.keyword('darkslategray').bold
 const styleWhite = chalk.reset.white
-const styleWhiteDim = styleWhite.dim
+export const styleWhiteDim = styleWhite.dim
 export const styleWhiteBold = styleWhite.bold
 
 export const stylePackage = chalk.reset.bold.magenta
