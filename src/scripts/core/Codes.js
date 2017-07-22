@@ -1,4 +1,6 @@
 export const INIT = 'INIT'
 export const EXEC = 'EXEC'
 export const SKIP = 'SKIP'
+export const ALL = 'ALL'
 export const QUIT = 'quit'
+export const NOPAK = 'NOPAK'

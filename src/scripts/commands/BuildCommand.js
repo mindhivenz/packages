@@ -1,9 +1,11 @@
 import cleanDestination from '../tasks/clean'
 import compileSources from '../tasks/compileSources'
 import copyFiles from '../tasks/copyFiles'
-import selectSpecificPackage from '../tasks/selectSpecificPackage'
+import FindPackageByNameTask from '../tasks/FindPackageByNameTask'
 
 import { printIgnoredPackages } from '../package/packageUtils'
+
+import { QUIT, INIT, NOPAK } from '../core/Codes'
 
 import {
   logBr,
@@ -12,42 +14,35 @@ import {
 
 import PackageUtilities from '../package/PackageUtilities'
 
-import SyncCommand from '../core/SyncCommand'
+import Command from '../core/Command'
 
-export default class BuildCommand extends SyncCommand {
-  get requiresGit() {
-    return false
-  }
+export default class BuildCommand extends Command {
 
-  async initialize(callback) {
+  async initialize() {
     logHeader('Building @mindhive/packages.....')
-    const packages = PackageUtilities.getPackages()
-    const specifiedPackage = this.input[0]
+    const specifiedPackage = this.input[0] || null
     if (specifiedPackage) {
-      this.packagesToBuild = selectSpecificPackage(packages, specifiedPackage, this.logger)
-      if (this.packagesToBuild === null) {
-        callback(null, false)
-        return
-      }
-    } else {
-      this.packagesToBuild = PackageUtilities.filterIncludedPackages(packages)
-      printIgnoredPackages(PackageUtilities.filterIgnoredPackages(packages), this.logger)
-    }
+      const findPackageByNameTask = this.createTask(FindPackageByNameTask)
+      this.packagesToBuild = await findPackageByNameTask.run(specifiedPackage)
 
-    this.additionalFiles = this.config.additionalFiles
+    } else {
+      this.packagesToBuild = PackageUtilities.filterIncludedPackages(this.allPackages)
+      printIgnoredPackages(PackageUtilities.filterIgnoredPackages(this.allPackages), this.logger)
+    }
     logBr()
-    callback(null, true)
   }
 
 
-  execute(callback) {
+  execute() {
     const logger = this.logger
+    const additionalFiles = this.config.additionalFiles
     logger.addWork(this.packagesToBuild.length * 3)
+    const concurrency = 4
     PackageUtilities.runParallel(this.packagesToBuild, pkg => (cb) => {
       logger.package(pkg, 'Building package......')
       try {
         cleanDestination(pkg, logger)
-        copyFiles(pkg, this.additionalFiles, logger)
+        copyFiles(pkg, additionalFiles, logger)
         compileSources(pkg, logger, () => {
           logger.package(pkg, '...complete!')
           logger.completeWork(1)
@@ -57,21 +52,28 @@ export default class BuildCommand extends SyncCommand {
         logger.error(pkg.name, err)
         cb(err)
       }
-    }, this.concurrency, (err) => {
+    }, concurrency, (err) => {
       logBr()
       if (err) {
-        logger.error('build', 'Failed!')
-        logger.error(err)
-        callback(err)
+        throw err
       } else {
         logger.info('build', 'Completed successfully!')
-        callback(null, true)
       }
       logBr()
       logger.finish()
     })
 
 
+  }
+
+  handleError(code, err) {
+    if (INIT === code && QUIT === err) {
+      logBr()
+      this.logger.warn('Quit without building!')
+      logBr()
+    } else {
+      super.handleError(code, err)
+    }
   }
 }
 

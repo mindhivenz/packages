@@ -8,14 +8,15 @@ export function nameFromClassName(className) {
 }
 
 export default class AsyncTask {
-  input
+  command
 
-  constructor(input) {
-    this.input = input
+  constructor(command) {
     log.pause()
+
+    this.command = command
     this.logger = newLogger(this.name)
     this.logger.info('task', this.name)
-    // this.logger.info('input', this.input)
+    this.logger.silly('command', this.command)
 
     this.config = config
     this.mhpVersion = this.config.version

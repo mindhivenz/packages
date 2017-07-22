@@ -13,9 +13,6 @@ import {
 } from '../utils/CliUtils'
 
 export default class NewCommand extends Command {
-  get requiresGit() {
-    return false
-  }
 
   async initialize() {
     logHeader('Create @mindhive/package')

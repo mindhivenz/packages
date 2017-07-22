@@ -15,7 +15,7 @@ async function _input(message, { filter, validate } = {}) {
   return answers.input
 }
 
-async function _select(message, choices) {
+const _select = async (message, choices) => {
   log.pause()
   const answers = await inquirer.prompt([{
     type: 'list',
@@ -84,4 +84,5 @@ export default {
   processUntilConfirm: _repeatUntilConfirm,
   select: _select,
   input: _input,
+  separator: () => new inquirer.Separator(),
 }

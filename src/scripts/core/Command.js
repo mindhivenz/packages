@@ -1,82 +1,14 @@
-import _ from 'lodash'
-import dedent from 'dedent'
 import log from 'npmlog'
 
 import config from '../commands/config'
 import { newLogger } from '../utils/CliUtils'
 import { EXEC, INIT } from '../core/Codes'
+import PackageUtilities from '../package/PackageUtilities'
 
-// import ChildProcessUtilities from '../utils/ChildProcessUtilities'
-// import FileSystemUtilities from '../utils/FileSystemUtilities'
-// import GitUtilities from '../utils/GitUtilities'
-// import PackageUtilities from '../package/PackageUtilities'
-// import Repository from './Repository'
-// import filterFlags from '../utils/filterFlags'
-// import writeLogFile from '../utils/writeLogFile'
-// import UpdatedPackagesCollector from './UpdatedPackagesCollector'
-
-// handle log.success()
 log.addLevel('success', 3001, { fg: 'green', bold: true })
 
 const DEFAULT_CONCURRENCY = 4
 
-export const builder = {
-  'loglevel': {
-    defaultDescription: 'info',
-    describe: 'What level of logs to report.',
-    type: 'string',
-  },
-  'concurrency': {
-    describe: 'How many threads to use if lerna parallelises the tasks.',
-    type: 'number',
-    requiresArg: true,
-  },
-  'scope': {
-    describe: dedent`
-      Restricts the scope to package names matching the given glob.
-      (Only for 'run', 'exec', 'clean', 'ls', and 'bootstrap' commands)
-    `,
-    type: 'string',
-    requiresArg: true,
-  },
-  'since': {
-    describe: dedent`
-      Restricts the scope to the packages that have been updated since
-      the specified [ref], or if not specified, the latest tag.
-      (Only for 'run', 'exec', 'clean', 'ls', and 'bootstrap' commands)
-    `,
-    type: 'string',
-    requiresArg: false,
-  },
-  'ignore': {
-    describe: dedent`
-      Ignore packages with names matching the given glob.
-      (Only for 'run', 'exec', 'clean', 'ls', and 'bootstrap' commands)
-    `,
-    type: 'string',
-    requiresArg: true,
-  },
-  'include-filtered-dependencies': {
-    describe: dedent`
-      Include all transitive dependencies when running a command, regardless of --scope, --since or --ignore.
-    `,
-  },
-  'registry': {
-    describe: 'Use the specified registry for all npm client operations.',
-    type: 'string',
-    requiresArg: true,
-  },
-  'sort': {
-    describe: 'Sort packages topologically (all dependencies before dependents)',
-    type: 'boolean',
-    default: undefined,
-  },
-  'max-buffer': {
-    describe: 'Set max-buffer(bytes) for Command execution',
-    type: 'number',
-    requiresArg: true,
-  },
-}
 export function commandNameFromClassName(className) {
   return className.replace(/Command$/, '').toLowerCase()
 }
@@ -93,40 +25,29 @@ export default class Command {
     }
 
     this.input = input
-    // this.logger.info('input', input)
-    // this.logger.info('flags', flags)
+    this.logger.info('input', input)
+    this.logger.silly('flags', flags)
 
     this._flags = flags
 
-    // log.silly('input', input)
-    // log.silly('flags',flags)
-    // log.silly('flags', filterFlags(flags))
-
     this.config = config
 
-    this.mhpVersion = this.config.version
-    // this.repository = new Repository(cwd)
+    this.allPackages = PackageUtilities.getPackages()
 
     log.resume()
   }
 
   get concurrency() {
+    return this.getConcurrency()
+  }
+
+  getConcurrency = () => {
     if (! this._concurrency) {
       const { concurrency } = this.options
       this._concurrency = Math.max(1, +concurrency || DEFAULT_CONCURRENCY)
     }
 
     return this._concurrency
-  }
-
-  get toposort() {
-    if (! this._toposort) {
-      const { sort } = this.options
-      // If the option isn't present then the default is to sort.
-      this._toposort = sort == null || sort
-    }
-
-    return this._toposort
   }
 
   get name() {
@@ -138,114 +59,36 @@ export default class Command {
     return this.constructor.name
   }
 
-  get execOpts() {
-    if (! this._execOpts) {
-      this._execOpts = {
-        cwd: this.repository.rootPath,
-      }
-
-      if (this.options.maxBuffer) {
-        this._execOpts.maxBuffer = this.options.maxBuffer
-      }
-    }
-
-    return this._execOpts
+  get version() {
+    return this.config.version
   }
 
-  get requiresGit() {
-    return true
-  }
-
-  // Override this to inherit config from another command.
-  // For example `updated` inherits config from `publish`.
-  get otherCommandConfigs() {
-    return []
-  }
-
-  get options() {
-    if (! this._options) {
-      // Command config object is either "commands" or "command".
-      // const { commands, command } = this.repository.lernaJson
-
-      // The current command always overrides otherCommandConfigs
-      // const lernaCommandOverrides = [
-      //   this.name,
-      //   ...this.otherCommandConfigs,
-      // ].map(name => (commands || command || {})[name])
-
-      this._options = _.defaults(
-        {},
-        // CLI flags, which if defined overrule subsequent values
-        this._flags,
-        // Namespaced command options from `lerna.json`
-        // ...lernaCommandOverrides,
-        // Global options from `lerna.json`
-        // this.repository.lernaJson,
-        // Command specific defaults
-        this.defaultOptions,
-        // Deprecated legacy options in `lerna.json`
-        // this._legacyOptions()
-      )
-    }
-
-    return this._options
-  }
-
-  get defaultOptions() {
-    return {
-      concurrency: DEFAULT_CONCURRENCY,
-      sort: true,
-    }
-  }
+  createTask = TaskClass => new TaskClass(this)
 
   run() {
-    // log.info('version', this.mhpVersion)
-
     this.runValidations()
     this.runPreparations()
     this.runCommand()
   }
 
-  runValidations() {
-    // if (this.requiresGit && ! GitUtilities.isInitialized(this.execOpts)) {
-    //   log.error('ENOGIT', 'This is not a git repository, did you already run `git init` or `lerna init`?')
-    //   this._complete(null, 1)
-    //   return
-    // }
+  runValidations() { }
 
-  }
-
-  runPreparations() {
-  }
+  runPreparations() { }
 
   async runCommand() {
-    let code = INIT
+    let initResult
     try {
-      const initResult = await this.initialize()
-      code = EXEC
-      this._complete(initResult, await this.execute(initResult))
+      initResult = await this.initialize()
+      this._complete(initResult, await this.execute())
     } catch (err) {
-      this._handleError(code, err)
+      this._handleError(INIT, err)
     }
   }
 
 
-  _complete(initResult, execResult) {  // eslint-disable-line no-unused-vars
-    // this._handleError(code, err)
-
-
-    // const childProcessCount = ChildProcessUtilities.getChildProcessCount()
-    // if (childProcessCount > 0) {
-    //   log.warn(
-    //     'complete',
-    //     `Waiting for ${childProcessCount} child ` +
-    //     `process${childProcessCount === 1 ? '' : 'es'} to exit. ` +
-    //     'CTRL-C to exit immediately.'
-    //   )
-    //   ChildProcessUtilities.onAllExited(finish)
-    // } else {
-    //   finish()
-    // }
+  _complete(initResult, execResult) {
+    this.logger.silly(INIT, initResult)
+    this.logger.silly(EXEC, execResult)
   }
 
   _handleError(code, err) {
