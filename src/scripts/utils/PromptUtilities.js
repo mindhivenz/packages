@@ -55,37 +55,34 @@ async function _confirm(message = DEFAULT_CONFIRM_MESSAGE, choices = CONFIRM_CHO
   return answers.confirm
 }
 
-const _confirmRedo = message => new Promise(async (resolve, reject) => {
+const _confirmOrEdit = async (message) => {
   const answer = await _confirm(
     message, [
       { key: 'y', name: 'Yes', value: true },
-      { key: 'n', name: 'No, enter data again', value: false },
-      { key: 'q', name: 'Quit', value: QUIT },
+      { key: 'n', name: 'No', value: QUIT },
+      { key: 'e', name: 'Edit', value: false },
     ]
   )
-  if (answer === QUIT) {
-    reject(answer)
-  } else {
-    resolve(answer)
-  }
-})
+  if (answer === QUIT) throw answer
+  return answer
+}
 
 
-const _repeatUntilConfirm = async (getData, printDataSummary, confirmMessage) => new Promise(async (resolve, reject) => { // eslint-disable-line max-len
+const _repeatUntilConfirm = async (getData, printDataSummary, confirmMessage) => { // eslint-disable-line max-len
   let proceed = false
   let data
   while (! proceed) {
     data = await getData()
     printDataSummary(data)
-    proceed = await _confirmRedo(confirmMessage).catch(reject)
+    proceed = await _confirmOrEdit(confirmMessage)
   }
-  resolve(data)
-})
+  return data
+}
 
 export default {
   questions: _prompt,
   confirm: _confirm,
-  confirmRedo: _confirmRedo,
+  confirmOrEdit: _confirmOrEdit,
   repeatUntilConfirm: _repeatUntilConfirm,
   select: _select,
   input: _input,

@@ -12,7 +12,7 @@ export default class ConfirmRedoTask extends AsyncTask {
   }
 
   async execute() {
-    return await PromptUtilities.confirmRedo(this.confirmPrompt)
+    return await PromptUtilities.confirmOrEdit(this.confirmPrompt)
   }
 
 }
