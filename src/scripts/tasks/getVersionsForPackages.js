@@ -3,26 +3,20 @@ import asyncJs from 'async'
 import promptVersion from './promptVersion'
 
 
-export default (packagesToUpdate, callback) => {
-  asyncJs.mapLimit(packagesToUpdate, 1, (update, cb) => {
-    const run = async () => await promptVersion(update.npmName, update.version)
+export default async packagesToUpdate => new Promise((resolve, reject) => {
+  asyncJs.mapLimit(packagesToUpdate, 1, (pkg, cb) => {
+    const run = async () => await promptVersion(pkg.npmName, pkg.version)
     run().then(answer => cb(null, answer))
   }, (err, versions) => {
     if (err) {
-      callback(null)
+      reject(reject)
+      return
     }
-
-    packagesToUpdate.forEach((update, index) => {
-      // console.log('++++++++++++++++++++++++')
-      // console.log(update.npmName, index)
-      // console.log(versions[index])
-      // console.log(versions[update.npmName])
-      versions[update.npmName] = versions[index]
-      // console.log(versions[update.npmName])
-      // console.log('=======================')
+    packagesToUpdate.forEach((pkg, index) => {
+      versions[pkg.npmName] = versions[index]
     })
 
-    callback(versions)
+    resolve(versions)
   })
 
-}
+})

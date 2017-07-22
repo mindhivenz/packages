@@ -20,12 +20,12 @@ export default class NewCommand extends Command {
     logHeader('Create @mindhive/package')
     this.newPackageName = this.input[0]
 
-    let proceed = false
 
     this.packageData = { packageName: this.newPackageName || null }
     this.basePackage = this.config.basePackageSource
 
     try {
+      let proceed = false
       while (! proceed) {
         this.packageData = await inputPackageData(this.packageData)
         proceed = await confirmPackageData(this.packageData, this.logger)

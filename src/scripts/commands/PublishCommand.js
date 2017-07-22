@@ -35,15 +35,18 @@ export default class NewCommand extends Command {
   async initialize(callback) {
     logHeader('Publish @mindhive/package')
     const packages = PackageUtilities.getPackages()
-    getVersionsForPackages(packages, async (versions) => {
-      if (! await confirmVersions(packages, versions, this.logger)) {
+    let proceed = false
+    while (! proceed) {
+      this.versions = await getVersionsForPackages(packages)
+      proceed = await confirmVersions(packages, this.versions, this.logger)
+      if (proceed === 'quit') {
         this.logger.warn('Quit without creating package!')
         logBr()
         callback(null, false)
         return
       }
-      callback(null, true)
-    })
+    }
+    callback(null, true)
   }
 
   execute(callback) {
