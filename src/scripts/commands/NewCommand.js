@@ -1,7 +1,6 @@
-import inputPackageData from '../tasks/inputNewPackageFields'
 import createNewPackage from '../tasks/createNewPackage'
+import GetPackageDataTask from '../tasks/GetPackageDataTask'
 import ConfirmNewPackageDataTask from '../tasks/ConfirmPackageDataTask'
-import { QUIT } from '../utils/PromptUtilities'
 
 import Command from './Command'
 
@@ -21,12 +20,13 @@ export default class NewCommand extends Command {
     this.newPackageName = this.input[0]
     this.packageData = { packageName: this.newPackageName || null }
     this.basePackage = this.config.basePackageSource
+    const getData = new GetPackageDataTask()
     const confirmData = new ConfirmNewPackageDataTask()
 
     let confirmed = false
     try {
       while (! confirmed) {
-        this.packageData = await inputPackageData(this.packageData)
+        this.packageData = await getData.run(this.packageData)
         confirmed = await confirmData.run(this.packageData)
       }
     } catch (reject) {

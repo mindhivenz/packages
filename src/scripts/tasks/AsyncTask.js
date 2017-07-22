@@ -41,8 +41,8 @@ export default class AsyncTask {
   _execute = data => new Promise((resolve, reject) => this.execute(data, resolve, reject))
 
   // initialize()
-  initialize() {
-    throw new Error('task.initialize() needs to be implemented.')
+  initialize(props, resolve) {
+    resolve(props)
   }
 
   // execute(resolve, reject)
