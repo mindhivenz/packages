@@ -9,13 +9,7 @@ export default async ({ name, version, author, description }, logger) => {
   logger.info('      Author', author)
   logger.info(' Description', description)
   logBr()
-  const confirm = await PromptUtilities.confirm(
-    'Do you want to continue?', [
-      { key: 'y', name: 'Yes', value: true },
-      { key: 'n', name: 'No, enter data again', value: false },
-      { key: 'q', name: 'Quit', value: 'quit' },
-    ]
-  )
+  const confirm = await PromptUtilities.confirmRedo('Do you want to continue?')
   logBr()
   return confirm
 }

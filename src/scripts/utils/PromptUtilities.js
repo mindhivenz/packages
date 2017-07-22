@@ -89,7 +89,9 @@ const CONFIRM_CHOICES = [
   { key: 'n', name: 'No', value: false },
 ]
 
-async function _confirm(message, choices = CONFIRM_CHOICES) {
+const DEFAULT_CONFIRM_MESSAGE = 'Do you want to continue?'
+
+async function _confirm(message = DEFAULT_CONFIRM_MESSAGE, choices = CONFIRM_CHOICES) {
   const defaultChoice = choices.length + 1 // default to help in order to avoid clicking straight through
   const answers = await _prompt([{
     type: 'expand',
@@ -109,10 +111,27 @@ const _confirmRedo = async message => await _confirm(
   ]
 )
 
+
+const _repeatUntilConfirm = async (getData, printDataSummary, confirmMessage) => new Promise(async (resolve, reject) => { // eslint-disable-line max-len
+  let proceed = false
+  let data
+  while (! proceed) {
+    data = await getData()
+    printDataSummary(data)
+    proceed = await _confirmRedo(confirmMessage)
+    if (proceed === 'quit') {
+      reject(proceed)
+      return
+    }
+  }
+  resolve(data)
+})
+
 export default {
   questions: _prompt,
   confirm: _confirm,
   confirmRedo: _confirmRedo,
+  repeatUntilConfirm: _repeatUntilConfirm,
   select: _select,
   input: _input,
 }

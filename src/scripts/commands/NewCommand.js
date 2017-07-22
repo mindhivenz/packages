@@ -1,7 +1,8 @@
 import inputPackageData from '../tasks/inputNewPackageFields'
-import confirmPackageData from '../tasks/confirmNewPackageData'
+import printNewPackageDataConfirm from '../tasks/printNewPackageDataConfirm'
 import createNewPackage from '../tasks/createNewPackage'
 import repeatUntilConfirm from '../tasks/repeatUntilConfirm'
+import PromptUtilities from '../utils/PromptUtilities'
 
 import Command from './Command'
 
@@ -24,9 +25,9 @@ export default class NewCommand extends Command {
     this.packageData = { packageName: this.newPackageName || null }
     this.basePackage = this.config.basePackageSource
     try {
-      this.packageData = await repeatUntilConfirm(
+      this.packageData = await PromptUtilities.repeatUntilConfirm(
         () => inputPackageData(this.packageData),
-        data => confirmPackageData(data, this.logger),
+        data => printNewPackageDataConfirm(data, this.logger),
       )
     } catch (e) {
       this.logger.warn('Quit without creating package!')
