@@ -1,12 +1,12 @@
 import inputPackageData from '../tasks/inputNewPackageFields'
 import confirmPackageData from '../tasks/confirmNewPackageData'
 import createNewPackage from '../tasks/createNewPackage'
+import repeatUntilConfirm from '../tasks/repeatUntilConfirm'
 
 import Command from './Command'
 
 import {
   logBr,
-  logError,
   logSuccess,
   logHeader,
 } from '../utils/CliUtils'
@@ -23,22 +23,16 @@ export default class NewCommand extends Command {
 
     this.packageData = { packageName: this.newPackageName || null }
     this.basePackage = this.config.basePackageSource
-
     try {
-      let proceed = false
-      while (! proceed) {
-        this.packageData = await inputPackageData(this.packageData)
-        proceed = await confirmPackageData(this.packageData, this.logger)
-        if (proceed === 'quit') {
-          this.logger.warn('Quit without creating package!')
-          logBr()
-          callback(null, false)
-          return
-        }
-
-      }
-    } catch (err) {
-      logError(err)
+      this.packageData = await repeatUntilConfirm(
+        () => inputPackageData(this.packageData),
+        data => confirmPackageData(data, this.logger),
+      )
+    } catch (e) {
+      this.logger.warn('Quit without creating package!')
+      logBr()
+      callback(null, false)
+      return
     }
     callback(null, true)
   }

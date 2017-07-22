@@ -22,9 +22,9 @@ export default class NewCommand extends Command {
     try {
       this.versions = await repeatUntilConfirm(
         () => getVersionsForPackages(this.packages),
-        data => confirmVersions(this.packages, data, this.logger)
+        data => confirmVersions(this.packages, data, this.logger),
       )
-    } catch (err) {
+    } catch (e) {
       this.logger.warn('Quit without creating package!')
       logBr()
       callback(null, false)
