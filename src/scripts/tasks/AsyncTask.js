@@ -30,9 +30,7 @@ export default class AsyncTask {
 
   run = props => this._execLifecycle(props)
 
-  _execLifecycle = props => new Promise(async (resolve, reject) => {
-    resolve(await this._execute(await this._initialize(props)).catch(reject))
-  })
+  _execLifecycle = async props => await this._execute(await this._initialize(props))
 
 
   _initialize = props => new Promise((resolve, reject) => this.initialize(props, resolve, reject))
