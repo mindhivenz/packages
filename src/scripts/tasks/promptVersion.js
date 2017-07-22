@@ -27,6 +27,7 @@ export default async (packageName, currentVersion) => {
       { value: premajor, name: `Premajor (${premajor})` },
       { value: 'PRERELEASE', name: 'Prerelease' },
       { value: 'CUSTOM', name: 'Custom' },
+      { value: 'SKIP', name: 'Skip this package' },
   ])
 
   switch (choice) {

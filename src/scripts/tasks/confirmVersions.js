@@ -7,7 +7,16 @@ export default async (packages, versions, logger) => {
   logBr()
   logSuccess('Changes:')
   packages.forEach((pkg) => {
-    logger.info(`${pkg.npmName}:`, `${pkg.version} => ${styleWhiteBold(versions[pkg.npmName])} ${pkg.isPrivate() ? styleError('private') : ''}`)
+    const { npmName, version } = pkg
+    const newVersion = versions[npmName]
+    if (newVersion === 'SKIP') {
+      logger.info(`${npmName}:`, styleError('Skipped!'))
+    } else {
+      logger.info(
+        `${npmName}:`,
+        `${version} => ${styleWhiteBold(newVersion)} ${pkg.isPrivate() ? styleError('private') : ''}`
+      )
+    }
   })
   logBr()
 
