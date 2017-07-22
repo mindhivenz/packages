@@ -1,32 +1,15 @@
-// import path from 'path'
-// import { exit } from 'shelljs'
-// import semver from 'semver'
-
-// import { getSourceDir } from '../package/packageUtils'
-// import config from '../tasks/config'
 import confirmVersions from '../tasks/confirmVersions'
 import getVersionsForPackages from '../tasks/getVersionsForPackages'
 import repeatUntilConfirm from '../tasks/repeatUntilConfirm'
 import PackageUtilities from '../package/PackageUtilities'
-
-// import PromptUtilities from '../utils/PromptUtilities'
-// import fsUtils from '../utils/FileSystemUtilities'
-
-// import createNewPackageJson from '../tasks/createNewPackageJson'
 
 import Command from './Command'
 
 import {
   logBr,
   log,
-  // logSuccess,
-  // logWarn,
   logHeader,
-  // logPackage,
 } from '../utils/CliUtils'
-
-// const newPackageName = `${process.argv[2]}`
-// const basePackage = path.resolve(config.basePackage, 'src')
 
 export default class NewCommand extends Command {
   get requiresGit() {
@@ -35,11 +18,11 @@ export default class NewCommand extends Command {
 
   async initialize(callback) {
     logHeader('Publish @mindhive/package')
-    const packages = PackageUtilities.getPackages()
+    this.packages = PackageUtilities.getPackages()
     try {
       this.versions = await repeatUntilConfirm(
-        async () => await getVersionsForPackages(packages),
-        async data => await confirmVersions(packages, data, this.logger)
+        () => getVersionsForPackages(this.packages),
+        data => confirmVersions(this.packages, data, this.logger)
       )
     } catch (err) {
       this.logger.warn('Quit without creating package!')
@@ -47,19 +30,6 @@ export default class NewCommand extends Command {
       callback(null, false)
       return
     }
-
-
-    // let proceed = false
-    // while (! proceed) {
-    //   this.versions = await getVersionsForPackages(packages)
-    //   proceed = await confirmVersions(packages, this.versions, this.logger)
-    //   if (proceed === 'quit') {
-    //     this.logger.warn('Quit without creating package!')
-    //     logBr()
-    //     callback(null, false)
-    //     return
-    //   }
-    // }
     callback(null, true)
   }
 
@@ -67,7 +37,6 @@ export default class NewCommand extends Command {
     log('Execute command!')
 
     callback(null, true)
-
   }
 
 
