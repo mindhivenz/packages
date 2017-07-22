@@ -2,8 +2,7 @@ import _ from 'lodash'
 import dedent from 'dedent'
 import log from 'npmlog'
 
-import config from './config'
-import { newLogger } from '../utils/CliUtils'
+import MhpTask from '../tasks/MhpTask'
 
 // import ChildProcessUtilities from '../utils/ChildProcessUtilities'
 // import FileSystemUtilities from '../utils/FileSystemUtilities'
@@ -76,36 +75,19 @@ export const builder = {
     requiresArg: true,
   },
 }
-export function commandNameFromClassName(className) {
-  return className.replace(/Command$/, '').toLowerCase()
-}
 
-export default class Command {
-  _cwd
+export default class Command extends MhpTask {
+
   constructor(input, flags, cwd) {
-    this._cwd = cwd
+    super(cwd)
     log.pause()
-    this.logger = newLogger(this.name)
 
     if (flags.loglevel) {
       log.level = flags.loglevel
     }
 
     this.input = input
-    // this.logger.info('input', input)
-    // this.logger.info('flags', flags)
-
     this._flags = flags
-
-    // log.silly('input', input)
-    // log.silly('flags',flags)
-    // log.silly('flags', filterFlags(flags))
-
-    this.config = config
-
-    this.mhpVersion = this.config.version
-    // this.repository = new Repository(cwd)
-
     log.resume()
   }
 
@@ -126,15 +108,6 @@ export default class Command {
     }
 
     return this._toposort
-  }
-
-  get name() {
-    // For a class named "FooCommand" this returns "foo".
-    return commandNameFromClassName(this.className)
-  }
-
-  get className() {
-    return this.constructor.name
   }
 
   get execOpts() {
@@ -199,10 +172,9 @@ export default class Command {
 
   run() {
     log.info('version', this.mhpVersion)
-
     this.runValidations()
     this.runPreparations()
-    this.runCommand()
+    super.run()
   }
 
   runValidations() {
@@ -218,68 +190,8 @@ export default class Command {
   }
 
   runCommand(callback) {
-    this._attempt('initialize', () => {
-      this._attempt('execute', () => {
-        this._complete(null, 0, callback)
-      }, callback)
-    }, callback)
+    super._execLifecycle(callback)
   }
 
-  _attempt(method, next, callback) {
-    try {
-      log.silly(method, 'attempt')
-
-      this[method]((err, completed) => {
-        if (err) {
-          log.error(method, 'callback with error\n', err)
-          this._complete(err, 1, callback)
-        } else if (! completed) {
-          log.verbose(method, 'exited early')
-          this._complete(null, 1, callback)
-        } else {
-          log.silly(method, 'success')
-          next()
-        }
-      })
-    } catch (err) {
-      log.error(method, 'caught error\n', err)
-      this._complete(err, 1, callback)
-    }
-  }
-
-  _complete(err, code, callback) {
-    if (code !== 0) {
-      // writeLogFile(this.repository.rootPath)
-    }
-
-    const finish = function () {
-      if (callback) {
-        callback(err, code)
-      }
-
-    }
-    finish()
-
-    // const childProcessCount = ChildProcessUtilities.getChildProcessCount()
-    // if (childProcessCount > 0) {
-    //   log.warn(
-    //     'complete',
-    //     `Waiting for ${childProcessCount} child ` +
-    //     `process${childProcessCount === 1 ? '' : 'es'} to exit. ` +
-    //     'CTRL-C to exit immediately.'
-    //   )
-    //   ChildProcessUtilities.onAllExited(finish)
-    // } else {
-    //   finish()
-    // }
-  }
-
-  initialize() {
-    throw new Error('command.initialize() needs to be implemented.')
-  }
-
-  execute() {
-    throw new Error('command.execute() needs to be implemented.')
-  }
 }
 
