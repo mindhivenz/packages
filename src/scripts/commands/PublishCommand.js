@@ -1,9 +1,12 @@
-import getVersionsForPackages from '../tasks/getVersionsForPackages'
-import printVersionsConfirm, { printPackageVersions } from '../package/printVersionsConfirm'
+import ConfirmVersionsTask from '../tasks/ConfirmVersionsTask'
+import ProcessVersionsTask from '../tasks/ProcessVersionsTask'
+import { printPackageVersions } from '../package/printVersionsConfirm'
 import PackageUtilities from '../package/PackageUtilities'
 import PromptUtilities from '../utils/PromptUtilities'
 
-import SyncCommand from '../core/SyncCommand'
+import { QUIT, INIT } from '../core/Codes'
+
+import Command from '../core/Command'
 
 import {
   logBr,
@@ -11,38 +14,39 @@ import {
   logHeader,
 } from '../utils/CliUtils'
 
-export default class NewCommand extends SyncCommand {
+export default class NewCommand extends Command {
   get requiresGit() {
     return false
   }
 
-  async initialize(callback) {
+  async initialize() {
     logHeader('Publish @mindhive/package')
     const packages = PackageUtilities.getPackages()
-    const logger = this.logger
-    try {
-      this.versions = await PromptUtilities.processUntilConfirm(
-        () => getVersionsForPackages(packages),
-        data => printVersionsConfirm(packages, data, logger),
-      )
-    } catch (e) {
-      logger.warn('Quit without publishing!')
-      logBr()
-      callback(null, false)
-      return
-    }
+
+    this.versions = await PromptUtilities.processUntilConfirm(packages,
+      new ProcessVersionsTask(packages),
+      new ConfirmVersionsTask(packages),
+    )
+
     this.packages = PackageUtilities.filterSkippedPackages(packages, this.versions)
-    callback(null, true)
   }
 
-  execute(callback) {
+  execute() {
     log('Execute command!')
     logBr()
 
     printPackageVersions(this.packages, this.versions, this.logger)
     logBr()
+  }
 
-    callback(null, true)
+  handleError(code, err) {
+    if (INIT === code && QUIT === err) {
+      logBr()
+      this.logger.warn('Quit without publishing!')
+      logBr()
+    } else {
+      super.handleError(code, err)
+    }
   }
 
 

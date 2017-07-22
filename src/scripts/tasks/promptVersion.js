@@ -1,7 +1,7 @@
 import semver from 'semver'
 import PromptUtilities from '../utils/PromptUtilities'
 
-import { SKIP } from '../package/PackageUtilities'
+import { SKIP } from '../core/Codes'
 
 export default async (packageName, currentVersion) => {
   // console.log('promptVersion', packageName, currentVersion)

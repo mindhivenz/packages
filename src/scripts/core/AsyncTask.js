@@ -8,11 +8,14 @@ export function nameFromClassName(className) {
 }
 
 export default class AsyncTask {
+  input
 
-  constructor() {
+  constructor(input) {
+    this.input = input
     log.pause()
     this.logger = newLogger(this.name)
     this.logger.info('task', this.name)
+    // this.logger.info('input', this.input)
 
     this.config = config
     this.mhpVersion = this.config.version
@@ -30,7 +33,7 @@ export default class AsyncTask {
 
   run = async (...props) => await this.execute(...props)
 
-  async execute(initialisedData, execProps) { // eslint-disable-line no-unused-vars
+  async execute() { // eslint-disable-line no-unused-vars
     throw new Error('task.execute() needs to be implemented.')
   }
 
