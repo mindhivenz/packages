@@ -4,7 +4,7 @@ import semver from 'semver'
 import { packageFullName, packageDirExists } from '../package/packageUtils'
 import PromptUtilities from '../utils/PromptUtilities'
 import { logBr } from '../utils/CliUtils'
-import AsyncTask from './AsyncTask'
+import AsyncTask from '../core/AsyncTask'
 
 const someSafeNpmName = 'valid-name'
 

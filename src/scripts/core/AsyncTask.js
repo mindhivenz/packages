@@ -28,7 +28,7 @@ export default class AsyncTask {
     return nameFromClassName(this.className)
   }
 
-  run = async props => await this.execute(props)
+  run = async (...props) => await this.execute(...props)
 
   async execute(initialisedData, execProps) { // eslint-disable-line no-unused-vars
     throw new Error('task.execute() needs to be implemented.')

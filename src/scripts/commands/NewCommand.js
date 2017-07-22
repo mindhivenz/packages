@@ -1,4 +1,4 @@
-import createNewPackage from '../tasks/createNewPackage'
+import CreatePackageTask from '../tasks/CreatePackageTask'
 import ProcessPackageDataTask from '../tasks/ProcessPackageDataTask'
 import ConfirmPackageDataTask from '../tasks/ConfirmPackageDataTask'
 import PromptUtilities from '../utils/PromptUtilities'
@@ -27,16 +27,18 @@ export default class NewCommand extends Command {
   }
 
   async execute() {
-    const success = await createNewPackage(this.config.basePackageSource, this.packageData, this.logger)
-    if (success) logSuccess('Package created successfully')
+    const success = await new CreatePackageTask().run(this.packageData)
+    if (success) logSuccess('Done!')
     logBr()
   }
 
-  handleExit(code, err) {
+  handleError(code, err) {
     if (INIT === code && QUIT === err) {
       logBr()
       this.logger.warn('Quit without creating package!')
       logBr()
+    } else {
+      super.handleError(code, err)
     }
   }
 

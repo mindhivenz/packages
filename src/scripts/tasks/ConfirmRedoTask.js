@@ -1,4 +1,4 @@
-import AsyncTask from './AsyncTask'
+import AsyncTask from '../core/AsyncTask'
 import PromptUtilities from '../utils/PromptUtilities'
 
 const DEFAULT_PROMPT = 'Do you want to continue?'

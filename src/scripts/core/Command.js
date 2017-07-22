@@ -231,7 +231,7 @@ export default class Command {
 
 
   _complete(code, err) {
-    this._handleExit(code, err)
+    this._handleError(code, err)
 
 
     // const childProcessCount = ChildProcessUtilities.getChildProcessCount()
@@ -248,11 +248,13 @@ export default class Command {
     // }
   }
 
-  _handleExit(code, err) {
-    this.handleExit(code, err)
+  _handleError(code, err) {
+    this.handleError(code, err)
   }
 
-  handleExit() { }
+  handleError(code, err) {
+    this.logger.error(code, err)
+  }
 
   async initialize() {
     throw new Error('command.initialize() needs to be implemented.')

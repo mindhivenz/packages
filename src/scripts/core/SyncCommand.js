@@ -3,7 +3,7 @@ import dedent from 'dedent'
 import log from 'npmlog'
 
 import config from '../commands/config'
-import { newLogger } from '../utils/CliUtils'
+import { newLogger, logError, logBr } from '../utils/CliUtils'
 
 // import ChildProcessUtilities from '../utils/ChildProcessUtilities'
 // import FileSystemUtilities from '../utils/FileSystemUtilities'
@@ -86,7 +86,16 @@ export default class SyncCommand {
     this._cwd = cwd
     log.pause()
     this.logger = newLogger(this.name)
-    this.logger.error(this.name, 'SyncCommand is depreciated, convert to Command')
+    logBr()
+    logError('***************************************************************')
+    logError('***************************************************************')
+    logBr()
+    this.logger.error(this.className)
+    logError(' ./core/SyncCommand is depreciated, use:')
+    logError(' ./core/Command')
+    logBr()
+    logError('***************************************************************')
+    logError('***************************************************************')
 
     if (flags.loglevel) {
       log.level = flags.loglevel
