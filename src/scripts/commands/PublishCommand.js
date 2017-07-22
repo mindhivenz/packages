@@ -6,6 +6,7 @@
 // import config from '../tasks/config'
 import confirmVersions from '../tasks/confirmVersions'
 import getVersionsForPackages from '../tasks/getVersionsForPackages'
+import repeatUntilConfirm from '../tasks/repeatUntilConfirm'
 import PackageUtilities from '../package/PackageUtilities'
 
 // import PromptUtilities from '../utils/PromptUtilities'
@@ -35,17 +36,30 @@ export default class NewCommand extends Command {
   async initialize(callback) {
     logHeader('Publish @mindhive/package')
     const packages = PackageUtilities.getPackages()
-    let proceed = false
-    while (! proceed) {
-      this.versions = await getVersionsForPackages(packages)
-      proceed = await confirmVersions(packages, this.versions, this.logger)
-      if (proceed === 'quit') {
-        this.logger.warn('Quit without creating package!')
-        logBr()
-        callback(null, false)
-        return
-      }
+    try {
+      this.versions = await repeatUntilConfirm(
+        async () => await getVersionsForPackages(packages),
+        async data => await confirmVersions(packages, data, this.logger)
+      )
+    } catch (err) {
+      this.logger.warn('Quit without creating package!')
+      logBr()
+      callback(null, false)
+      return
     }
+
+
+    // let proceed = false
+    // while (! proceed) {
+    //   this.versions = await getVersionsForPackages(packages)
+    //   proceed = await confirmVersions(packages, this.versions, this.logger)
+    //   if (proceed === 'quit') {
+    //     this.logger.warn('Quit without creating package!')
+    //     logBr()
+    //     callback(null, false)
+    //     return
+    //   }
+    // }
     callback(null, true)
   }
 
