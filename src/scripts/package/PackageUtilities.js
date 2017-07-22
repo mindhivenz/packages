@@ -8,8 +8,7 @@ import async from 'async'
 import Package from './Package'
 import config from '../commands/config'
 import Errors from './Errors'
-
-export const SKIP = 'SKIP'
+import { SKIP } from '../core/Codes'
 
 
 function filterPackage(name, globs, negate = false) {

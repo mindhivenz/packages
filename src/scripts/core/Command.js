@@ -4,6 +4,7 @@ import log from 'npmlog'
 
 import config from '../commands/config'
 import { newLogger } from '../utils/CliUtils'
+import { EXEC, INIT } from '../core/Codes'
 
 // import ChildProcessUtilities from '../utils/ChildProcessUtilities'
 // import FileSystemUtilities from '../utils/FileSystemUtilities'
@@ -198,7 +199,7 @@ export default class Command {
   }
 
   run() {
-    log.info('version', this.mhpVersion)
+    // log.info('version', this.mhpVersion)
 
     this.runValidations()
     this.runPreparations()
@@ -217,48 +218,21 @@ export default class Command {
   runPreparations() {
   }
 
-  runCommand(callback) {
-    this._attempt('initialize', () => {
-      this._attempt('execute', () => {
-        this._complete(null, 0, callback)
-      }, callback)
-    }, callback)
-  }
-
-  _attempt(method, next, callback) {
+  async runCommand() {
+    let code = INIT
     try {
-      log.silly(method, 'attempt')
-
-      this[method]((err, completed) => {
-        if (err) {
-          log.error(method, 'callback with error\n', err)
-          this._complete(err, 1, callback)
-        } else if (! completed) {
-          log.verbose(method, 'exited early')
-          this._complete(null, 1, callback)
-        } else {
-          log.silly(method, 'success')
-          next()
-        }
-      })
+      await this.initialize()
+      code = EXEC
+      await this.execute()
     } catch (err) {
-      log.error(method, 'caught error\n', err)
-      this._complete(err, 1, callback)
+      this._complete(code, err)
     }
   }
 
-  _complete(err, code, callback) {
-    if (code !== 0) {
-      // writeLogFile(this.repository.rootPath)
-    }
 
-    const finish = function () {
-      if (callback) {
-        callback(err, code)
-      }
+  _complete(code, err) {
+    this._handleExit(code, err)
 
-    }
-    finish()
 
     // const childProcessCount = ChildProcessUtilities.getChildProcessCount()
     // if (childProcessCount > 0) {
@@ -274,11 +248,17 @@ export default class Command {
     // }
   }
 
-  initialize() {
+  _handleExit(code, err) {
+    this.handleExit(code, err)
+  }
+
+  handleExit() { }
+
+  async initialize() {
     throw new Error('command.initialize() needs to be implemented.')
   }
 
-  execute() {
+  async execute() {
     throw new Error('command.execute() needs to be implemented.')
   }
 }

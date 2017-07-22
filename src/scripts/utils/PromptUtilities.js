@@ -1,7 +1,6 @@
 import inquirer from 'inquirer'
 import log from 'npmlog'
-
-export const QUIT = 'quit'
+import { QUIT } from '../core/Codes'
 
 async function _input(message, { filter, validate } = {}) {
   log.pause()
@@ -59,8 +58,8 @@ const _confirmOrEdit = async (message) => {
   const answer = await _confirm(
     message, [
       { key: 'y', name: 'Yes', value: true },
-      { key: 'n', name: 'No', value: QUIT },
-      { key: 'e', name: 'Edit', value: false },
+      { key: 'n', name: 'No', value: false },
+      { key: 'q', name: 'Quit', value: QUIT },
     ]
   )
   if (answer === QUIT) throw answer
@@ -77,17 +76,6 @@ const _repeatUntilConfirm = async (input, processTask, confirmTask) => { // esli
   }
   return data
 }
-
-// const _repeatUntilConfirm = async (getData, printDataSummary, confirmMessage) => { // eslint-disable-line max-len
-//   let proceed = false
-//   let data
-//   while (! proceed) {
-//     data = await getData()
-//     printDataSummary(data)
-//     proceed = await _confirmOrEdit(confirmMessage)
-//   }
-//   return data
-// }
 
 export default {
   questions: _prompt,
