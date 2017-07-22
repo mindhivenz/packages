@@ -11,8 +11,8 @@ export default class ConfirmRedoTask extends AsyncTask {
     this.confirmPrompt = confirmPrompt
   }
 
-  async execute(data, resolve, reject) {
-    resolve(await PromptUtilities.confirmRedo(this.confirmPrompt).catch(reject))
+  async execute() {
+    return await PromptUtilities.confirmRedo(this.confirmPrompt)
   }
 
 }

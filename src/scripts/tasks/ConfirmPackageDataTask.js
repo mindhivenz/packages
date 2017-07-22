@@ -4,7 +4,7 @@ import { logBr, log } from '../utils/CliUtils'
 
 export default class ConfirmNewPackageDataTask extends ConfirmRedoTask {
 
-  async execute(pkg, resolve, reject) {
+  async execute(pkg) {
     const { name, version, author, description } = pkg
     logBr()
     log('About to create package:')
@@ -13,7 +13,7 @@ export default class ConfirmNewPackageDataTask extends ConfirmRedoTask {
     this.logger.info('      Author', author)
     this.logger.info(' Description', description)
     logBr()
-    return await super.execute(pkg, resolve, reject)
+    return await super.execute(pkg)
   }
 
 }

@@ -65,12 +65,12 @@ const questions = ({ packageScope, packageName, version, author, description }) 
 
 export default class GetPackageDataTask extends AsyncTask {
 
-  async execute(defaults, resolve) {
+  async execute(defaults) {
     logBr()
     const questionDefaults = Object.assign({}, { author: await fullname() }, defaults)
     const packageData = await PromptUtilities.questions(questions(questionDefaults))
     packageData.name = packageFullName(packageData.packageScope, packageData.packageName)
-    resolve(packageData)
+    return packageData
   }
 
 }
