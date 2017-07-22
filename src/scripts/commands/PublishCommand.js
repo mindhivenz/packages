@@ -23,19 +23,22 @@ export default class NewCommand extends Command {
     logHeader('Publish @mindhive/package')
     const packages = PackageUtilities.getPackages()
 
-    this.versions = await PromptUtilities.processUntilConfirm(packages,
+    const versions = await PromptUtilities.processUntilConfirm(packages,
       new ProcessVersionsTask(packages),
       new ConfirmVersionsTask(packages),
     )
 
-    this.packages = PackageUtilities.filterSkippedPackages(packages, this.versions)
+    return {
+      packages: PackageUtilities.filterSkippedPackages(packages, versions),
+      versions,
+    }
   }
 
-  execute() {
+  execute({ packages, versions }) {
     log('Execute command!')
     logBr()
 
-    printPackageVersions(this.packages, this.versions, this.logger)
+    printPackageVersions(packages, versions, this.logger)
     logBr()
   }
 

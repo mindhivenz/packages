@@ -221,17 +221,17 @@ export default class Command {
   async runCommand() {
     let code = INIT
     try {
-      await this.initialize()
+      const initResult = await this.initialize()
       code = EXEC
-      await this.execute()
+      this._complete(initResult, await this.execute(initResult))
     } catch (err) {
-      this._complete(code, err)
+      this._handleError(code, err)
     }
   }
 
 
-  _complete(code, err) {
-    this._handleError(code, err)
+  _complete(initResult, execResult) {  // eslint-disable-line no-unused-vars
+    // this._handleError(code, err)
 
 
     // const childProcessCount = ChildProcessUtilities.getChildProcessCount()
