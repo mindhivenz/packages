@@ -8,12 +8,10 @@ export function nameFromClassName(className) {
 }
 
 export default class AsyncTask {
-  _cwd
 
-  constructor(cwd) {
+  constructor() {
     console.log('AsyncTask')
     log.pause()
-    this._cwd = cwd
     this.logger = newLogger(this.name)
 
     this.config = config
@@ -40,12 +38,10 @@ export default class AsyncTask {
   _initialize = props => new Promise((resolve, reject) => this.initialize(props, resolve, reject))
   _execute = data => new Promise((resolve, reject) => this.execute(data, resolve, reject))
 
-  // initialize()
   initialize(props, resolve) {
     resolve(props)
   }
 
-  // execute(resolve, reject)
   execute() {
     throw new Error('task.execute() needs to be implemented.')
   }

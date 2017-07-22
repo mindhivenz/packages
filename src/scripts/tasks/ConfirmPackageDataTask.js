@@ -1,22 +1,19 @@
-import AsyncTask from './AsyncTask'
+import ConfirmRedoTask from './ConfirmRedoTask'
+
 import { logBr, log } from '../utils/CliUtils'
-import PromptUtilities from '../utils/PromptUtilities'
 
-export default class ConfirmNewPackageDataTask extends AsyncTask {
+export default class ConfirmNewPackageDataTask extends ConfirmRedoTask {
 
-  initialize({ name, version, author, description }, resolve) {
+  async execute(pkg, resolve, reject) {
+    const { name, version, author, description } = pkg
     logBr()
     log('About to create package:')
     this.logger.info('        Name', name)
     this.logger.info('     Version', version)
     this.logger.info('      Author', author)
     this.logger.info(' Description', description)
-    resolve()
-  }
-
-  async execute(data, resolve, reject) {
     logBr()
-    resolve(await PromptUtilities.confirmRedo('Do you want to continue?').catch(reject))
+    return await super.execute(pkg, resolve, reject)
   }
 
 }
