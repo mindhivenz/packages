@@ -1,6 +1,8 @@
 import inquirer from 'inquirer'
 import log from 'npmlog'
 
+export const QUIT = 'quit'
+
 async function _input(message, { filter, validate } = {}) {
   log.pause()
   const answers = await inquirer.prompt([{
@@ -53,14 +55,20 @@ async function _confirm(message = DEFAULT_CONFIRM_MESSAGE, choices = CONFIRM_CHO
   return answers.confirm
 }
 
-const QUIT = 'quit'
-const _confirmRedo = async message => await _confirm(
-  message, [
-    { key: 'y', name: 'Yes', value: true },
-    { key: 'n', name: 'No, enter data again', value: false },
-    { key: 'q', name: 'Quit', value: QUIT },
-  ]
-)
+const _confirmRedo = message => new Promise(async (resolve, reject) => {
+  const answer = await _confirm(
+    message, [
+      { key: 'y', name: 'Yes', value: true },
+      { key: 'n', name: 'No, enter data again', value: false },
+      { key: 'q', name: 'Quit', value: QUIT },
+    ]
+  )
+  if (answer === QUIT) {
+    reject(answer)
+  } else {
+    resolve(answer)
+  }
+})
 
 
 const _repeatUntilConfirm = async (getData, printDataSummary, confirmMessage) => new Promise(async (resolve, reject) => { // eslint-disable-line max-len
@@ -69,11 +77,7 @@ const _repeatUntilConfirm = async (getData, printDataSummary, confirmMessage) =>
   while (! proceed) {
     data = await getData()
     printDataSummary(data)
-    proceed = await _confirmRedo(confirmMessage)
-    if (proceed === QUIT) {
-      reject(proceed)
-      return
-    }
+    proceed = await _confirmRedo(confirmMessage).catch(reject)
   }
   resolve(data)
 })

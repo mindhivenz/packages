@@ -1,7 +1,7 @@
 import inputPackageData from '../tasks/inputNewPackageFields'
-import printNewPackageDataConfirm from '../package/printNewPackageDataConfirm'
 import createNewPackage from '../tasks/createNewPackage'
-import PromptUtilities from '../utils/PromptUtilities'
+import ConfirmNewPackageDataTask from '../tasks/ConfirmPackageDataTask'
+import { QUIT } from '../utils/PromptUtilities'
 
 import Command from './Command'
 
@@ -19,21 +19,42 @@ export default class NewCommand extends Command {
   async initialize(callback) {
     logHeader('Create @mindhive/package')
     this.newPackageName = this.input[0]
-
-
     this.packageData = { packageName: this.newPackageName || null }
     this.basePackage = this.config.basePackageSource
+    const confirmData = new ConfirmNewPackageDataTask()
+
+    let confirmed = false
     try {
-      this.packageData = await PromptUtilities.repeatUntilConfirm(
-        () => inputPackageData(this.packageData),
-        data => printNewPackageDataConfirm(data, this.logger),
-      )
-    } catch (e) {
-      this.logger.warn('Quit without creating package!')
+      while (! confirmed) {
+        this.packageData = await inputPackageData(this.packageData)
+        confirmed = await confirmData.run(this.packageData)
+      }
+    } catch (reject) {
       logBr()
+      this.logger.warn('Quit without creating package!')
       callback(null, false)
       return
     }
+
+    // this.packageData = await PromptUtilities.repeatUntilConfirm(
+    //   () => inputPackageData(this.packageData),
+    //   data => printNewPackageDataConfirm(data, this.logger),
+    // )
+    //
+    //
+    // this.packageData = { packageName: this.newPackageName || null }
+    // this.basePackage = this.config.basePackageSource
+    // try {
+    //   this.packageData = await PromptUtilities.repeatUntilConfirm(
+    //     () => inputPackageData(this.packageData),
+    //     data => printNewPackageDataConfirm(data, this.logger),
+    //   )
+    // } catch (e) {
+    //   this.logger.warn('Quit without creating package!')
+    //   logBr()
+    //   callback(null, false)
+    //   return
+    // }
     callback(null, true)
   }
 
