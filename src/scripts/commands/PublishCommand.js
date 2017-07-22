@@ -1,7 +1,7 @@
-import confirmVersions from '../tasks/confirmVersions'
 import getVersionsForPackages from '../tasks/getVersionsForPackages'
-import repeatUntilConfirm from '../tasks/repeatUntilConfirm'
+import printVersionsConfirm from '../tasks/printVersionsConfirm'
 import PackageUtilities from '../package/PackageUtilities'
+import PromptUtilities from '../utils/PromptUtilities'
 
 import Command from './Command'
 
@@ -20,12 +20,12 @@ export default class NewCommand extends Command {
     logHeader('Publish @mindhive/package')
     this.packages = PackageUtilities.getPackages()
     try {
-      this.versions = await repeatUntilConfirm(
+      this.versions = await PromptUtilities.repeatUntilConfirm(
         () => getVersionsForPackages(this.packages),
-        data => confirmVersions(this.packages, data, this.logger),
+        data => printVersionsConfirm(this.packages, data, this.logger),
       )
     } catch (e) {
-      this.logger.warn('Quit without creating package!')
+      this.logger.warn('Quit without publishing!')
       logBr()
       callback(null, false)
       return

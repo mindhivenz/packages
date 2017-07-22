@@ -1,7 +1,6 @@
 import inputPackageData from '../tasks/inputNewPackageFields'
 import printNewPackageDataConfirm from '../tasks/printNewPackageDataConfirm'
 import createNewPackage from '../tasks/createNewPackage'
-import repeatUntilConfirm from '../tasks/repeatUntilConfirm'
 import PromptUtilities from '../utils/PromptUtilities'
 
 import Command from './Command'
