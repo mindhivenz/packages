@@ -3,7 +3,7 @@ import printVersionsConfirm, { printPackageVersions } from '../package/printVers
 import PackageUtilities from '../package/PackageUtilities'
 import PromptUtilities from '../utils/PromptUtilities'
 
-import Command from './Command'
+import SyncCommand from '../core/SyncCommand'
 
 import {
   logBr,
@@ -11,7 +11,7 @@ import {
   logHeader,
 } from '../utils/CliUtils'
 
-export default class NewCommand extends Command {
+export default class NewCommand extends SyncCommand {
   get requiresGit() {
     return false
   }

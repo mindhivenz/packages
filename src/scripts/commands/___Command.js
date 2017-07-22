@@ -1,7 +1,7 @@
 import async from 'async'
 // import path from 'path'
 
-import Command from './Command'
+import Command from '../core/Command'
 // import FileSystemUtilities from '../utils/FileSystemUtilities'
 // import PromptUtilities from '../utils/PromptUtilities'
 

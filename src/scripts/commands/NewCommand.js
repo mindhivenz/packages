@@ -3,7 +3,7 @@ import ProcessPackageDataTask from '../tasks/ProcessPackageDataTask'
 import ConfirmPackageDataTask from '../tasks/ConfirmPackageDataTask'
 import PromptUtilities from '../utils/PromptUtilities'
 
-import Command from './Command'
+import Command from '../core/Command'
 
 import {
   logBr,

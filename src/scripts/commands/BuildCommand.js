@@ -12,9 +12,9 @@ import {
 
 import PackageUtilities from '../package/PackageUtilities'
 
-import Command from './Command'
+import SyncCommand from '../core/SyncCommand'
 
-export default class BuildCommand extends Command {
+export default class BuildCommand extends SyncCommand {
   get requiresGit() {
     return false
   }
