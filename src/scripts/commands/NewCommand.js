@@ -18,8 +18,8 @@ export default class NewCommand extends Command {
     logHeader('Create @mindhive/package')
     this.packageData = await PromptUtilities.processUntilConfirm(
       { packageName: this.input[0] || null },
-      new ProcessPackageDataTask(),
-      new ConfirmPackageDataTask()
+      this.createTask(ProcessPackageDataTask),
+      this.createTask(ConfirmPackageDataTask)
     )
   }
 
