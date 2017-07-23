@@ -15,7 +15,7 @@ export default class AsyncTask {
 
     this.command = command
     this.logger = newLogger(this.name)
-    this.logger.info('task', this.name)
+    this.logger.silly('task', this.name)
     this.logger.silly('command', this.command)
 
     this.config = config

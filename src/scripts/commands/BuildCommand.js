@@ -21,13 +21,11 @@ export default class BuildCommand extends Command {
   async initialize() {
     logHeader('Building @mindhive/packages.....')
     const specifiedPackage = this.input[0] || null
+    this.filteredPackages = PackageUtilities.filterIncludedPackages(this.allPackages)
+    printIgnoredPackages(PackageUtilities.filterIgnoredPackages(this.allPackages), this.logger)
     if (specifiedPackage) {
       const findPackageByNameTask = this.createTask(FindPackageByNameTask)
-      this.packagesToBuild = await findPackageByNameTask.run(specifiedPackage)
-
-    } else {
-      this.packagesToBuild = PackageUtilities.filterIncludedPackages(this.allPackages)
-      printIgnoredPackages(PackageUtilities.filterIgnoredPackages(this.allPackages), this.logger)
+      this.filteredPackages = await findPackageByNameTask.run(specifiedPackage)
     }
     logBr()
   }
@@ -36,9 +34,9 @@ export default class BuildCommand extends Command {
   execute() {
     const logger = this.logger
     const additionalFiles = this.config.additionalFiles
-    logger.addWork(this.packagesToBuild.length * 3)
+    logger.addWork(this.filteredPackages.length * 3)
     const concurrency = 4
-    PackageUtilities.runParallel(this.packagesToBuild, pkg => (cb) => {
+    PackageUtilities.runParallel(this.filteredPackages, pkg => (cb) => {
       logger.package(pkg, 'Building package......')
       try {
         cleanDestination(pkg, logger)

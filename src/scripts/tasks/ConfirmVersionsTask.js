@@ -5,7 +5,8 @@ import PackageUtilities from '../package/PackageUtilities'
 export default class ConfirmVersionsTask extends ConfirmRedoTask {
 
   async execute(versions) {
-    const { updating, skipping } = PackageUtilities.filterSkippedPackages(this.command.allPackages, versions)
+    const { packages } = this.initialValues
+    const { updating, skipping } = PackageUtilities.filterSkippedPackages(packages, versions)
     if (updating) {
       logBr()
       this.logger.info(styleWhiteBold('Updating:'))

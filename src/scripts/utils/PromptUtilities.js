@@ -69,7 +69,9 @@ const _confirmOrEdit = async (message) => {
 
 const _repeatUntilConfirm = async (input, processTask, confirmTask) => { // eslint-disable-line max-len
   let confirmed = false
-  let data = input
+  processTask.setInitialValues(input)
+  confirmTask.setInitialValues(input)
+  let data
   while (! confirmed) {
     data = await processTask.run(data)
     confirmed = await confirmTask.run(data)

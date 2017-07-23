@@ -15,26 +15,24 @@ import {
 } from '../utils/CliUtils'
 
 export default class NewCommand extends Command {
-  get requiresGit() {
-    return false
-  }
 
   async initialize() {
     logHeader('Publish @mindhive/package')
-    const packages = PackageUtilities.getPackages()
+    const packages = PackageUtilities.filterIncludedPackages(this.allPackages)
 
-    const versions = await PromptUtilities.processUntilConfirm(packages,
-      new ProcessVersionsTask(packages),
-      new ConfirmVersionsTask(packages),
+    const versions = await PromptUtilities.processUntilConfirm({ packages },
+      this.createTask(ProcessVersionsTask),
+      this.createTask(ConfirmVersionsTask),
     )
 
-    return {
+    this.updates = {
       packages: PackageUtilities.filterSkippedPackages(packages, versions),
       versions,
     }
   }
 
-  execute({ packages, versions }) {
+  execute() {
+    const { packages, versions } = this.updates
     log('Execute command!')
     logBr()
 

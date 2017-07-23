@@ -1,11 +1,12 @@
 import asyncJs from 'async'
 import promptVersion from './promptVersion'
 
-import AsyncTask from '../core/AsyncTask'
+import ProcessConfirmTask from '../core/ProcessConfirmTask'
 
-export default class ProcessVersionsTask extends AsyncTask {
+export default class ProcessVersionsTask extends ProcessConfirmTask {
 
-  async execute(packages) {
+  async execute() {
+    const packages = this.initialValues.packages
     return new Promise((resolve, reject) => {
       const NUM_PARALLEL_PROCESSES = 1
       asyncJs.mapLimit(packages, NUM_PARALLEL_PROCESSES, async ({ npmName, version }, cb) => {
