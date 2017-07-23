@@ -20,7 +20,7 @@ export default class BuildCommand extends Command {
 
   async initialize() {
     logHeader('Building @mindhive/packages.....')
-    const specifiedPackage = this.input[0] || null
+    const specifiedPackage = this.input.package || null
     this.filteredPackages = PackageUtilities.filterIncludedPackages(this.allPackages)
     printIgnoredPackages(PackageUtilities.filterIgnoredPackages(this.allPackages), this.logger)
     if (specifiedPackage) {
@@ -76,6 +76,6 @@ export default class BuildCommand extends Command {
 }
 
 export function handler(argv) {
-  return new BuildCommand(argv._, argv).run()
+  return new BuildCommand(argv).run()
 }
 

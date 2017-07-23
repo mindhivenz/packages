@@ -15,20 +15,20 @@ export function commandNameFromClassName(className) {
 
 export default class Command {
   _cwd
-  constructor(input, flags, cwd) {
+  constructor(input, cwd) {
     this._cwd = cwd
     log.pause()
     this.logger = newLogger(this.name)
 
-    if (flags.loglevel) {
-      log.level = flags.loglevel
-    }
+    // if (flags.loglevel) {
+    //   log.level = flags.loglevel
+    // }
 
     this.input = input
-    this.logger.silly('input', input)
-    this.logger.silly('flags', flags)
+    this.logger.info('input', input)
+    // this.logger.info('flags', flags)
 
-    this._flags = flags
+    // this._flags = flags
 
     this.config = config
 
@@ -65,10 +65,10 @@ export default class Command {
 
   createTask = TaskClass => new TaskClass(this)
 
-  run() {
+  async run() {
     this.runValidations()
     this.runPreparations()
-    this.runCommand()
+    await this.runCommand()
   }
 
   runValidations() { }
