@@ -3,6 +3,7 @@ import ProcessVersionsTask from '../tasks/ProcessVersionsTask'
 import { printPackageVersions } from '../package/printVersionsConfirm'
 import PackageUtilities from '../package/PackageUtilities'
 import PromptUtilities from '../utils/PromptUtilities'
+import { printIgnoredPackages } from '../package/packageUtils'
 
 import { QUIT, INIT } from '../core/Codes'
 
@@ -19,6 +20,7 @@ export default class NewCommand extends Command {
   async initialize() {
     logHeader('Publish @mindhive/package')
     const packages = PackageUtilities.filterIncludedPackages(this.allPackages)
+    printIgnoredPackages(PackageUtilities.filterIgnoredPackages(this.allPackages), this.logger)
 
     const versions = await PromptUtilities.processUntilConfirm({ packages },
       this.createTask(ProcessVersionsTask),

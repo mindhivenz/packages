@@ -15,7 +15,6 @@
     }
   },
   "scripts": {
-    "mhp": "node $npm_package_config_scripts_dest/mhp.js",
     "mhp:build": "node $npm_package_config_scripts_dest/build.js",
     "mhp:clean": "node $npm_package_config_scripts_dest/clean.js",
     "mhp:pub": "node $npm_package_config_scripts_dest/pub.js",

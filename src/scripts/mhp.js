@@ -1,12 +1,17 @@
 import v from 'vorpal'
 
-import build from './build'
+import buildCmd from './build'
+import newCmd from './new'
 
 const vorpal = v()
 vorpal
   .command('build [package]', 'Builds packages')
-  .action(build)
+  .action(buildCmd)
+
+// vorpal
+//   .command('new [package]', 'Creates a new package')
+//   .action(newCmd)
 
 vorpal
-  .delimiter('myapp$')
+  .delimiter('mhp$')
   .show()

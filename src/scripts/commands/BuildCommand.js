@@ -75,7 +75,8 @@ export default class BuildCommand extends Command {
   }
 }
 
-export function handler(argv) {
-  return new BuildCommand(argv).run()
+export async function handler(argv, callback) {
+  await new BuildCommand(argv).run()
+  callback()
 }
 

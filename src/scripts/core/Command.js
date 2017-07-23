@@ -25,7 +25,7 @@ export default class Command {
     // }
 
     this.input = input
-    this.logger.info('input', input)
+    this.logger.silly('input', input)
     // this.logger.info('flags', flags)
 
     // this._flags = flags

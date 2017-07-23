@@ -59,7 +59,8 @@ const questions = ({ packageScope, packageName, version, author, description }) 
 
 export default class ProcessPackageDataTask extends ProcessConfirmTask {
 
-  async execute(defaults) {
+  async execute(data) {
+    const defaults = data || this.initialValues
     logBr()
     const questionDefaults = Object.assign({}, { author: await fullname() }, defaults)
     const packageData = await PromptUtilities.questions(questions(questionDefaults))

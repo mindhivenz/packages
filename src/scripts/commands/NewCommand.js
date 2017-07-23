@@ -16,8 +16,10 @@ export default class NewCommand extends Command {
 
   async initialize() {
     logHeader('Create @mindhive/package')
+    const packageName = this.input.package
+    console.log(this.input)
     this.packageData = await PromptUtilities.processUntilConfirm(
-      { packageName: this.input[0] || null },
+      { packageName: packageName || null },
       this.createTask(ProcessPackageDataTask),
       this.createTask(ConfirmPackageDataTask)
     )
@@ -41,7 +43,7 @@ export default class NewCommand extends Command {
 
 }
 
-export function handler(argv) {
-  return new NewCommand(argv._, argv).run()
+export function handler(argv, callback) {
+  return new NewCommand(argv).run().then(callback)
 }
 

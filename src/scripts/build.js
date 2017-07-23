@@ -8,4 +8,8 @@ const params = {
 if (argv) {
   params.package = argv[0]
 }
-handler(params)
+export default async function (args, callback) {
+  await handler(args, callback())
+}
+
+handler(params, () => {})
