@@ -1,3 +1,5 @@
+import { exit } from 'shelljs'
+
 import cleanDestination from '../tasks/clean'
 import compileSources from '../tasks/compileSources'
 import copyFiles from '../tasks/copyFiles'
@@ -39,7 +41,9 @@ export default class BuildCommand extends Command {
     PackageUtilities.runParallel(this.filteredPackages, pkg => (cb) => {
       logger.package(pkg, 'Building package......')
       try {
-        cleanDestination(pkg, logger)
+        cleanDestination(pkg, logger).then(() => {
+          exit(0)
+        })
         copyFiles(pkg, additionalFiles, logger)
         compileSources(pkg, logger, () => {
           logger.package(pkg, '...complete!')

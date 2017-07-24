@@ -69,6 +69,7 @@
     "eslint-plugin-prettier": "^2.0.1",
     "eslint-plugin-react": "^6.4.1",
     "flyd": "^0.2.4",
+    "fs-extra": "^4.0.0",
     "fullname": "^3.3.0",
     "gauge": "^2.7.4",
     "glob": "^7.1.1",
