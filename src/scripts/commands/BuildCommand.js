@@ -1,6 +1,6 @@
 import { exit } from 'shelljs'
 
-import cleanDestination from '../tasks/clean'
+import cleanDestination from '../tasks/cleanBuildLocation'
 import compileSources from '../tasks/compileSources'
 import copyFiles from '../tasks/copyFiles'
 import FindPackageByNameTask from '../tasks/FindPackageByNameTask'
