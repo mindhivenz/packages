@@ -1,13 +1,9 @@
-import { rm, exec } from 'shelljs'
-import path from 'path'
-import FileSystemUtilities from '../utils/FileSystemUtilities'
+import fs from 'fs-extra'
 
 export default async ({ buildLocation, name }, logger) => {
   logger.verbose(name, 'Cleaning compiled package...')
-
-  if (FileSystemUtilities.pathExistsSync(buildLocation)) {
-    // rm('-rf', buildLocation)
-    loggser.verbose(name, 'Clean!')
+  if (await fs.pathExists(buildLocation) && await fs.remove(buildLocation)) {
+    logger.info(name, 'Clean!')
     logger.completeWork(1)
   }
   return true

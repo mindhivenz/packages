@@ -1,4 +1,3 @@
-
 const isFunct = me => err => err.name === me.name
 
 const setup = (me, name, message) => {

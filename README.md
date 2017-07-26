@@ -4,6 +4,10 @@ for our NPM packages using [Lerna](https://github.com/lerna/lerna) and with insp
 from [Bable](https://github.com/babel/babel/tree/master/packages) and 
 [Jest](https://github.com/facebook/jest/tree/master/packages)
 
+```text
+    THIS IS A LITTLE OUT OF DATE :)
+```
+
 ### Getting started
 1. First thing run `yarn bootstrap` to install npm dependencies, compile build scripts and build any packages
 
@@ -57,17 +61,45 @@ in root dir
   "sourcePath": "./src/packages",
   "outPath": "./packages",
 
-  "registry": "https://registry.npmjs.org/",
+  "registry": "https://registry.npmjs.org/"
 }
 ```
 ### Structure
 ```text
 root
-  |-compiled_scripts    ....    DON'T EDIT, see src/scripts    
-  |-init                ....    template/defaults for new package    
-  |-packages            ....    our COMPILED npm packages
+  |-compiled_scripts    ....        
+  |-lib
+  |  |-- packages       ....    our COMPILED npm packages
+  |  |-- scripts        ....    DON'T EDIT, see src/scripts
   |-src
   |-- scripts           ....    scripts ES6 source
   |-- packages          ....    packages ES6 source
 
 ```
+### Prettier
+[Prettier](https://github.com/prettier/prettier)  is an opinionated code formatter that's getting traction as a replacement for linting as it just formats the code in one way with very few config options. Giving it a go here to see how we feel about it. It's pretty close to ```AirBnB``` and so far I like it. 
+
+Upshot is that our entire code base will be auto formatted to one very strict style with no effort or thought from us. Can be setup to style on save or pre-commit or whatever but for now I've only set up commands to do it when you want....
+
+
+
+#####Setup in Idea:
+Open ```Intelij Idea -> Preferences... -> Tools -> External```
+1. ```+``` create new called ```Prettier file```
+    1. Program set ```./node_modules/.bin/prettier```
+    1. Parameters set ```--single-quote --no-semi --trailing-comma es5 --jsx-bracket-same-line --write $FilePathRelativeToProjectRoot$```
+    1. Working directory set `$ProjectFileDir$`
+    1. Save that
+    
+1. Clone the above and call it ```Prettier dir```
+    1. Parameters set *--single-quote --no-semi --trailing-comma es5 --jsx-bracket-same-line --write* ```$FileDirRelativeToProjectRoot$"/+(*.js|*.jsx)"```
+
+1. Clone the above and call it ```Prettier scripts```
+    1. Parameters set *--single-quote --no-semi --trailing-comma es5 --jsx-bracket-same-line --write ```"{app,src/scripts}/**/*.js"```
+    1. Note the ```"``` surrounding *{app,src/scripts}/**/*.js* 
+
+#####Usage
+```Cmd-Shift-A```  then type ```prettier``` and:
+ 1. ```Prettier file```: format the file you are editing
+ 1. ```Prettier dir```: format all files in the package of the current file
+ 1. ```Prettier scripts```: format all script source files

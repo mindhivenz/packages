@@ -7,4 +7,3 @@ export default ({ name, version, author, description }, logger) => {
   logger.info('      Author', author)
   logger.info(' Description', description)
 }
-

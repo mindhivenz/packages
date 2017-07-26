@@ -20,7 +20,7 @@ export default class Package {
   }
 
   @action
-  init = (pkg) => {
+  init = pkg => {
     this._package = pkg
     const { name, scope } = npmSafeName(pkg.name)
     this._scope = scope
@@ -82,11 +82,7 @@ export default class Package {
   }
 
   get allDependencies() {
-    return Object.assign(
-      {},
-      this.devDependencies,
-      this.dependencies
-    )
+    return Object.assign({}, this.devDependencies, this.dependencies)
   }
 
   get scripts() {
@@ -94,7 +90,7 @@ export default class Package {
   }
 
   isPrivate() {
-    return !! this._package.private
+    return !!this._package.private
   }
 
   toJSON() {
@@ -128,7 +124,7 @@ export default class Package {
     const expectedVersion = this.allDependencies[dependency.name]
     const actualVersion = dependency.version
 
-    if (! expectedVersion) {
+    if (!expectedVersion) {
       return false
     }
 
@@ -138,13 +134,15 @@ export default class Package {
     }
 
     if (doWarn) {
-      log.warn(this.name, dedent`
+      log.warn(
+        this.name,
+        dedent`
         depends on '${dependency.name}@${expectedVersion}'
         instead of '${dependency.name}@${actualVersion}'
-      `)
+      `
+      )
     }
 
     return false
   }
-
 }

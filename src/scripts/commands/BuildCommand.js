@@ -33,17 +33,15 @@ export default class BuildCommand extends Command {
   }
 
 
-  execute() {
+  async execute() {
     const logger = this.logger
     const additionalFiles = this.config.additionalFiles
     logger.addWork(this.filteredPackages.length * 3)
     const concurrency = 4
-    PackageUtilities.runParallel(this.filteredPackages, pkg => (cb) => {
+    PackageUtilities.runParallel(this.filteredPackages, pkg => async (cb) => {
       logger.package(pkg, 'Building package......')
       try {
-        cleanDestination(pkg, logger).then(() => {
-          exit(0)
-        })
+        await cleanDestination(pkg, logger)
         copyFiles(pkg, additionalFiles, logger)
         compileSources(pkg, logger, () => {
           logger.package(pkg, '...complete!')
