@@ -1,0 +1,9 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+
+    // Controls the font family.
+    // Controls the line height. Use 0 to compute the lineHeight from the fontSize.
+    "editor.lineHeight": 24,
+    // Enables font ligatures
+    "editor.fontLigatures": true,
+}
