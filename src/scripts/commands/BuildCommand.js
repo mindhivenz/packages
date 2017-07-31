@@ -42,7 +42,7 @@ export default class BuildCommand extends Command {
       logger.package(pkg, 'Building package......')
       try {
         await cleanDestination(pkg, logger)
-        copyFiles(pkg, additionalFiles, logger)
+        Promise.all(copyFiles(pkg, additionalFiles, logger))
         compileSources(pkg, logger, () => {
           logger.package(pkg, '...complete!')
           logger.completeWork(1)

@@ -1,21 +1,24 @@
+import fs from 'fs-extra'
 import path from 'path'
-import fsUtils from '../utils/FileSystemUtilities'
 
-export default ({ buildLocation, sourceLocation, name }, files, logger) => {
+export default async ({ buildLocation, sourceLocation, name }, files, logger) => {
   logger.silly('copyFiles', files)
   logger.verbose(name, 'Copying additional package files...')
 
   const filesToCopy = files
     .map(file => path.resolve(sourceLocation, file))
-    .filter(file => fsUtils.pathExistsSync(file))
+    .filter(async file => {
+      const exists = await fs.pathExists(file)
+      console.log(exists, file)
+    })
 
   logger.addWork(filesToCopy.length)
 
-  filesToCopy.forEach((sourceFile) => {
+  Promise.all(filesToCopy.map(async (sourceFile) => {
     logger.verbose(name, `Copying ${sourceFile}`)
-    fsUtils.copySync(sourceFile, buildLocation)
+    await fs.copy(sourceFile, buildLocation)
     logger.completeWork(1)
-  })
+  }))
 
   logger.verbose(name, 'Copied!')
   logger.completeWork(1)
