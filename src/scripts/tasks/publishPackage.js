@@ -50,13 +50,13 @@ export default (
           ? styleError('private')
           : ''}`
       )
-      writeVersion(sourceLocation, newVersion)
+      writeVersion(buildLocation, newVersion)
 
       const bCommand = `cd ${buildLocation} && npm  publish`
 
-      if (await execJs(bCommand, getExecOpts(buildLocation)) === 0) {
+      if (await execJs(bCommand, getExecOpts(buildLocation)).code === 0) {
         logger.verbose(npmName, 'Success...')
-        writeVersion(buildLocation, newVersion)
+        writeVersion(sourceLocation, newVersion)
       }
 
 
