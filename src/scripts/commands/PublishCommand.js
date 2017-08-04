@@ -1,5 +1,6 @@
 import ConfirmVersionsTask from '../tasks/ConfirmVersionsTask'
 import ProcessVersionsTask from '../tasks/ProcessVersionsTask'
+import publishPackage from '../tasks/publishPackage'
 import { printPackageVersions } from '../package/printVersionsConfirm'
 import PackageUtilities from '../package/PackageUtilities'
 import PromptUtilities from '../utils/PromptUtilities'
@@ -38,7 +39,7 @@ export default class NewCommand extends Command {
     log('Execute command!')
     logBr()
 
-    printPackageVersions(packages, versions, this.logger)
+    publishPackage(packages, versions, this.logger)
     logBr()
   }
 
