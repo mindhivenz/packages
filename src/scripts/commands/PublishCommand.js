@@ -11,7 +11,7 @@ import Command from '../core/Command'
 
 import {
   logBr,
-  log,
+  styleWhiteBold,
   logHeader,
 } from '../utils/CliUtils'
 
@@ -31,11 +31,14 @@ export default class NewCommand extends Command {
   }
 
   async execute() {
+    logBr()
+    this.logger.info(styleWhiteBold('Publishing...'))
     this.publishPackagesTask
       .execute()
       .then(() => {
         logBr()
         this.logger.info('Done!!')
+        logBr()
       }
     )
   }

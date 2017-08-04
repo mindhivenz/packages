@@ -45,7 +45,7 @@ export default class PublishPackagesTask extends AsyncTask {
           } else {
             this.writePackageVersion(sourceLocation, newVersion)
             this.logger.info(
-              'Published to NPM:',
+              '+',
               `${npmName}@${newVersion}`
             )
             resolve()
