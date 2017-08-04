@@ -1,4 +1,3 @@
-import glob from 'glob'
 import path from 'path'
 import jsonfile from 'jsonfile'
 import {
@@ -18,18 +17,13 @@ const writeVersion = (location, version) => {
   jsonfile.writeFileSync(jsonPath, Object.assign({}, jsonData, {version}), {spaces: 2})
 }
 
-const getExecOpts = (directory) => {
-  const opts = {
-    cwd: directory,
-    env: Object.assign({}, process.env, {
-      npm_config_registry: config.registry,
-    }),
-    silent: false,
-    async: true,
-  }
-  log("getExecOpts", opts)
-  return opts
-}
+const getExecOpts = (directory) => ({
+  cwd: directory,
+  env: Object.assign({}, process.env, {
+    npm_config_registry: config.registry,
+  }),
+  silent: true,
+})
 
 export default (
   { updating },
@@ -39,28 +33,21 @@ export default (
 
 
   if (updating) {
-    logBr()
-    updating.forEach(async pkg => {
-      const { buildLocation, sourceLocation, npmName, version: currentVersion,  } = pkg
+    updating.forEach(pkg => {
+      const { buildLocation, sourceLocation, npmName } = pkg
       logger.verbose(npmName, 'Publish ......')
       const newVersion = versions[npmName]
-      logger.info(
-        `${npmName}:`,
-        `${currentVersion} => ${styleWhiteBold(newVersion)} ${pkg.isPrivate()
-          ? styleError('private')
-          : ''}`
-      )
       writeVersion(buildLocation, newVersion)
 
       const bCommand = `cd ${buildLocation} && npm  publish`
-
-      if (await execJs(bCommand, getExecOpts(buildLocation)).code === 0) {
-        logger.verbose(npmName, 'Success...')
+      execJs(bCommand, getExecOpts(buildLocation), code => {
+        if (code !== 0) throw new Error('Publish to NPM failed')
         writeVersion(sourceLocation, newVersion)
-      }
-
-
+        logger.info(
+          'Published to NPM:',
+          `${npmName}@${newVersion}`
+        )
+      })
     })
   }
-  logBr()
 }

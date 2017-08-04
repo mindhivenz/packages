@@ -1,6 +1,6 @@
 {
   "name": "@mindhive/documents",
-  "version": "0.0.21",
+  "version": "0.0.27",
   "description": "Standard document viewing, editing, listing etc",
   "keywords": [
     "doc",

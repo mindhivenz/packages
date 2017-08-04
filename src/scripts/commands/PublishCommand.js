@@ -34,13 +34,11 @@ export default class NewCommand extends Command {
     }
   }
 
-  execute() {
+  async execute() {
     const { packages, versions } = this.updates
-    log('Execute command!')
-    logBr()
-
     publishPackage(packages, versions, this.logger)
     logBr()
+    this.logger.info('Done!!')
   }
 
   handleError(code, err) {
