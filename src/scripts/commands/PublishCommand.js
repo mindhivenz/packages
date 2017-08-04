@@ -1,8 +1,6 @@
 import ConfirmVersionsTask from '../tasks/ConfirmVersionsTask'
 import ProcessVersionsTask from '../tasks/ProcessVersionsTask'
-import publishPackage from '../tasks/publishPackage'
 import PublishPackagesTask from '../tasks/PublishPackagesTask'
-import { printPackageVersions } from '../package/printVersionsConfirm'
 import PackageUtilities from '../package/PackageUtilities'
 import PromptUtilities from '../utils/PromptUtilities'
 import { printIgnoredPackages } from '../package/packageUtils'
@@ -37,9 +35,10 @@ export default class NewCommand extends Command {
 
   async execute() {
     const { packages, versions } = this.updates
-    this.createTask(PublishPackagesTask).execute(packages, versions)
-    logBr()
-    this.logger.info('Done!!')
+    this.createTask(PublishPackagesTask).execute(packages, versions).then(() => {
+      logBr()
+      this.logger.info('Done!!')
+    })
   }
 
   handleError(code, err) {

@@ -24,7 +24,7 @@ export default class PublishPackagesTask extends AsyncTask {
 
   async execute({ updating }, versions) {
     if (updating) {
-      updating.forEach(pkg => {
+      return Promise.all(updating.map(pkg => new Promise((resolve, reject) => {
         const { buildLocation, sourceLocation, npmName } = pkg
         this.logger.verbose(npmName, 'Publish ......')
         const newVersion = versions[npmName]
@@ -32,15 +32,21 @@ export default class PublishPackagesTask extends AsyncTask {
 
         const bCommand = `cd ${buildLocation} && npm  publish`
         execJs(bCommand, this.getExecOpts(buildLocation), code => {
-          if (code !== 0) throw new Error('Publish to NPM failed')
-          this.writePackageVersion(sourceLocation, newVersion)
-          this.logger.info(
-            'Published to NPM:',
-            `${npmName}@${newVersion}`
-          )
+          if (code !== 0) {
+            reject('Publish to NPM failed')
+          } else {
+            this.writePackageVersion(sourceLocation, newVersion)
+            this.logger.info(
+              'Published to NPM:',
+              `${npmName}@${newVersion}`
+            )
+            resolve()
+          }
         })
-      })
+      }))
+      )
     }
+    return Promise.resolve()
   }
 
 }
