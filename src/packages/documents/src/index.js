@@ -8,6 +8,7 @@ import DocListIcon from './DocListIcon'
 import DocEdit from './DocEdit'
 import DocView from './DocView'
 import DocDropDownMenu from './DocDropDownMenu'
+import DropDownMenuItem from './DropDownMenuItem'
 import DocStatefulIcon from './DocStatefulIcon'
 import withDocEditContext from './withDocEditContext'
 import withDocEditContextAsProps from './withDocEditContextAsProps'
@@ -22,6 +23,7 @@ module.exports = {
   DocView,
   DocStatefulIcon,
   DocDropDownMenu,
+  DropDownMenuItem,
   withDocEditContextAsProps,
   withDocEditContext,
   getVersion: () => VERSION,

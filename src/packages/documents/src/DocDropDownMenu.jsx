@@ -1,4 +1,6 @@
 import React from 'react'
+import compose from 'recompose/compose'
+import mapProps from 'recompose/mapProps'
 
 import IconButton from 'material-ui/IconButton'
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
@@ -22,7 +24,8 @@ const DocDropDownMenu = ({
   stateIcons = [],
   menuItems = [],
   selectorId,
-  styles,
+  iconColor,
+  menuStyle,
   ...other
 }) =>
   <PassPropsWrapper {...other}>
@@ -33,13 +36,13 @@ const DocDropDownMenu = ({
         <IconButton
           id={`doc-list-item-icon-menu-${selectorId}-selector`}
         >
-          <MoreVertIcon color={styles.icon.color} />
+          <MoreVertIcon color={iconColor} />
         </IconButton>
       }
       useLayerForClickAway
       anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
       targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-      menuStyle={styles.menu}
+      menuStyle={menuStyle}
       {...other}
     >
       { menuItems.map(item => item) }
@@ -62,5 +65,12 @@ const mapThemeToStyles = ({
   }
 })
 
-export default withStyles(mapThemeToStyles)(DocDropDownMenu)
+export default compose(
+  withStyles(mapThemeToStyles),
+  mapProps(({theme, prepareStyles, styles, ...other}) => ({
+    iconColor: styles.icon.color,
+    menuStyle: styles.menu,
+    ...other,
+  }))
+)(DocDropDownMenu)
 
