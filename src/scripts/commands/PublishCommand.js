@@ -1,6 +1,7 @@
 import ConfirmVersionsTask from '../tasks/ConfirmVersionsTask'
 import ProcessVersionsTask from '../tasks/ProcessVersionsTask'
 import publishPackage from '../tasks/publishPackage'
+import PublishPackagesTask from '../tasks/PublishPackagesTask'
 import { printPackageVersions } from '../package/printVersionsConfirm'
 import PackageUtilities from '../package/PackageUtilities'
 import PromptUtilities from '../utils/PromptUtilities'
@@ -36,7 +37,7 @@ export default class NewCommand extends Command {
 
   async execute() {
     const { packages, versions } = this.updates
-    publishPackage(packages, versions, this.logger)
+    this.createTask(PublishPackagesTask).execute(packages, versions)
     logBr()
     this.logger.info('Done!!')
   }
