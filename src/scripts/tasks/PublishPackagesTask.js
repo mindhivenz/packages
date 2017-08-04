@@ -7,6 +7,14 @@ import AsyncTask from '../core/AsyncTask'
 
 
 export default class PublishPackagesTask extends AsyncTask {
+  updating
+  versions
+
+  constructor(command, { updating }, versions) {
+    super(command)
+    this.updating = updating
+    this.versions = versions
+  }
 
   writePackageVersion = (location, version) => {
     const jsonPath = path.resolve(location, 'package.json')
@@ -22,12 +30,12 @@ export default class PublishPackagesTask extends AsyncTask {
     silent: true,
   })
 
-  async execute({ updating }, versions) {
-    if (updating) {
-      return Promise.all(updating.map(pkg => new Promise((resolve, reject) => {
+  async execute() {
+    if (this.updating) {
+      return Promise.all(this.updating.map(pkg => new Promise((resolve, reject) => {
         const { buildLocation, sourceLocation, npmName } = pkg
         this.logger.verbose(npmName, 'Publish ......')
-        const newVersion = versions[npmName]
+        const newVersion = this.versions[npmName]
         this.writePackageVersion(buildLocation, newVersion)
 
         const bCommand = `cd ${buildLocation} && npm  publish`

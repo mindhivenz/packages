@@ -27,18 +27,17 @@ export default class NewCommand extends Command {
       this.createTask(ConfirmVersionsTask),
     )
 
-    this.updates = {
-      packages: PackageUtilities.filterSkippedPackages(packages, versions),
-      versions,
-    }
+    this.publishPackagesTask = new PublishPackagesTask(this, PackageUtilities.filterSkippedPackages(packages, versions), versions)
   }
 
   async execute() {
-    const { packages, versions } = this.updates
-    this.createTask(PublishPackagesTask).execute(packages, versions).then(() => {
-      logBr()
-      this.logger.info('Done!!')
-    })
+    this.publishPackagesTask
+      .execute()
+      .then(() => {
+        logBr()
+        this.logger.info('Done!!')
+      }
+    )
   }
 
   handleError(code, err) {
