@@ -22,8 +22,8 @@ module.exports = {
   DocView,
   DocStatefulIcon,
   DocDropDownMenu,
-  withDocEditContext,
   withDocEditContextAsProps,
+  withDocEditContext,
   getVersion: () => VERSION,
 }
 

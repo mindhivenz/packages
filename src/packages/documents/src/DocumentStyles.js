@@ -4,12 +4,16 @@ export default ({
   palette,
   colorManipulator,
   raisedButton,
+  paper,
 }) => ({
   docStatefulIcon: {
     disabledColor: grey200,
   },
   docDropDownMenu: {
     iconColor: grey400,
+    backgroundColor: paper.backgroundColor,
+    disabledColor: palette.disabledColor,
+
   },
   docList: {
     iconColor: grey400,
@@ -26,5 +30,8 @@ export default ({
     closeButtonHoverColor: palette.errorText,
     discardButtonColor: palette.errorText,
   },
+
+
+
 })
 
