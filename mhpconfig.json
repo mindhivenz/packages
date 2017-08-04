@@ -6,7 +6,6 @@
   ],
   "additionalFiles": [
     "README.md", 
-    ".npmignore", 
     "package.json"
   ],
   "sourcePath": "./src/packages",
