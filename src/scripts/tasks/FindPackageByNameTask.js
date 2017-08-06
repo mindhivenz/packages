@@ -1,4 +1,5 @@
 import { logBr, log, styleWhiteBold } from '../utils/CliUtils'
+
 import PackageUtilities from '../package/PackageUtilities'
 import Errors from '../package/Errors'
 import AsyncTask from '../core/AsyncTask'
@@ -10,10 +11,11 @@ export default class FindPackageByNameTask extends AsyncTask {
   async execute(name) {
     logBr()
     let packages
+    const npmName = name.charAt(0) === '@' ? name : `@mindhive/${name}`
     const filteredPackages = this.command.filteredPackages
     try {
-      packages = PackageUtilities.filterPackagesByName(filteredPackages, name)
-      this.logger.info('Building one package:', name)
+      packages = PackageUtilities.filterPackagesByName(filteredPackages, npmName)
+      this.logger.info('Building one package:', npmName)
       logBr()
 
     } catch (err) {
