@@ -3,7 +3,7 @@ import promptVersion from './promptVersion'
 
 import ProcessConfirmTask from '../core/ProcessConfirmTask'
 
-export default class ProcessVersionsTask extends ProcessConfirmTask {
+export default class RequestNewVersionsTask extends ProcessConfirmTask {
 
   async execute() {
     const packages = this.initialValues.packages

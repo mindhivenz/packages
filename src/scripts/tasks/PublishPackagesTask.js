@@ -32,6 +32,7 @@ export default class PublishPackagesTask extends AsyncTask {
 
   async execute() {
     if (this.updating) {
+      this.logger.addWork(this.updating.length)
       return Promise.all(this.updating.map(pkg => new Promise((resolve, reject) => {
         const { buildLocation, sourceLocation, npmName } = pkg
         this.logger.verbose(npmName, 'Publish ......')
@@ -49,6 +50,7 @@ export default class PublishPackagesTask extends AsyncTask {
               `${npmName}@${newVersion}`
             )
             resolve()
+            this.logger.completeWork(1)
           }
         })
       }))

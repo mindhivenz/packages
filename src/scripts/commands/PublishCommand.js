@@ -1,5 +1,5 @@
 import ConfirmVersionsTask from '../tasks/ConfirmVersionsTask'
-import ProcessVersionsTask from '../tasks/ProcessVersionsTask'
+import RequestNewVersionsTask from '../tasks/RequestNewVersionsTask'
 import PublishPackagesTask from '../tasks/PublishPackagesTask'
 import PackageUtilities from '../package/PackageUtilities'
 import PromptUtilities from '../utils/PromptUtilities'
@@ -22,9 +22,10 @@ export default class NewCommand extends Command {
     const packages = PackageUtilities.filterIncludedPackages(this.allPackages)
     printIgnoredPackages(PackageUtilities.filterIgnoredPackages(this.allPackages), this.logger)
 
+    logBr()
     const versions = await PromptUtilities.processUntilConfirm({ packages },
-      this.createTask(ProcessVersionsTask),
-      this.createTask(ConfirmVersionsTask),
+      new RequestNewVersionsTask(this),
+      new ConfirmVersionsTask(this),
     )
 
     this.publishPackagesTask = new PublishPackagesTask(this, PackageUtilities.filterSkippedPackages(packages, versions), versions)
@@ -41,6 +42,7 @@ export default class NewCommand extends Command {
         logBr()
       }
     )
+
   }
 
   handleError(code, err) {
