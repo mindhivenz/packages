@@ -1,6 +1,6 @@
 import ConfirmVersionsTask from '../tasks/ConfirmVersionsTask'
 import RequestNewVersionsTask from '../tasks/RequestNewVersionsTask'
-import PublishPackagesTask from '../tasks/PublishPackagesTask'
+import PublishPackagesTask from '../tasks/PublishSelectedPackagesTask'
 import PackageUtilities from '../package/PackageUtilities'
 import PromptUtilities from '../utils/PromptUtilities'
 import { printIgnoredPackages } from '../package/packageUtils'
@@ -28,14 +28,13 @@ export default class NewCommand extends Command {
       new ConfirmVersionsTask(this),
     )
 
-    this.publishPackagesTask = new PublishPackagesTask(this, PackageUtilities.filterSkippedPackages(packages, versions), versions)
+    this.publishPackages = new PublishPackagesTask(this, PackageUtilities.filterSkippedPackages(packages, versions).updating, versions)
   }
 
   async execute() {
     logBr()
     this.logger.info(styleWhiteBold('Publishing...'))
-    this.publishPackagesTask
-      .execute()
+    this.publishPackages.execute()
       .then(() => {
         logBr()
         this.logger.info('Done!!')
