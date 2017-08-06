@@ -15,26 +15,27 @@ import {
   logHeader,
 } from '../utils/CliUtils'
 
-export default class NewCommand extends Command {
+class PublishCommand extends Command {
 
   async initialize() {
     logHeader('Publish @mindhive/package')
-    const packages = PackageUtilities.filterIncludedPackages(this.allPackages)
     printIgnoredPackages(PackageUtilities.filterIgnoredPackages(this.allPackages), this.logger)
 
+    const availablePackages = PackageUtilities.filterIncludedPackages(this.allPackages)
     logBr()
-    const versions = await PromptUtilities.processUntilConfirm({ packages },
+    const versions = await PromptUtilities.processUntilConfirm({ packages: availablePackages },
       new RequestNewVersionsTask(this),
       new ConfirmVersionsTask(this),
     )
 
-    this.publishPackages = new PublishPackagesTask(this, PackageUtilities.filterSkippedPackages(packages, versions).updating, versions)
+    const packagesToPublish = PackageUtilities.filterSkippedPackages(availablePackages, versions).updating
+    this.publishTask = new PublishPackagesTask(this, packagesToPublish, versions)
   }
 
   async execute() {
     logBr()
     this.logger.info(styleWhiteBold('Publishing...'))
-    this.publishPackages.execute()
+    this.publishTask.execute()
       .then(() => {
         logBr()
         this.logger.info('Done!!')
@@ -58,6 +59,6 @@ export default class NewCommand extends Command {
 }
 
 export function handler(argv) {
-  return new NewCommand(argv._, argv).run()
+  return new PublishCommand(argv._, argv).run()
 }
 
