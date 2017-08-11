@@ -25,7 +25,7 @@ export default compose(
       buttons.map(buttonProps => <AnyButton {...buttonProps} />),
       React.Children.map(children, child => child),
       isEqual
-    ).map((child, i) => React.cloneElement(child, {key: `ButtonGroupBtn${i}`}))
+    ).map((child, i) => React.cloneElement(child, {key: `ButtonGroupBtn${i}`, className: "btnGroupChild"}))
     return {
       children: left ? allButtons.reverse() : allButtons,
       ...rest,

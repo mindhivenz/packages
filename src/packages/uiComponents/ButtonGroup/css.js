@@ -4,11 +4,17 @@ import { applyTheme } from '@mindhive/styles'
 const mapThemeToStyles = ({ spacing }) => ({
   buttonGroup: {
     marginTop: spacing.desktopGutter,
-    textAlign: 'right',
-    position: 'relative',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    padding: '0 5px',
     '&.left': {
       textAlign: 'left',
     },
+    '& btnGroupChild': {
+      flex: '1 1 auto',
+      magin: '0 5px',
+    }
   },
 })
 
