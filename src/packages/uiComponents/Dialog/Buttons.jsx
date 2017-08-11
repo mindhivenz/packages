@@ -15,8 +15,8 @@ import { injectStylesSheet } from './Styles'
 
 const Buttons = ({ dialogDomain }) =>
   <ButtonGroup>
-    <SecondaryButton {...dialogDomain.secondaryButton} />
-    <PrimaryButton {...dialogDomain.primaryButton} />
+    <SecondaryButton {...dialogDomain.rejectButton} />
+    <PrimaryButton {...dialogDomain.confirmButton} />
   </ButtonGroup>
 
 export default compose(

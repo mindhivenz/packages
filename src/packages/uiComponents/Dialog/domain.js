@@ -4,6 +4,14 @@ import { observable, action, computed } from 'mobx'
 import keycode from 'keycode'
 import { makeProps } from '../Buttons/propHelper'
 
+type OpenProps = {
+  title?: string,
+  message?: string,
+  modal?: boolean,
+  confirmButton?: {},
+  rejectButton?: {},
+}
+
 export class DialogDomain {
   _resolve: () => mixed
   _reject: () => mixed
@@ -13,8 +21,8 @@ export class DialogDomain {
   @observable message = 'Default dialog message'
   @observable modal = true
 
-  @observable _primaryButton = undefined
-  @observable _secondaryButton = undefined
+  @observable _confirmButton = undefined
+  @observable _rejectButton = undefined
 
   constructor() {}
 
@@ -29,24 +37,24 @@ export class DialogDomain {
   }
 
   @computed
-  get primaryButton(): ?{} {
+  get confirmButton(): ?{} {
     return makeProps(
       {
         label: 'Yes',
         onTouchTap: this.doSuccess,
       },
-      this._primaryButton
+      this._confirmButton
     )
   }
 
   @computed
-  get secondaryButton(): ?{} {
+  get rejectButton(): ?{} {
     return makeProps(
       {
-        label: 'No',
+        label: 'Cancel',
         onTouchTap: this.doCancel,
       },
-      this._secondaryButton
+      this._rejectButton
     )
   }
 
@@ -78,18 +86,12 @@ export class DialogDomain {
     title,
     message,
     modal = true,
-    primaryButton,
-    secondaryButton,
-  }: {
-    title?: string,
-    message?: string,
-    modal?: boolean,
-    primaryButton?: {},
-    secondaryButton?: {},
-  }) {
+    confirmButton,
+    rejectButton,
+  }: OpenProps) {
     this.modal = modal
-    this._primaryButton = primaryButton
-    this._secondaryButton = secondaryButton
+    this._confirmButton = confirmButton
+    this._rejectButton = rejectButton
     this._title = title
     this.message = message
     this._openPromise = new Promise(this._handlePromise)
@@ -105,8 +107,8 @@ export class DialogDomain {
   _tidyUp() {
     this._resolve = () => {}
     this._reject = () => {}
-    this._primaryButton = undefined
-    this._secondaryButton = undefined
+    this._confirmButton = undefined
+    this._rejectButton = undefined
   }
 
   handleKeyUp = (event: {}) => {
