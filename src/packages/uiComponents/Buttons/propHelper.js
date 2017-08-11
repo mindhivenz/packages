@@ -9,15 +9,17 @@ export const SHOW_BUTTON_PROP = 'showButton'
 export const BUTTON_PRIMARY = 'primary'
 export const BUTTON_SECONDARY = 'secondary'
 
-export const makeProps = (buttonType: string, props: {}, options?: {}) =>
-  options
-    ? {
-        buttonType,
-        [SHOW_BUTTON_PROP]: true,
-        ...props,
-        ...options,
-      }
-    : {
-        [SHOW_BUTTON_PROP]: false,
-      }
-
+export const makeProps = (buttonType: string, props: {}, options: any) => {
+  if (options) {
+    return {
+      buttonType,
+      [SHOW_BUTTON_PROP]: true,
+      ...props,
+      ...(typeof options === 'string' ? {label: options} : options),
+    }
+  } else {
+    return {
+      [SHOW_BUTTON_PROP]: false,
+    }
+  }
+}

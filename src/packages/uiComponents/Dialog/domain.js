@@ -4,12 +4,14 @@ import { observable, action, computed } from 'mobx'
 import keycode from 'keycode'
 import { makeProps, BUTTON_PRIMARY, BUTTON_SECONDARY } from '../Buttons/propHelper'
 
+const muiDialogCloseDelay = 450
+
 type OpenProps = {
   title?: string,
   message?: string,
   modal?: boolean,
-  confirmButton?: {},
-  rejectButton?: {},
+  confirm?: mixed,
+  reject?: mixed,
 }
 
 export class DialogDomain {
@@ -53,7 +55,7 @@ export class DialogDomain {
     return makeProps(
       BUTTON_SECONDARY,
       {
-        label: 'Cancel',
+        label: 'No',
         onTouchTap: this.doCancel,
       },
       this._rejectButton
@@ -68,15 +70,13 @@ export class DialogDomain {
 
   @action
   _handleCancel = () => {
-    this.close()
-    this._reject()
+    this.close(this._reject)
     this._tidyUp()
   }
 
   @action
   _handleSuccess = () => {
-    this.close()
-    this._resolve()
+    this.close(this._resolve)
     this._tidyUp()
   }
 
@@ -88,12 +88,12 @@ export class DialogDomain {
     title,
     message,
     modal = true,
-    confirmButton,
-    rejectButton,
+    confirm,
+    reject,
   }: OpenProps) {
     this.modal = modal
-    this._confirmButton = confirmButton
-    this._rejectButton = rejectButton
+    this._confirmButton = confirm
+    this._rejectButton = reject
     this._title = title
     this.message = message
     this._openPromise = new Promise(this._handlePromise)
@@ -101,8 +101,9 @@ export class DialogDomain {
   }
 
   @action
-  close() {
+  close(afterClose: () => mixed) {
     this._openPromise = null
+    setTimeout(afterClose, muiDialogCloseDelay)
   }
 
   @action
