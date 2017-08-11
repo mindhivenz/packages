@@ -20,5 +20,5 @@ export default ({ buildLocation, sourceLocation, name }, logger, cb) => {
     `--out-dir ${path.resolve(buildLocation)}`
 
 
-  execJs(bCommand, { silent: true, async: true }, cb)
+  execJs(bCommand, { silent: false, async: true }, cb)
 }

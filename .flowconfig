@@ -11,3 +11,4 @@ unsafe.enable_getters_and_setters=true
 munge_underscores=true
 esproposal.decorators=ignore
 suppress_type=$FlowARGV
+suppress_type=$FlowDestructure

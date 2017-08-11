@@ -24,8 +24,9 @@ export default class PublishPackageTask extends AsyncTask {
     cwd: directory,
     env: Object.assign({}, process.env, {
       npm_config_registry: config.registry,
+      '--access':  'public',
     }),
-    silent: true,
+    silent: false,
   })
 
   execute(pkg) {
