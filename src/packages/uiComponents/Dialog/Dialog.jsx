@@ -8,17 +8,19 @@ import EventListener from 'react-event-listener'
 
 import inject from '@mindhive/mobx/inject'
 import { injectStylesSheet } from './Styles'
+import Buttons from './Buttons'
 
 const Dialog = ({
   dialogDomain,
   title,
   styleProps,
+  buttonsStyle,
   children,
   ...other
 }) =>
   <MuiDialog
     ref={dialogDomain.registerNode}
-    title={title}
+    title={dialogDomain.title}
     open={dialogDomain.isOpen}
     modal
     {...styleProps}
@@ -28,7 +30,8 @@ const Dialog = ({
       target="window"
       onKeyUp={dialogDomain.handleKeyUp}
     />
-    {children}
+    {children || dialogDomain.message}
+    <Buttons />
   </MuiDialog>
 
 export default compose(
@@ -41,6 +44,7 @@ export default compose(
       bodyStyle: styles.body,
       titleStyle: styles.title,
     },
+    buttonsStyle: styles.buttons,
   })),
   observer,
 )(Dialog)

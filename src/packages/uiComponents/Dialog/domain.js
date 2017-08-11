@@ -3,34 +3,122 @@
 import { observable, action, computed } from 'mobx'
 import keycode from 'keycode'
 
+const primaryButtonDefault = {
+  label: 'OK',
+}
+const secondaryButtonDefault = {
+  label: 'Cancel',
+}
+
 export class DialogDomain {
+  _resolve: () => mixed
+  _reject: () => mixed
 
-  @observable _wantOpen = false
+  @observable _openPromise = null
+  @observable _title = 'Default dialog title'
+  @observable message = 'Default dialog message'
 
-  constructor() {
+  @observable _primaryButton = undefined
+  @observable _secondaryButton = undefined
+
+  constructor() {}
+
+  @computed
+  get isOpen(): boolean {
+    return this._openPromise !== null
   }
 
-  @computed get isOpen():boolean {
-    return this._wantOpen
+  @computed
+  get title(): string {
+    return this._title || 'Confirm'
   }
 
-  @action open() {
-    this._wantOpen = true
+  @computed
+  get primaryButton(): ?{} {
+    return this._primaryButton
+      ? {
+          label: 'Yes',
+          onTouchTap: this.doSuccess,
+          ...this._primaryButton,
+        }
+      : undefined
   }
 
-  @action close() {
-    this._wantOpen = false
+  @computed
+  get secondaryButton(): ?{} {
+    return this._secondaryButton
+      ? {
+        label: 'No',
+        onTouchTap: this.doCancel,
+        ...this._secondaryButton,
+      }
+      : undefined
+  }
+
+  @action
+  _handlePromise = (resolve: () => mixed, reject: () => mixed) => {
+    this._resolve = resolve
+    this._reject = reject
+  }
+
+  @action
+  _handleCancel = () => {
+    this.close()
+    this._reject()
+    this._tidyUp()
+  }
+
+  @action
+  _handleSuccess = () => {
+    this.close()
+    this._resolve()
+    this._tidyUp()
+  }
+
+  @action doCancel = this._handleCancel
+  @action doSuccess = this._handleSuccess
+
+  @action
+  open({
+    title,
+    message,
+    primaryButton,
+    secondaryButton,
+  }: {
+    title?: string,
+    message?: string,
+    primaryButton?: {},
+    secondaryButton?: {},
+  }) {
+    this._primaryButton = primaryButton
+    this._secondaryButton = secondaryButton
+    this._title = title
+    this.message = message
+    this._openPromise = new Promise(this._handlePromise)
+    return this._openPromise
+  }
+
+  @action
+  close() {
+    this._openPromise = null
+  }
+
+  @action
+  _tidyUp() {
+    this._resolve = () => {}
+    this._reject = () => {}
+    this._primaryButton = undefined
+    this._secondaryButton = undefined
   }
 
   handleKeyUp = (event: {}) => {
     const key = keycode(event)
     if (key === 'esc') {
-      this.close()
-    } else if (key === 'enter' && this.primaryButton) {
-      this.close()
+      this._handleCancel()
+    } else if (key === 'enter') {
+      this._handleSuccess()
     }
   }
-
 }
 
 export default (context: {}) => ({
