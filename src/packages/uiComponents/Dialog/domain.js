@@ -2,7 +2,7 @@
 
 import { observable, action, computed } from 'mobx'
 import keycode from 'keycode'
-import { makeProps } from '../Buttons/propHelper'
+import { makeProps, BUTTON_PRIMARY, BUTTON_SECONDARY } from '../Buttons/propHelper'
 
 type OpenProps = {
   title?: string,
@@ -39,6 +39,7 @@ export class DialogDomain {
   @computed
   get confirmButton(): ?{} {
     return makeProps(
+      BUTTON_PRIMARY,
       {
         label: 'Yes',
         onTouchTap: this.doSuccess,
@@ -50,6 +51,7 @@ export class DialogDomain {
   @computed
   get rejectButton(): ?{} {
     return makeProps(
+      BUTTON_SECONDARY,
       {
         label: 'Cancel',
         onTouchTap: this.doCancel,

@@ -8,7 +8,7 @@ import EventListener from 'react-event-listener'
 
 import inject from '@mindhive/mobx/inject'
 import { injectStylesSheet } from './Styles'
-import Buttons from './Buttons'
+import DialogActions from './Actions'
 
 const Dialog = ({
   dialogDomain,
@@ -27,7 +27,7 @@ const Dialog = ({
     {...other}>
     <EventListener target="window" onKeyUp={dialogDomain.handleKeyUp} />
     {children || dialogDomain.message}
-    <Buttons />
+    <DialogActions />
   </MuiDialog>
 
 export default compose(
