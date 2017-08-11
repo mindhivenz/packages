@@ -13,7 +13,7 @@ import Buttons from './Buttons'
 const Dialog = ({
   dialogDomain,
   title,
-  styleProps,
+  dialogStyles,
   buttonsStyle,
   children,
   ...other
@@ -22,14 +22,10 @@ const Dialog = ({
     ref={dialogDomain.registerNode}
     title={dialogDomain.title}
     open={dialogDomain.isOpen}
-    modal
-    {...styleProps}
-    {...other}
-  >
-    <EventListener
-      target="window"
-      onKeyUp={dialogDomain.handleKeyUp}
-    />
+    modal={dialogDomain.modal}
+    {...dialogStyles}
+    {...other}>
+    <EventListener target="window" onKeyUp={dialogDomain.handleKeyUp} />
     {children || dialogDomain.message}
     <Buttons />
   </MuiDialog>
@@ -39,12 +35,12 @@ export default compose(
   injectStylesSheet,
   withProps(({ dialogDomain, styles }) => ({
     registerNode: dialogDomain.registerNode,
-    styleProps: {
+    dialogStyles: {
       contentStyle: styles.content,
       bodyStyle: styles.body,
       titleStyle: styles.title,
     },
     buttonsStyle: styles.buttons,
   })),
-  observer,
+  observer
 )(Dialog)

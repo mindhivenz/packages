@@ -2,29 +2,25 @@
 import React from 'react'
 import { observer } from 'mobx-react'
 import compose from 'recompose/compose'
-import withProps from 'recompose/withProps'
-
-import PrimaryButton from './PrimaryButton'
-import SecondaryButton from './SecondaryButton'
 
 import inject from '@mindhive/mobx/inject'
 
+import ButtonGroup from '../ButtonGroup'
+
+import PrimaryButton from '../Buttons/PrimaryButton'
+import SecondaryButton from '../Buttons/SecondaryButton'
+
+
 import { injectStylesSheet } from './Styles'
 
-const Buttons = ({
-  buttonsStyle,
-  dialogDomain,
-}) =>
-  <div style={buttonsStyle}>
-    {dialogDomain.secondaryButton && <SecondaryButton {...dialogDomain.secondaryButton} />}
-    {dialogDomain.primaryButton && <PrimaryButton {...dialogDomain.primaryButton} />}
-  </div>
+const Buttons = ({ dialogDomain }) =>
+  <ButtonGroup>
+    <SecondaryButton {...dialogDomain.secondaryButton} />
+    <PrimaryButton {...dialogDomain.primaryButton} />
+  </ButtonGroup>
 
 export default compose(
   inject(['dialogDomain']),
   injectStylesSheet,
-  withProps(({ dialogDomain, styles, prepareStyles }) => ({
-    buttonsStyle: prepareStyles(styles.buttons),
-  })),
-  observer,
+  observer
 )(Buttons)

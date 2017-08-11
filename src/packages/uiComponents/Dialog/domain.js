@@ -2,13 +2,7 @@
 
 import { observable, action, computed } from 'mobx'
 import keycode from 'keycode'
-
-const primaryButtonDefault = {
-  label: 'OK',
-}
-const secondaryButtonDefault = {
-  label: 'Cancel',
-}
+import { makeProps } from '../Buttons/propHelper'
 
 export class DialogDomain {
   _resolve: () => mixed
@@ -17,6 +11,7 @@ export class DialogDomain {
   @observable _openPromise = null
   @observable _title = 'Default dialog title'
   @observable message = 'Default dialog message'
+  @observable modal = true
 
   @observable _primaryButton = undefined
   @observable _secondaryButton = undefined
@@ -35,24 +30,24 @@ export class DialogDomain {
 
   @computed
   get primaryButton(): ?{} {
-    return this._primaryButton
-      ? {
-          label: 'Yes',
-          onTouchTap: this.doSuccess,
-          ...this._primaryButton,
-        }
-      : undefined
+    return makeProps(
+      {
+        label: 'Yes',
+        onTouchTap: this.doSuccess,
+      },
+      this._primaryButton
+    )
   }
 
   @computed
   get secondaryButton(): ?{} {
-    return this._secondaryButton
-      ? {
+    return makeProps(
+      {
         label: 'No',
         onTouchTap: this.doCancel,
-        ...this._secondaryButton,
-      }
-      : undefined
+      },
+      this._secondaryButton
+    )
   }
 
   @action
@@ -82,14 +77,17 @@ export class DialogDomain {
   open({
     title,
     message,
+    modal = true,
     primaryButton,
     secondaryButton,
   }: {
     title?: string,
     message?: string,
+    modal?: boolean,
     primaryButton?: {},
     secondaryButton?: {},
   }) {
+    this.modal = modal
     this._primaryButton = primaryButton
     this._secondaryButton = secondaryButton
     this._title = title

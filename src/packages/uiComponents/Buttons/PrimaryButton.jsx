@@ -5,15 +5,10 @@ import compose from 'recompose/compose'
 import RaisedButton from 'material-ui/RaisedButton'
 import FlatButton from 'material-ui/FlatButton'
 
-import { injectStylesSheet } from './Styles'
+import showButton from './showButton'
+import { injectStylesSheet } from '../Dialog/Styles'
 
-const PrimaryButton = ({
-  disabled,
-  label,
-  onTouchTap,
-  children,
-  ...props
-}) =>
+const PrimaryButton = ({ disabled, label, onTouchTap, children, ...props }) =>
   <RaisedButton
     key="primaryButton"
     disabled={disabled}
@@ -23,6 +18,4 @@ const PrimaryButton = ({
     {...props}
   />
 
-export default compose(
-  observer,
-)(PrimaryButton)
+export default compose(showButton, observer)(PrimaryButton)
