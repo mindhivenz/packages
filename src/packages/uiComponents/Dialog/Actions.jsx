@@ -9,11 +9,8 @@ import ButtonGroup from '../ButtonGroup'
 import AnyButton from '../Buttons/AnyButton'
 
 const Actions = ({ dialogDomain }) =>
-  <ButtonGroup>
-    <AnyButton {...dialogDomain.rejectButton} />
+  <ButtonGroup buttons={[dialogDomain.rejectButton]}>
     <AnyButton {...dialogDomain.confirmButton} />
-    {/*<SecondaryButton {...dialogDomain.rejectButton} />*/}
-    {/*<PrimaryButton {...dialogDomain.confirmButton} />*/}
   </ButtonGroup>
 
 export default compose(inject(['dialogDomain']), observer)(Actions)
