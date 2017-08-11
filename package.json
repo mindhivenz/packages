@@ -109,6 +109,7 @@
     "react-test-renderer": "^15.5.4",
     "read-pkg": "^2.0.0",
     "readline-sync": "^1.2.21",
+    "recompose": "^0.24.0",
     "redux-form": "^6.8.0",
     "rollup": "^0.41.6",
     "rollup-plugin-babel": "^2.7.1",
@@ -126,5 +127,8 @@
     "webpack": "^2.4.1",
     "xstream": "^5.0.5",
     "yargs": "^8.0.2"
+  },
+  "devDependencies": {
+    "flow-bin": "^0.52.0"
   }
 }

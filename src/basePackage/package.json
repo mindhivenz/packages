@@ -1,0 +1,8 @@
+{
+  "private": false,
+  "repository": {
+    "url": "git+ssh://git@github.com/mindhivenz/packages.git"
+  },
+  "license": "MIT",
+  "main": "index.js"
+}

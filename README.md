@@ -10,6 +10,10 @@ from [Bable](https://github.com/babel/babel/tree/master/packages) and
 
 ### Getting started
 1. First thing run `yarn bootstrap` to install npm dependencies, compile build scripts and build any packages
+1. `npm install -g flow-typed`
+1. `npm install --save-dev flow-bin`
+1. `yarn add babel-preset-flow`
+1. `npm install -g prettier`
 
 #### Basics
 1.  `yarn new <package>` creates a new package

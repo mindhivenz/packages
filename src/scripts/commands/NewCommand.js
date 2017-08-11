@@ -1,3 +1,5 @@
+// @flow
+
 import CreatePackageTask from '../tasks/CreatePackageTask'
 import ProcessPackageDataTask from '../tasks/ProcessPackageDataTask'
 import ConfirmPackageDataTask from '../tasks/ConfirmPackageDataTask'
@@ -6,18 +8,13 @@ import PromptUtilities from '../utils/PromptUtilities'
 import Command from '../core/Command'
 import { QUIT, INIT } from '../core/Codes'
 
-import {
-  logBr,
-  logSuccess,
-  logHeader,
-} from '../utils/CliUtils'
+import { logBr, logSuccess, logHeader } from '../utils/CliUtils'
 
-export default class NewCommand extends Command {
+class NewCommand extends Command {
 
   async initialize() {
     logHeader('Create @mindhive/package')
     const packageName = this.input.package
-    console.log(this.input)
     this.packageData = await PromptUtilities.processUntilConfirm(
       { packageName: packageName || null },
       this.createTask(ProcessPackageDataTask),
@@ -31,7 +28,7 @@ export default class NewCommand extends Command {
     logBr()
   }
 
-  handleError(code, err) {
+  handleError(code: string, err: string) {
     if (INIT === code && QUIT === err) {
       logBr()
       this.logger.warn('Quit without creating package!')
@@ -43,7 +40,7 @@ export default class NewCommand extends Command {
 
 }
 
-export function handler(argv, callback) {
-  return new NewCommand(argv).run().then(callback)
+export function handler(params: {}, callback: () => mixed) {
+  return new NewCommand(params).run().then(callback)
 }
 
