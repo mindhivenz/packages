@@ -5,6 +5,7 @@
     "@mindhive/documents",
     "@mindhive/richtext",
     "@mindhive/styles",
+    "@mindhive/ui-components",
     "@mindhive/styles2"
   ],
   "additionalFiles": [
