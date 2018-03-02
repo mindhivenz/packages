@@ -8,6 +8,15 @@ from [Bable](https://github.com/babel/babel/tree/master/packages) and
     THIS IS A LITTLE OUT OF DATE :)
 ```
 
+### NPM
+1. `npm whois` shows login
+1. `npm login` to login as motorweb user:
+```
+username: motorweb
+password: *******
+email: damon@motorweb.co.nz
+```
+
 ### Getting started
 1. First thing run `yarn bootstrap` to install npm dependencies, compile build scripts and build any packages
 1. `npm install -g flow-typed`
