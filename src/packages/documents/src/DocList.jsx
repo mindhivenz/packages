@@ -23,6 +23,8 @@ const DocList = ({
   DocView,
   viewProps,
   docIdSelector = mongoIdSelector,
+  noDnoDocumentsStyles,
+  ...other,
 }) => {
   const docComponents = documents.map((doc, index) => {
     const id = docIdSelector(doc)
@@ -65,7 +67,7 @@ const DocList = ({
       </List>
     </div>
     :
-    <NoDocsLabel hideWhenEmpty={hideWhenEmpty}>No {vocab.documents} defined</NoDocsLabel>
+    <NoDocsLabel hideWhenEmpty={hideWhenEmpty} noDnoDocumentsStyles={noDnoDocumentsStyles}>No {vocab.documents} defined</NoDocsLabel>
 }
 
 export default observer(DocList)

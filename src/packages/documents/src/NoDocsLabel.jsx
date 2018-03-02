@@ -11,13 +11,14 @@ const mapThemeToStyles = ({
   typography,
   appBar,
   spacing,
-}) => ({
+}, {noDnoDocumentsStyles = {}}) => ({
   noDocuments: {
     color: palette.disabledColor,
     fontWeight: typography.fontWeightMedium,
     textAlign: 'center',
     padding: appBar.height,
     fontSize: spacing.desktopGutterMore,
+    ...noDnoDocumentsStyles,
   },
 })
 
