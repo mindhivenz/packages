@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'    // eslint-disable-line import/no-unres
 import compose from 'recompose/compose'
 import {injectStore} from './ReduxStoreModule'
 
-const RxProvider = ({ store, children }) =>
+const ReduxProvider = ({ store, children }) =>
   <Provider store={store}>
     {children}
   </Provider>
@@ -13,4 +13,4 @@ export default compose(
   injectStore(storeModule => ({
     store: storeModule.createStore()
   })),
-)(RxProvider)
+)(ReduxProvider)

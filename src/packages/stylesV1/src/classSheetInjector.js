@@ -1,6 +1,6 @@
 import { Component } from 'react'
 import isEqual from 'lodash/isEqual'
-import { jss } from 'react-jss'
+import { jss } from 'r'
 import { createEagerElement, getDisplayName } from 'recompose'
 
 const classSheetInjector = (classesName = 'classes') => (BaseComponent) => {

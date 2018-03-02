@@ -12,6 +12,7 @@ export default async (packageName, currentVersion) => {
   const prepatch = semver.inc(currentVersion, 'prepatch')
   const preminor = semver.inc(currentVersion, 'preminor')
   const premajor = semver.inc(currentVersion, 'premajor')
+  const prerelease = semver.inc(currentVersion, 'prerelease', 'alpha')
 
 
   let message = 'Select a new version'
@@ -26,6 +27,7 @@ export default async (packageName, currentVersion) => {
       { value: prepatch, name: `Prepatch (${prepatch})` },
       { value: preminor, name: `Preminor (${preminor})` },
       { value: premajor, name: `Premajor (${premajor})` },
+      { value: prerelease, name: `Premajor (${premajor})` },
       { value: 'PRERELEASE', name: 'Prerelease' },
       { value: 'CUSTOM', name: 'Custom' },
       { value: SKIP, name: 'Skip this package' },

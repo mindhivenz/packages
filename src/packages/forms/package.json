@@ -1,6 +1,6 @@
 {
   "name": "@mindhive/forms",
-  "version": "0.0.0",
+  "version": "0.0.1-2",
   "description": "Simple, flexable, extendable form management",
   "keywords": [
     "form"
@@ -18,13 +18,13 @@
     "url": "https://github.com/mindhivenz/packages/issues"
   },
   "dependencies": {
-    "@mindhive/module-sandbox": "^0.0.0",
     "lodash": "^4.17.4",
     "prop-types": "^15.5.10",
     "recompose": "^0.25.0",
     "redux-form": "^7.0.3"
   },
   "peerDependencies": {
+    "@mindhive/module-sandbox": "^0.0.1-0",
     "material-ui": "^1.0.0-alpha",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
@@ -32,4 +32,3 @@
     "redux": "^3.0.0"
   }
 }
-

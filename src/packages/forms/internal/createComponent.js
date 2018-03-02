@@ -2,7 +2,7 @@
 import React from 'react'
 import compose from 'recompose/compose'
 import mapProps from 'recompose/mapProps'
-import inject from '@mindhive/framework/modules/inject'
+import inject from '@mindhive/module-sandbox/modules/inject'
 
 export const selectComponents = select => compose(
   inject(['ctxFormComponents']),

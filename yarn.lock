@@ -25,6 +25,16 @@
     babel-runtime "^6.23.0"
     global "^4.3.2"
 
+"@mindhive/forms@^0.0.1-1":
+  version "0.0.1-1"
+  resolved "https://registry.yarnpkg.com/@mindhive/forms/-/forms-0.0.1-1.tgz#731617b268af4b5f23f20e238dc098e7615557cc"
+  dependencies:
+    "@mindhive/module-sandbox" "^0.0.0"
+    lodash "^4.17.4"
+    prop-types "^15.5.10"
+    recompose "^0.25.0"
+    redux-form "^7.0.3"
+
 "@mindhive/mobx@^2.1.2":
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/@mindhive/mobx/-/mobx-2.1.2.tgz#82b9ff73fdbeaa751a756b545f07a68d0c312113"
@@ -33,6 +43,28 @@
     global "^4.3.2"
     lodash "^4.17.4"
     recompose "^0.22.0"
+
+"@mindhive/module-sandbox@^0.0.0":
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/@mindhive/module-sandbox/-/module-sandbox-0.0.0.tgz#564fb848cddbe233fe159e37d55b0b56c17859f2"
+  dependencies:
+    "@mindhive/di" "^4.3.1"
+    lodash "^4.17.4"
+    mobx "^3.2.2"
+    mobx-react "^4.2.2"
+    prop-types "^15.5.10"
+    recompose "^0.25.0"
+
+"@mindhive/module-sandbox@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@mindhive/module-sandbox/-/module-sandbox-0.0.1.tgz#f9314b4160cec9088ec7883bd1786533b6a2e63c"
+  dependencies:
+    "@mindhive/di" "^4.3.1"
+    lodash "^4.17.4"
+    mobx "^3.2.2"
+    mobx-react "^4.2.2"
+    prop-types "^15.5.10"
+    recompose "^0.25.0"
 
 "@most/multicast@^1.2.5":
   version "1.2.5"
@@ -2939,9 +2971,9 @@ flat-cache@^1.2.1:
     graceful-fs "^4.1.2"
     write "^0.2.1"
 
-flow-bin@^0.52.0:
-  version "0.52.0"
-  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.52.0.tgz#b6d9abe8bcd1ee5c62df386451a4e2553cadc3a3"
+flow-bin@^0.53.1:
+  version "0.53.1"
+  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.53.1.tgz#9b22b63a23c99763ae533ebbab07f88c88c97d84"
 
 flyd@^0.2.4:
   version "0.2.4"
@@ -3555,6 +3587,10 @@ hoek@2.x.x:
 hoist-non-react-statics@^1.0.0, hoist-non-react-statics@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-1.2.0.tgz#aa448cf0986d55cc40773b17174b7dd066cb7cfb"
+
+hoist-non-react-statics@^2.2.1:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.3.0.tgz#ede16318c2ff1f9fe3a025396ba06fd4c44608bb"
 
 home-or-tmp@^2.0.0:
   version "2.0.0"
@@ -5283,6 +5319,10 @@ mobx@^3.1.16:
   version "3.1.17"
   resolved "https://registry.yarnpkg.com/mobx/-/mobx-3.1.17.tgz#8bfb03952089c53fec120e1ee45d93441f627c9e"
 
+mobx@^3.2.2:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/mobx/-/mobx-3.2.2.tgz#aa671459bededfd9880c948889a3f62bce09279c"
+
 mocha@^3.4.2:
   version "3.4.2"
   resolved "https://registry.yarnpkg.com/mocha/-/mocha-3.4.2.tgz#d0ef4d332126dbf18d0d640c9b382dd48be97594"
@@ -6355,6 +6395,15 @@ recompose@^0.24.0:
     hoist-non-react-statics "^1.0.0"
     symbol-observable "^1.0.4"
 
+recompose@^0.25.0:
+  version "0.25.0"
+  resolved "https://registry.yarnpkg.com/recompose/-/recompose-0.25.0.tgz#e2ec723692ff0fdab3d62bd22c1da69af1985acd"
+  dependencies:
+    change-emitter "^0.1.2"
+    fbjs "^0.8.1"
+    hoist-non-react-statics "^1.0.0"
+    symbol-observable "^1.0.4"
+
 redent@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/redent/-/redent-1.0.0.tgz#cf916ab1fd5f1f16dfb20822dd6ec7f730c2afde"
@@ -6369,6 +6418,19 @@ redux-form@^6.8.0:
     deep-equal "^1.0.1"
     es6-error "^4.0.0"
     hoist-non-react-statics "^1.2.0"
+    invariant "^2.2.2"
+    is-promise "^2.1.0"
+    lodash "^4.17.3"
+    lodash-es "^4.17.3"
+    prop-types "^15.5.9"
+
+redux-form@^7.0.3:
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/redux-form/-/redux-form-7.0.3.tgz#80157d01df7de6c8eb2297ad1fbbb092bafa34f5"
+  dependencies:
+    deep-equal "^1.0.1"
+    es6-error "^4.0.0"
+    hoist-non-react-statics "^2.2.1"
     invariant "^2.2.2"
     is-promise "^2.1.0"
     lodash "^4.17.3"

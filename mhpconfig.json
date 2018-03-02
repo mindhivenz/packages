@@ -2,10 +2,8 @@
   "name": "mindhive-packages",
   "version": "0.0.1",
   "ignore": [
-    "@mindhive/documents",
     "@mindhive/richtext",
     "@mindhive/styles",
-    "@mindhive/ui-components",
     "@mindhive/styles2"
   ],
   "additionalFiles": [
